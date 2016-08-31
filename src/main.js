@@ -133,7 +133,7 @@ var Sample3 = React.createClass({
 var Sample4 = React.createClass({
 
   config: {
-    angularIgnoreAttrs: ['class']
+    reactIgnoreAttrs: ['class']
   },
   getInitialState: function() {
     return {content: {src: '../src/image.jpg'}};
@@ -278,7 +278,7 @@ var Demo = React.createClass({
   render: function() {
     return (
       <div>
-        <h1>Angular adapter for the Froala WYSIWYG editor</h1>
+        <h1>React adapter for the Froala WYSIWYG editor</h1>
         <Sample1/>
         <Sample2/>
         <Sample3/>
