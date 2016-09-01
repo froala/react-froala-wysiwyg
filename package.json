@@ -32,7 +32,8 @@
     "lite-server": "^2.2.0"
   },
   "scripts": {
-    "start": "lite-server -c configs/bs-config.js"
+    "start": "lite-server -c configs/bs-config.js",
+    "build": "gulp"
   },
   "repository": {
     "type": "git",
