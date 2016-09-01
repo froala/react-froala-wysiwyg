@@ -91,12 +91,12 @@ var Sample3 = React.createClass({
     this.setState({content: model});
   },
 
-  initializeEditor() {
+  initializeEditor: function() {
     this.state.initControls.initialize();
     this.setState({initControls: this.state.initControls});
   },
 
-  destroyEditor() {
+  destroyEditor: function() {
     this.state.initControls.destroy();
     this.setState({initControls: this.state.initControls});
   },
@@ -232,12 +232,12 @@ var Sample7 = React.createClass({
     this.setState({content: model});
   },
 
-  initializeEditor() {
+  initializeEditor: function() {
     this.state.initControls.initialize();
     this.setState({initControls: this.state.initControls});
   },
 
-  destroyEditor() {
+  destroyEditor: function() {
     this.state.initControls.destroy();
     this.setState({initControls: this.state.initControls});
   },
