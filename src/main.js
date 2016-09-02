@@ -160,10 +160,10 @@ var Sample4 = React.createClass({
 var Sample5 = React.createClass({
 
   config: {
-    reactIgnoreAttrs: ['class']
+    reactIgnoreAttrs: ['tmpattr']
   },
   getInitialState: function() {
-    return {content: {src: '../src/image.jpg'}};
+    return {content: {src: '../src/image.jpg', id: 'froalaEditor', tmpattr: 'This attribute will be ignored on change.'}};
   },
   handleModelChange: function(model) {
     this.setState({content: model});
