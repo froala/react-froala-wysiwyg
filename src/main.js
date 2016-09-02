@@ -32,7 +32,7 @@ var Sample1 = React.createClass({
         <FroalaEditor
           tag='textarea'
           config={this.config}
-          initModel={this.state.myTitle}
+          model={this.state.myTitle}
           onModelChange={this.handleModelChange}
         />
         <input value={this.state.myTitle} onChange={this.handleInputChange}/>
@@ -54,7 +54,7 @@ var Sample2 = React.createClass({
       <div className="sample">
         <h2>Sample2: Full Editor</h2>
         <FroalaEditor
-          initModel={this.state.content}
+          model={this.state.content}
           onModelChange={this.handleModelChange}
         />
         <h4>Rendered Content:</h4>
@@ -69,6 +69,31 @@ var Sample2 = React.createClass({
 var Sample3 = React.createClass({
 
   getInitialState: function() {
+    return {content: '<span>My Document\'s Title</span>'};
+  },
+  handleModelChange: function(model) {
+    this.setState({content: model});
+  },
+  render: function() {
+    return(
+      <div className="sample">
+        <h2>Sample3: Two way binding</h2>
+        <FroalaEditor
+          model={this.state.content}
+          onModelChange={this.handleModelChange}
+        />
+        <FroalaEditor
+          model={this.state.content}
+          onModelChange={this.handleModelChange}
+        />
+      </div>
+    );
+  }
+});
+
+var Sample4 = React.createClass({
+
+  getInitialState: function() {
     return {
       initControls: null
     };
@@ -79,6 +104,8 @@ var Sample3 = React.createClass({
       return;
     }
     this.state.initControls.getEditor()('html.set', '');
+    this.state.initControls.getEditor()('undo.reset');
+    this.state.initControls.getEditor()('undo.saveStep');
   },
 
   handleController: function(initControls) {
@@ -104,7 +131,7 @@ var Sample3 = React.createClass({
   render: function() {
     return(
       <div className="sample">
-        <h2>Sample 3: Manual Initialization</h2>
+        <h2>Sample 4: Manual Initialization</h2>
         {this.state.initControls ?
             <button className="manual" onClick={this.initializeEditor}>Initialize Editor</button>
             :
@@ -119,7 +146,7 @@ var Sample3 = React.createClass({
           null
         }
         <FroalaEditor
-          initModel={this.state.content}
+          model={this.state.content}
           onModelChange={this.handleModelChange}
           onManualControllerReady={this.handleController}
         >
@@ -130,7 +157,7 @@ var Sample3 = React.createClass({
   }
 });
 
-var Sample4 = React.createClass({
+var Sample5 = React.createClass({
 
   config: {
     reactIgnoreAttrs: ['class']
@@ -145,33 +172,10 @@ var Sample4 = React.createClass({
   render: function() {
     return(
       <div className="sample">
-        <h2>Sample 4: Editor on 'img' tag</h2>
+        <h2>Sample 5: Editor on 'img' tag</h2>
         <FroalaEditorImg
           config={this.config}
-          initModel={this.state.content}
-          onModelChange={this.handleModelChange}
-        />
-        <h4>Model Obj:</h4>
-        <div>{JSON.stringify(this.state.content)}</div>
-      </div>
-    );
-  }
-});
-
-var Sample5 = React.createClass({
-
-  getInitialState: function() {
-    return {content: {innerHTML: 'Click Me'}};
-  },
-  handleModelChange: function(model) {
-    this.setState({content: model});
-  },
-  render: function() {
-    return(
-      <div className="sample">
-        <h2>Sample 5: Editor on 'button' tag</h2>
-        <FroalaEditorButton
-          initModel={this.state.content}
+          model={this.state.content}
           onModelChange={this.handleModelChange}
         />
         <h4>Model Obj:</h4>
@@ -184,7 +188,7 @@ var Sample5 = React.createClass({
 var Sample6 = React.createClass({
 
   getInitialState: function() {
-    return {content: {placeholder: 'I am an input!'}};
+    return {content: {innerHTML: 'Click Me'}};
   },
   handleModelChange: function(model) {
     this.setState({content: model});
@@ -192,9 +196,9 @@ var Sample6 = React.createClass({
   render: function() {
     return(
       <div className="sample">
-        <h2>Sample 6: Editor on 'input' tag</h2>
-        <FroalaEditorInput
-          initModel={this.state.content}
+        <h2>Sample 6: Editor on 'button' tag</h2>
+        <FroalaEditorButton
+          model={this.state.content}
           onModelChange={this.handleModelChange}
         />
         <h4>Model Obj:</h4>
@@ -205,6 +209,29 @@ var Sample6 = React.createClass({
 });
 
 var Sample7 = React.createClass({
+
+  getInitialState: function() {
+    return {content: {placeholder: 'I am an input!'}};
+  },
+  handleModelChange: function(model) {
+    this.setState({content: model});
+  },
+  render: function() {
+    return(
+      <div className="sample">
+        <h2>Sample 7: Editor on 'input' tag</h2>
+        <FroalaEditorInput
+          model={this.state.content}
+          onModelChange={this.handleModelChange}
+        />
+        <h4>Model Obj:</h4>
+        <div>{JSON.stringify(this.state.content)}</div>
+      </div>
+    );
+  }
+});
+
+var Sample8 = React.createClass({
 
   getInitialState: function() {
     return {
@@ -220,6 +247,8 @@ var Sample7 = React.createClass({
       return;
     }
     this.state.initControls.getEditor()('html.set', '');
+    this.state.initControls.getEditor()('undo.reset');
+    this.state.initControls.getEditor()('undo.saveStep');
   },
 
   handleController: function(initControls) {
@@ -244,7 +273,7 @@ var Sample7 = React.createClass({
   render: function() {
     return(
       <div className="sample">
-        <h2>Sample 7: Editor on 'a' tag. Manual Initialization</h2>
+        <h2>Sample 8: Editor on 'a' tag. Manual Initialization</h2>
         {this.state.initControls ?
             <button className="manual" onClick={this.initializeEditor}>Initialize Editor</button>
             :
@@ -260,7 +289,7 @@ var Sample7 = React.createClass({
         }
         <div>
           <FroalaEditorA
-            initModel={this.state.content}
+            model={this.state.content}
             onModelChange={this.handleModelChange}
             onManualControllerReady={this.handleController}
           >
@@ -286,6 +315,7 @@ var Demo = React.createClass({
         <Sample5/>
         <Sample6/>
         <Sample7/>
+        <Sample8/>
       </div>
     );
   }

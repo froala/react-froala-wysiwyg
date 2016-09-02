@@ -24,6 +24,12 @@ var FroalaEditorFunctionality = {
   INNER_HTML_ATTR: 'innerHTML',
   hasSpecialTag: false,
 
+  // Hack to:
+  // 1. Not trigger contentChanged editor event when html.set is called.
+  // 2. When contentChanged event is fired, because of React way, html.set must not be called.
+  htmlWasSet: false,
+  oldModel: null,
+
   // Before first time render.
   componentWillMount: function() {
     this.tag = this.props.tag || this.defaultTag;
@@ -50,48 +56,83 @@ var FroalaEditorFunctionality = {
     this.destroyEditor();
   },
 
+  componentDidUpdate: function() {
+    this.setContent();
+  },
+
   createEditor: function() {
 
     if (this.editorInitialized) {
       return;
     }
-    this.editorInitialized = true;
 
     this.config = this.props.config || this.config;
 
     this.$element = $(this.refs.el);
 
-    if (this.props.initModel) {
-
-      if (this.hasSpecialTag) {
-        this.setInitialSpecialTagModel();
-      } else {
-        this.setInitialModel();
-      }
-    }
+    this.setContent(true);
 
     this.registerEvents();
     this.$editor = this.$element.froalaEditor(this.config).data('froala.editor').$el;
     this.initListeners();
+
+    this.editorInitialized = true;
   },
 
-  setInitialModel: function() {
+  setContent: function(firstTime) {
+
+    if (!this.editorInitialized && !firstTime) {
+      return;
+    }
+
+    if (this.props.model || this.props.model == '') {
+
+      if (!firstTime) {
+
+        if (this.htmlWasSet) {
+          this.htmlWasSet = false;
+          return;
+        }
+        if (this.oldModel != this.props.model) {
+          this.htmlWasSet = true;
+        }
+
+      }
+
+      if (this.hasSpecialTag) {
+        this.setSpecialTagContent();
+      } else {
+        this.setNormalTagContent(firstTime);
+      }
+    }
+  },
+
+  setNormalTagContent: function(firstTime) {
 
     var self = this;
-    this.registerEvent(this.$element, 'froalaEditor.initialized', function () {
 
-      self.$element.froalaEditor('html.set', self.props.initModel || '', true);
+    function htmlSet() {
+
+      self.oldModel = self.props.model;
+      self.$element.froalaEditor('html.set', self.props.model || '', true);
       //This will reset the undo stack everytime the model changes externally. Can we fix this?
       self.$element.froalaEditor('undo.reset');
       self.$element.froalaEditor('undo.saveStep');
-    });
+    }
+
+    if (firstTime) {
+      this.registerEvent(this.$element, 'froalaEditor.initialized', function () {
+        htmlSet();
+      });
+    } else {
+      htmlSet();
+    }
+
   },
 
-  setInitialSpecialTagModel: function() {
+  setSpecialTagContent: function() {
 
-    var self = this;
-
-    var tags = this.props.initModel;
+    var tags = this.props.model;
 
     // add tags on element
     if (tags) {
@@ -143,11 +184,19 @@ var FroalaEditorFunctionality = {
 
   updateModel: function() {
 
+    if (this.htmlWasSet) {
+
+      this.htmlWasSet = false;
+      return;
+    }
+
     if (!this.props.onModelChange) {
       return;
     }
 
-    var modelContent = null;
+    this.htmlWasSet = true;
+
+    var modelContent = '';
 
     if (this.hasSpecialTag) {
 
@@ -320,7 +369,7 @@ var Sample1 = React.createClass({displayName: "Sample1",
         React.createElement(FroalaEditor, {
           tag: "textarea", 
           config: this.config, 
-          initModel: this.state.myTitle, 
+          model: this.state.myTitle, 
           onModelChange: this.handleModelChange}
         ), 
         React.createElement("input", {value: this.state.myTitle, onChange: this.handleInputChange})
@@ -342,7 +391,7 @@ var Sample2 = React.createClass({displayName: "Sample2",
       React.createElement("div", {className: "sample"}, 
         React.createElement("h2", null, "Sample2: Full Editor"), 
         React.createElement(FroalaEditor, {
-          initModel: this.state.content, 
+          model: this.state.content, 
           onModelChange: this.handleModelChange}
         ), 
         React.createElement("h4", null, "Rendered Content:"), 
@@ -357,6 +406,31 @@ var Sample2 = React.createClass({displayName: "Sample2",
 var Sample3 = React.createClass({displayName: "Sample3",
 
   getInitialState: function() {
+    return {content: '<span>My Document\'s Title</span>'};
+  },
+  handleModelChange: function(model) {
+    this.setState({content: model});
+  },
+  render: function() {
+    return(
+      React.createElement("div", {className: "sample"}, 
+        React.createElement("h2", null, "Sample3: Two way binding"), 
+        React.createElement(FroalaEditor, {
+          model: this.state.content, 
+          onModelChange: this.handleModelChange}
+        ), 
+        React.createElement(FroalaEditor, {
+          model: this.state.content, 
+          onModelChange: this.handleModelChange}
+        )
+      )
+    );
+  }
+});
+
+var Sample4 = React.createClass({displayName: "Sample4",
+
+  getInitialState: function() {
     return {
       initControls: null
     };
@@ -367,6 +441,8 @@ var Sample3 = React.createClass({displayName: "Sample3",
       return;
     }
     this.state.initControls.getEditor()('html.set', '');
+    this.state.initControls.getEditor()('undo.reset');
+    this.state.initControls.getEditor()('undo.saveStep');
   },
 
   handleController: function(initControls) {
@@ -392,7 +468,7 @@ var Sample3 = React.createClass({displayName: "Sample3",
   render: function() {
     return(
       React.createElement("div", {className: "sample"}, 
-        React.createElement("h2", null, "Sample 3: Manual Initialization"), 
+        React.createElement("h2", null, "Sample 4: Manual Initialization"), 
         this.state.initControls ?
             React.createElement("button", {className: "manual", onClick: this.initializeEditor}, "Initialize Editor")
             :
@@ -407,7 +483,7 @@ var Sample3 = React.createClass({displayName: "Sample3",
           null, 
         
         React.createElement(FroalaEditor, {
-          initModel: this.state.content, 
+          model: this.state.content, 
           onModelChange: this.handleModelChange, 
           onManualControllerReady: this.handleController
         }, 
@@ -418,7 +494,7 @@ var Sample3 = React.createClass({displayName: "Sample3",
   }
 });
 
-var Sample4 = React.createClass({displayName: "Sample4",
+var Sample5 = React.createClass({displayName: "Sample5",
 
   config: {
     reactIgnoreAttrs: ['class']
@@ -433,33 +509,10 @@ var Sample4 = React.createClass({displayName: "Sample4",
   render: function() {
     return(
       React.createElement("div", {className: "sample"}, 
-        React.createElement("h2", null, "Sample 4: Editor on 'img' tag"), 
+        React.createElement("h2", null, "Sample 5: Editor on 'img' tag"), 
         React.createElement(FroalaEditorImg, {
           config: this.config, 
-          initModel: this.state.content, 
-          onModelChange: this.handleModelChange}
-        ), 
-        React.createElement("h4", null, "Model Obj:"), 
-        React.createElement("div", null, JSON.stringify(this.state.content))
-      )
-    );
-  }
-});
-
-var Sample5 = React.createClass({displayName: "Sample5",
-
-  getInitialState: function() {
-    return {content: {innerHTML: 'Click Me'}};
-  },
-  handleModelChange: function(model) {
-    this.setState({content: model});
-  },
-  render: function() {
-    return(
-      React.createElement("div", {className: "sample"}, 
-        React.createElement("h2", null, "Sample 5: Editor on 'button' tag"), 
-        React.createElement(FroalaEditorButton, {
-          initModel: this.state.content, 
+          model: this.state.content, 
           onModelChange: this.handleModelChange}
         ), 
         React.createElement("h4", null, "Model Obj:"), 
@@ -472,7 +525,7 @@ var Sample5 = React.createClass({displayName: "Sample5",
 var Sample6 = React.createClass({displayName: "Sample6",
 
   getInitialState: function() {
-    return {content: {placeholder: 'I am an input!'}};
+    return {content: {innerHTML: 'Click Me'}};
   },
   handleModelChange: function(model) {
     this.setState({content: model});
@@ -480,9 +533,9 @@ var Sample6 = React.createClass({displayName: "Sample6",
   render: function() {
     return(
       React.createElement("div", {className: "sample"}, 
-        React.createElement("h2", null, "Sample 6: Editor on 'input' tag"), 
-        React.createElement(FroalaEditorInput, {
-          initModel: this.state.content, 
+        React.createElement("h2", null, "Sample 6: Editor on 'button' tag"), 
+        React.createElement(FroalaEditorButton, {
+          model: this.state.content, 
           onModelChange: this.handleModelChange}
         ), 
         React.createElement("h4", null, "Model Obj:"), 
@@ -493,6 +546,29 @@ var Sample6 = React.createClass({displayName: "Sample6",
 });
 
 var Sample7 = React.createClass({displayName: "Sample7",
+
+  getInitialState: function() {
+    return {content: {placeholder: 'I am an input!'}};
+  },
+  handleModelChange: function(model) {
+    this.setState({content: model});
+  },
+  render: function() {
+    return(
+      React.createElement("div", {className: "sample"}, 
+        React.createElement("h2", null, "Sample 7: Editor on 'input' tag"), 
+        React.createElement(FroalaEditorInput, {
+          model: this.state.content, 
+          onModelChange: this.handleModelChange}
+        ), 
+        React.createElement("h4", null, "Model Obj:"), 
+        React.createElement("div", null, JSON.stringify(this.state.content))
+      )
+    );
+  }
+});
+
+var Sample8 = React.createClass({displayName: "Sample8",
 
   getInitialState: function() {
     return {
@@ -508,6 +584,8 @@ var Sample7 = React.createClass({displayName: "Sample7",
       return;
     }
     this.state.initControls.getEditor()('html.set', '');
+    this.state.initControls.getEditor()('undo.reset');
+    this.state.initControls.getEditor()('undo.saveStep');
   },
 
   handleController: function(initControls) {
@@ -532,7 +610,7 @@ var Sample7 = React.createClass({displayName: "Sample7",
   render: function() {
     return(
       React.createElement("div", {className: "sample"}, 
-        React.createElement("h2", null, "Sample 7: Editor on 'a' tag. Manual Initialization"), 
+        React.createElement("h2", null, "Sample 8: Editor on 'a' tag. Manual Initialization"), 
         this.state.initControls ?
             React.createElement("button", {className: "manual", onClick: this.initializeEditor}, "Initialize Editor")
             :
@@ -548,7 +626,7 @@ var Sample7 = React.createClass({displayName: "Sample7",
         
         React.createElement("div", null, 
           React.createElement(FroalaEditorA, {
-            initModel: this.state.content, 
+            model: this.state.content, 
             onModelChange: this.handleModelChange, 
             onManualControllerReady: this.handleController
           }, 
@@ -573,7 +651,8 @@ var Demo = React.createClass({displayName: "Demo",
         React.createElement(Sample4, null), 
         React.createElement(Sample5, null), 
         React.createElement(Sample6, null), 
-        React.createElement(Sample7, null)
+        React.createElement(Sample7, null), 
+        React.createElement(Sample8, null)
       )
     );
   }
