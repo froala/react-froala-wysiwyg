@@ -172,7 +172,12 @@ var Sample5 = React.createClass({
   render: function() {
     return(
       <div className="sample">
-        <h2>Sample 5: Editor on 'img' tag</h2>
+        <h2>Sample 5: Editor on 'img' tag. Two way binding.</h2>
+        <FroalaEditorImg
+          config={this.config}
+          model={this.state.content}
+          onModelChange={this.handleModelChange}
+        />
         <FroalaEditorImg
           config={this.config}
           model={this.state.content}
