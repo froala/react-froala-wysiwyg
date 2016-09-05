@@ -160,10 +160,10 @@ var Sample4 = React.createClass({
 var Sample5 = React.createClass({
 
   config: {
-    reactIgnoreAttrs: ['class']
+    reactIgnoreAttrs: ['tmpattr']
   },
   getInitialState: function() {
-    return {content: {src: '../src/image.jpg'}};
+    return {content: {src: '../src/image.jpg', id: 'froalaEditor', tmpattr: 'This attribute will be ignored on change.'}};
   },
   handleModelChange: function(model) {
     this.setState({content: model});
@@ -172,7 +172,12 @@ var Sample5 = React.createClass({
   render: function() {
     return(
       <div className="sample">
-        <h2>Sample 5: Editor on 'img' tag</h2>
+        <h2>Sample 5: Editor on 'img' tag. Two way binding.</h2>
+        <FroalaEditorImg
+          config={this.config}
+          model={this.state.content}
+          onModelChange={this.handleModelChange}
+        />
         <FroalaEditorImg
           config={this.config}
           model={this.state.content}

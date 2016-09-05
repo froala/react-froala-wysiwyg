@@ -24,10 +24,6 @@ var FroalaEditorFunctionality = {
   INNER_HTML_ATTR: 'innerHTML',
   hasSpecialTag: false,
 
-  // Hack to:
-  // 1. Not trigger contentChanged editor event when html.set is called.
-  // 2. When contentChanged event is fired, because of React way, html.set must not be called.
-  htmlWasSet: false,
   oldModel: null,
 
   // Before first time render.
@@ -57,6 +53,11 @@ var FroalaEditorFunctionality = {
   },
 
   componentDidUpdate: function() {
+
+    if (JSON.stringify(this.oldModel) == JSON.stringify(this.props.model)) {
+      return;
+    }
+
     this.setContent();
   },
 
@@ -87,17 +88,7 @@ var FroalaEditorFunctionality = {
 
     if (this.props.model || this.props.model == '') {
 
-      if (!firstTime) {
-
-        if (this.htmlWasSet) {
-          this.htmlWasSet = false;
-          return;
-        }
-        if (this.oldModel != this.props.model) {
-          this.htmlWasSet = true;
-        }
-
-      }
+      this.oldModel = this.props.model;
 
       if (this.hasSpecialTag) {
         this.setSpecialTagContent();
@@ -113,7 +104,6 @@ var FroalaEditorFunctionality = {
 
     function htmlSet() {
 
-      self.oldModel = self.props.model;
       self.$element.froalaEditor('html.set', self.props.model || '', true);
       //This will reset the undo stack everytime the model changes externally. Can we fix this?
       self.$element.froalaEditor('undo.reset');
@@ -184,17 +174,9 @@ var FroalaEditorFunctionality = {
 
   updateModel: function() {
 
-    if (this.htmlWasSet) {
-
-      this.htmlWasSet = false;
-      return;
-    }
-
     if (!this.props.onModelChange) {
       return;
     }
-
-    this.htmlWasSet = true;
 
     var modelContent = '';
 
@@ -225,6 +207,7 @@ var FroalaEditorFunctionality = {
       }
     }
 
+    this.oldModel = modelContent;
     this.props.onModelChange(modelContent);
   },
 
@@ -497,10 +480,10 @@ var Sample4 = React.createClass({displayName: "Sample4",
 var Sample5 = React.createClass({displayName: "Sample5",
 
   config: {
-    reactIgnoreAttrs: ['class']
+    reactIgnoreAttrs: ['tmpattr']
   },
   getInitialState: function() {
-    return {content: {src: '../src/image.jpg'}};
+    return {content: {src: '../src/image.jpg', id: 'froalaEditor', tmpattr: 'This attribute will be ignored on change.'}};
   },
   handleModelChange: function(model) {
     this.setState({content: model});
@@ -509,7 +492,12 @@ var Sample5 = React.createClass({displayName: "Sample5",
   render: function() {
     return(
       React.createElement("div", {className: "sample"}, 
-        React.createElement("h2", null, "Sample 5: Editor on 'img' tag"), 
+        React.createElement("h2", null, "Sample 5: Editor on 'img' tag. Two way binding."), 
+        React.createElement(FroalaEditorImg, {
+          config: this.config, 
+          model: this.state.content, 
+          onModelChange: this.handleModelChange}
+        ), 
         React.createElement(FroalaEditorImg, {
           config: this.config, 
           model: this.state.content, 
