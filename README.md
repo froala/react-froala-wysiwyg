@@ -1,4 +1,5 @@
-# react-froala-wyswiyg
+# React JS Froala WYSIWYG Editor
+
 >react-froala-wyswiyg provides React bindings to the Froala WYSIWYG editor VERSION 2.
 
 ## Installation
