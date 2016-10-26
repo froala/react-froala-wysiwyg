@@ -12,86 +12,86 @@ npm install react-highcharts --save
 
 #### Webpack/Browserify
 
-1. Install the React component.
+##### 1. Install the React component.
 
-  ```bash
-  npm install react-froala-wysiwyg react --save
-  ```
+```bash
+npm install react-froala-wysiwyg react --save
+```
 
-2. Require and use Froala Editor component inside your application.
+##### 2. Require and use Froala Editor component inside your application.
 
-  ```jsx
-  var React = require('react');
-  var ReactDOM = require('react-dom');
+```jsx
+var React = require('react');
+var ReactDOM = require('react-dom');
 
-  // Require Editor JS files.
-  require("froala-editor/js/froala_editor.pkgd.min.js");
-  require("froala-editor/css/froala_editor.pkgd.min.css");
+// Require Editor JS files.
+require("froala-editor/js/froala_editor.pkgd.min.js");
+require("froala-editor/css/froala_editor.pkgd.min.css");
 
-  // Require Font Awesome.
-  require('font-awesome/css/font-awesome.css');
+// Require Font Awesome.
+require('font-awesome/css/font-awesome.css');
 
-  var FroalaEditor = require('react-froala-wysiwyg');
+var FroalaEditor = require('react-froala-wysiwyg');
 
-  // Include special components if required.
-  // var FroalaEditorView = require('react-froala-wysiwyg/FroalaEditorView');
-  // var FroalaEditorA = require('react-froala-wysiwyg/FroalaEditorA');
-  // var FroalaEditorButton= require('react-froala-wysiwyg/FroalaEditorButton');
-  // var FroalaEditorImg = require('react-froala-wysiwyg/FroalaEditorImg');
-  // var FroalaEditorInput = require('react-froala-wysiwyg/FroalaEditorInput');
+// Include special components if required.
+// var FroalaEditorView = require('react-froala-wysiwyg/FroalaEditorView');
+// var FroalaEditorA = require('react-froala-wysiwyg/FroalaEditorA');
+// var FroalaEditorButton= require('react-froala-wysiwyg/FroalaEditorButton');
+// var FroalaEditorImg = require('react-froala-wysiwyg/FroalaEditorImg');
+// var FroalaEditorInput = require('react-froala-wysiwyg/FroalaEditorInput');
 
-  // Render Froala Editor component.
-  ReactDOM.render(<FroalaEditor tag='textarea'/>, document.getElementById('editor'));
-  ```
+// Render Froala Editor component.
+ReactDOM.render(<FroalaEditor tag='textarea'/>, document.getElementById('editor'));
+```
 
-3. Make sure you have the right Webpack settings for loading the CSS files, Font Awesome and jQuery.
+##### 3. Make sure you have the right Webpack settings for loading the CSS files, Font Awesome and jQuery.
 
-  ```js
-  var webpack = require("webpack");
+```js
+var webpack = require("webpack");
 
-  module.exports = {
-    module: {
-      loaders: [
-        {
-          test: /\.jsx$/,
-          loader: 'babel',
-          query: {
-            cacheDirectory: true,
-            presets: ['react','es2015', 'stage-2']
-          }
-        }, {
-          test: /\.css$/,
-          loader: "style-loader!css-loader?root=."
-        },
-        {
-          test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-          loader: "url?limit=10000&mimetype=application/font-woff"
-        }, {
-          test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-          loader: "url?limit=10000&mimetype=application/font-woff"
-        }, {
-          test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-          loader: "url?limit=10000&mimetype=application/octet-stream"
-        }, {
-          test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-          loader: "file"
-        }, {
-          test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-          loader: "url?limit=10000&mimetype=image/svg+xml"
+module.exports = {
+  module: {
+    loaders: [
+      {
+        test: /\.jsx$/,
+        loader: 'babel',
+        query: {
+          cacheDirectory: true,
+          presets: ['react','es2015', 'stage-2']
         }
-      ]
-    },
-    resolve: {
-      modulesDirectories: ['node_modules']
-    },
-    plugins: [
-      new webpack.ProvidePlugin({
-        $: "jquery",
-        jQuery: "jquery"
-      })
+      }, {
+        test: /\.css$/,
+        loader: "style-loader!css-loader?root=."
+      },
+      {
+        test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url?limit=10000&mimetype=application/font-woff"
+      }, {
+        test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url?limit=10000&mimetype=application/font-woff"
+      }, {
+        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url?limit=10000&mimetype=application/octet-stream"
+      }, {
+        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "file"
+      }, {
+        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url?limit=10000&mimetype=image/svg+xml"
+      }
     ]
-  };
-  ```
+  },
+  resolve: {
+    modulesDirectories: ['node_modules']
+  },
+  plugins: [
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery"
+    })
+  ]
+};
+```
 
 #### Passing properties to the wrapping DOM element
 
