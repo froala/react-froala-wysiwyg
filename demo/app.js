@@ -1,4 +1,3 @@
-
 var FroalaEditorFunctionality = {
 
   // Tag on which the editor is initialized.
@@ -252,58 +251,80 @@ var FroalaEditorFunctionality = {
   }
 };
 
+export default FroalaEditorFunctionality;
 
-var FroalaEditor = React.createClass({displayName: "FroalaEditor",
+import React from 'react';
+import FroalaEditorFunctionality from './froalaEditorFunctionality.js';
 
+var FroalaEditor = React.createClass({
   mixins: [FroalaEditorFunctionality],
   render: function() {
     return (
-      React.createElement(this.tag, {ref: "el"}, this.props.children)
+      <this.tag ref='el'>{this.props.children}</this.tag>
     );
   }
 });
 
-var FroalaEditorA = React.createClass({displayName: "FroalaEditorA",
+export default FroalaEditor;
+import React from 'react';
+import FroalaEditorFunctionality from './froalaEditorFunctionality.js';
+
+var FroalaEditorA = React.createClass({
 
   mixins: [FroalaEditorFunctionality],
   render: function() {
     return (
-      React.createElement("a", {ref: "el"}, this.props.children)
+      <a ref='el'>{this.props.children}</a>
     );
   }
 });
 
-var FroalaEditorButton = React.createClass({displayName: "FroalaEditorButton",
+export default FroalaEditorA;
+import React from 'react';
+import FroalaEditorFunctionality from './froalaEditorFunctionality.js';
+
+var FroalaEditorButton = React.createClass({
 
   mixins: [FroalaEditorFunctionality],
   render: function() {
     return (
-      React.createElement("button", {ref: "el"}, this.props.children)
+      <button ref='el'>{this.props.children}</button>
     );
   }
 });
 
-var FroalaEditorImg = React.createClass({displayName: "FroalaEditorImg",
+export default FroalaEditorButton;
+import React from 'react';
+import FroalaEditorFunctionality from './froalaEditorFunctionality.js';
+
+var FroalaEditorImg = React.createClass({
 
   mixins: [FroalaEditorFunctionality],
   render: function() {
     return (
-      React.createElement("img", {ref: "el"})
+      <img ref='el'/>
     );
   }
 });
 
-var FroalaEditorInput = React.createClass({displayName: "FroalaEditorInput",
+export default FroalaEditorImg;
+import React from 'react';
+import FroalaEditorFunctionality from './froalaEditorFunctionality.js';
+
+var FroalaEditorInput = React.createClass({
 
   mixins: [FroalaEditorFunctionality],
   render: function() {
     return (
-      React.createElement("input", {ref: "el"})
+      <input ref='el'/>
     );
   }
 });
 
-var FroalaView = React.createClass({displayName: "FroalaView",
+export default FroalaEditorInput;
+import React from 'react';
+
+var FroalaView = React.createClass({
 
   defaultTag: 'div',
 
@@ -314,13 +335,15 @@ var FroalaView = React.createClass({displayName: "FroalaView",
   render: function() {
     this.tag = this.props.tag || this.defaultTag;
     return (
-      React.createElement(this.tag, {className: "fr-view", dangerouslySetInnerHTML: this.getTrustedHtml()})
+      <this.tag className='fr-view' dangerouslySetInnerHTML={this.getTrustedHtml()}></this.tag>
     );
   }
 });
 
+export default FroalaEditorView;
 
-var Sample1 = React.createClass({displayName: "Sample1",
+
+var Sample1 = React.createClass({
 
   config: {
     placeholderText: 'Add a Title',
@@ -347,21 +370,21 @@ var Sample1 = React.createClass({displayName: "Sample1",
 
   render: function() {
     return(
-      React.createElement("div", {className: "sample"}, 
-        React.createElement("h2", null, "Sample 1: Inline Edit"), 
-        React.createElement(FroalaEditor, {
-          tag: "textarea", 
-          config: this.config, 
-          model: this.state.myTitle, 
-          onModelChange: this.handleModelChange}
-        ), 
-        React.createElement("input", {value: this.state.myTitle, onChange: this.handleInputChange})
-      )
+      <div className="sample">
+        <h2>Sample 1: Inline Edit</h2>
+        <FroalaEditor
+          tag='textarea'
+          config={this.config}
+          model={this.state.myTitle}
+          onModelChange={this.handleModelChange}
+        />
+        <input value={this.state.myTitle} onChange={this.handleInputChange}/>
+      </div>
     );
   }
 });
 
-var Sample2 = React.createClass({displayName: "Sample2",
+var Sample2 = React.createClass({
 
   getInitialState: function() {
     return {content: '<span>My Document\'s Title</span>'};
@@ -371,22 +394,22 @@ var Sample2 = React.createClass({displayName: "Sample2",
   },
   render: function() {
     return(
-      React.createElement("div", {className: "sample"}, 
-        React.createElement("h2", null, "Sample2: Full Editor"), 
-        React.createElement(FroalaEditor, {
-          model: this.state.content, 
-          onModelChange: this.handleModelChange}
-        ), 
-        React.createElement("h4", null, "Rendered Content:"), 
-        React.createElement(FroalaView, {
-          model: this.state.content}
-        )
-      )
+      <div className="sample">
+        <h2>Sample2: Full Editor</h2>
+        <FroalaEditor
+          model={this.state.content}
+          onModelChange={this.handleModelChange}
+        />
+        <h4>Rendered Content:</h4>
+        <FroalaView
+          model={this.state.content}
+        />
+      </div>
     );
   }
 });
 
-var Sample3 = React.createClass({displayName: "Sample3",
+var Sample3 = React.createClass({
 
   getInitialState: function() {
     return {content: '<span>My Document\'s Title</span>'};
@@ -396,22 +419,22 @@ var Sample3 = React.createClass({displayName: "Sample3",
   },
   render: function() {
     return(
-      React.createElement("div", {className: "sample"}, 
-        React.createElement("h2", null, "Sample3: Two way binding"), 
-        React.createElement(FroalaEditor, {
-          model: this.state.content, 
-          onModelChange: this.handleModelChange}
-        ), 
-        React.createElement(FroalaEditor, {
-          model: this.state.content, 
-          onModelChange: this.handleModelChange}
-        )
-      )
+      <div className="sample">
+        <h2>Sample3: Two way binding</h2>
+        <FroalaEditor
+          model={this.state.content}
+          onModelChange={this.handleModelChange}
+        />
+        <FroalaEditor
+          model={this.state.content}
+          onModelChange={this.handleModelChange}
+        />
+      </div>
     );
   }
 });
 
-var Sample4 = React.createClass({displayName: "Sample4",
+var Sample4 = React.createClass({
 
   getInitialState: function() {
     return {
@@ -450,34 +473,34 @@ var Sample4 = React.createClass({displayName: "Sample4",
 
   render: function() {
     return(
-      React.createElement("div", {className: "sample"}, 
-        React.createElement("h2", null, "Sample 4: Manual Initialization"), 
-        this.state.initControls ?
-            React.createElement("button", {className: "manual", onClick: this.initializeEditor}, "Initialize Editor")
+      <div className="sample">
+        <h2>Sample 4: Manual Initialization</h2>
+        {this.state.initControls ?
+            <button className="manual" onClick={this.initializeEditor}>Initialize Editor</button>
             :
-          null, 
-        
-        this.state.initControls && this.state.initControls.getEditor() ?
-          React.createElement("span", null, 
-            React.createElement("button", {className: "button", onClick: this.destroyEditor}, "Close Editor"), 
-            React.createElement("button", {className: "button", onClick: this.deleteAll}, "Delete All")
-          )
+          null
+        }
+        {this.state.initControls && this.state.initControls.getEditor() ?
+          <span>
+            <button className="button" onClick={this.destroyEditor}>Close Editor</button>
+            <button className="button" onClick={this.deleteAll}>Delete All</button>
+          </span>
             :
-          null, 
-        
-        React.createElement(FroalaEditor, {
-          model: this.state.content, 
-          onModelChange: this.handleModelChange, 
-          onManualControllerReady: this.handleController
-        }, 
-          "Check out the ", React.createElement("a", {href: "https://www.froala.com/wysiwyg-editor"}, "Froala Editor")
-        )
-      )
+          null
+        }
+        <FroalaEditor
+          model={this.state.content}
+          onModelChange={this.handleModelChange}
+          onManualControllerReady={this.handleController}
+        >
+          Check out the <a href="https://www.froala.com/wysiwyg-editor">Froala Editor</a>
+        </FroalaEditor>
+      </div>
     );
   }
 });
 
-var Sample5 = React.createClass({displayName: "Sample5",
+var Sample5 = React.createClass({
 
   config: {
     reactIgnoreAttrs: ['tmpattr']
@@ -491,26 +514,26 @@ var Sample5 = React.createClass({displayName: "Sample5",
 
   render: function() {
     return(
-      React.createElement("div", {className: "sample"}, 
-        React.createElement("h2", null, "Sample 5: Editor on 'img' tag. Two way binding."), 
-        React.createElement(FroalaEditorImg, {
-          config: this.config, 
-          model: this.state.content, 
-          onModelChange: this.handleModelChange}
-        ), 
-        React.createElement(FroalaEditorImg, {
-          config: this.config, 
-          model: this.state.content, 
-          onModelChange: this.handleModelChange}
-        ), 
-        React.createElement("h4", null, "Model Obj:"), 
-        React.createElement("div", null, JSON.stringify(this.state.content))
-      )
+      <div className="sample">
+        <h2>Sample 5: Editor on 'img' tag. Two way binding.</h2>
+        <FroalaEditorImg
+          config={this.config}
+          model={this.state.content}
+          onModelChange={this.handleModelChange}
+        />
+        <FroalaEditorImg
+          config={this.config}
+          model={this.state.content}
+          onModelChange={this.handleModelChange}
+        />
+        <h4>Model Obj:</h4>
+        <div>{JSON.stringify(this.state.content)}</div>
+      </div>
     );
   }
 });
 
-var Sample6 = React.createClass({displayName: "Sample6",
+var Sample6 = React.createClass({
 
   getInitialState: function() {
     return {content: {innerHTML: 'Click Me'}};
@@ -520,20 +543,20 @@ var Sample6 = React.createClass({displayName: "Sample6",
   },
   render: function() {
     return(
-      React.createElement("div", {className: "sample"}, 
-        React.createElement("h2", null, "Sample 6: Editor on 'button' tag"), 
-        React.createElement(FroalaEditorButton, {
-          model: this.state.content, 
-          onModelChange: this.handleModelChange}
-        ), 
-        React.createElement("h4", null, "Model Obj:"), 
-        React.createElement("div", null, JSON.stringify(this.state.content))
-      )
+      <div className="sample">
+        <h2>Sample 6: Editor on 'button' tag</h2>
+        <FroalaEditorButton
+          model={this.state.content}
+          onModelChange={this.handleModelChange}
+        />
+        <h4>Model Obj:</h4>
+        <div>{JSON.stringify(this.state.content)}</div>
+      </div>
     );
   }
 });
 
-var Sample7 = React.createClass({displayName: "Sample7",
+var Sample7 = React.createClass({
 
   getInitialState: function() {
     return {content: {placeholder: 'I am an input!'}};
@@ -543,20 +566,20 @@ var Sample7 = React.createClass({displayName: "Sample7",
   },
   render: function() {
     return(
-      React.createElement("div", {className: "sample"}, 
-        React.createElement("h2", null, "Sample 7: Editor on 'input' tag"), 
-        React.createElement(FroalaEditorInput, {
-          model: this.state.content, 
-          onModelChange: this.handleModelChange}
-        ), 
-        React.createElement("h4", null, "Model Obj:"), 
-        React.createElement("div", null, JSON.stringify(this.state.content))
-      )
+      <div className="sample">
+        <h2>Sample 7: Editor on 'input' tag</h2>
+        <FroalaEditorInput
+          model={this.state.content}
+          onModelChange={this.handleModelChange}
+        />
+        <h4>Model Obj:</h4>
+        <div>{JSON.stringify(this.state.content)}</div>
+      </div>
     );
   }
 });
 
-var Sample8 = React.createClass({displayName: "Sample8",
+var Sample8 = React.createClass({
 
   getInitialState: function() {
     return {
@@ -597,57 +620,57 @@ var Sample8 = React.createClass({displayName: "Sample8",
   },
   render: function() {
     return(
-      React.createElement("div", {className: "sample"}, 
-        React.createElement("h2", null, "Sample 8: Editor on 'a' tag. Manual Initialization"), 
-        this.state.initControls ?
-            React.createElement("button", {className: "manual", onClick: this.initializeEditor}, "Initialize Editor")
+      <div className="sample">
+        <h2>Sample 8: Editor on 'a' tag. Manual Initialization</h2>
+        {this.state.initControls ?
+            <button className="manual" onClick={this.initializeEditor}>Initialize Editor</button>
             :
-          null, 
-        
-        this.state.initControls && this.state.initControls.getEditor() ?
-          React.createElement("span", null, 
-            React.createElement("button", {className: "button", onClick: this.destroyEditor}, "Close Editor"), 
-            React.createElement("button", {className: "button", onClick: this.deleteAll}, "Delete All")
-          )
+          null
+        }
+        {this.state.initControls && this.state.initControls.getEditor() ?
+          <span>
+            <button className="button" onClick={this.destroyEditor}>Close Editor</button>
+            <button className="button" onClick={this.deleteAll}>Delete All</button>
+          </span>
             :
-          null, 
-        
-        React.createElement("div", null, 
-          React.createElement(FroalaEditorA, {
-            model: this.state.content, 
-            onModelChange: this.handleModelChange, 
-            onManualControllerReady: this.handleController
-          }, 
-            "Froala Editor"
-          )
-        )
-      )
+          null
+        }
+        <div>
+          <FroalaEditorA
+            model={this.state.content}
+            onModelChange={this.handleModelChange}
+            onManualControllerReady={this.handleController}
+          >
+            Froala Editor
+          </FroalaEditorA>
+        </div>
+      </div>
     );
   }
 });
 
 
-var Demo = React.createClass({displayName: "Demo",
+var Demo = React.createClass({
 
   render: function() {
     return (
-      React.createElement("div", null, 
-        React.createElement("h1", null, "React adapter for the Froala WYSIWYG editor"), 
-        React.createElement(Sample1, null), 
-        React.createElement(Sample2, null), 
-        React.createElement(Sample3, null), 
-        React.createElement(Sample4, null), 
-        React.createElement(Sample5, null), 
-        React.createElement(Sample6, null), 
-        React.createElement(Sample7, null), 
-        React.createElement(Sample8, null)
-      )
+      <div>
+        <h1>React adapter for the Froala WYSIWYG editor</h1>
+        <Sample1/>
+        <Sample2/>
+        <Sample3/>
+        <Sample4/>
+        <Sample5/>
+        <Sample6/>
+        <Sample7/>
+        <Sample8/>
+      </div>
     );
   }
 });
 
 ReactDOM.render(
-  React.createElement(Demo, null),
+  <Demo/>,
   document.getElementById('content')
 );
 //# sourceMappingURL=app.js.map
