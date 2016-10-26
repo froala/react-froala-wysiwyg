@@ -245,14 +245,14 @@ The object received by the function will contain the following methods:
 
 ### Displaying HTML
 
-To display content created with the froala editor use the `FroalaView` component.
+To display content created with the froala editor use the `FroalaEditorView` component.
 
 ```js
 <FroalaEditor
   model={this.state.content}
   onModelChange={this.handleModelChange}
 />
-<FroalaView
+<FroalaEditorView
   model={this.state.content}
 />
 ```
