@@ -13,11 +13,13 @@ npm install react-highcharts --save
 #### Webpack/Browserify
 
 1. Install the React component.
+
   ```bash
   npm install react-froala-wysiwyg react --save
   ```
 
 2. Require and use Froala Editor component inside your application.
+
   ```jsx
   var React = require('react');
   var ReactDOM = require('react-dom');
