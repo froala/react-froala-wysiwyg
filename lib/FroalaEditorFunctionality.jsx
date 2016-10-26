@@ -251,4 +251,4 @@ var FroalaEditorFunctionality = {
   }
 };
 
-export default FroalaEditorFunctionality;
+module.exports = FroalaEditorFunctionality;

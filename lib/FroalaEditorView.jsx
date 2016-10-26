@@ -1,6 +1,6 @@
-import React from 'react';
+var React = require('react');
 
-var FroalaView = React.createClass({
+var FroalaEditorView = React.createClass({
 
   defaultTag: 'div',
 
@@ -16,4 +16,4 @@ var FroalaView = React.createClass({
   }
 });
 
-export default FroalaEditorView;
+module.exports = FroalaEditorView;

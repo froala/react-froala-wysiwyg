@@ -1,5 +1,5 @@
-import React from 'react';
-import FroalaEditorFunctionality from './froalaEditorFunctionality.js';
+var React = require('react');
+var FroalaEditorFunctionality = require('./FroalaEditorFunctionality.jsx');
 
 var FroalaEditorButton = React.createClass({
 
@@ -11,4 +11,4 @@ var FroalaEditorButton = React.createClass({
   }
 });
 
-export default FroalaEditorButton;
+module.exports = FroalaEditorButton;

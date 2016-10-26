@@ -4,39 +4,94 @@
 
 ## Installation
 
-1. Clone this repo or download the zip.
-
-2. Run `bower install` or Download the editor from [https://www.froala.com/wysiwyg-editor/](https://www.froala.com/wysiwyg-editor/) and jQuery
-
-3. Load Froala WYSIWYG editor (and all desired plugins), jQuery, React framework and react-froala-wyswiyg component files into your project:
-
-  - **lib/froalaEditorFunctionality.js** : Mixin: must be included **before** `FroalaEditor` components:
-    - **lib/froalaEditor.js**            : `FroalaEditor` component
-    - **lib/froalaEditorA.js**           : `FroalaEditorA` component: init on 'a' tag
-    - **lib/froalaEditorButton.js**      : `FroalaEditorButton` component: init on 'button' tag
-    - **lib/froalaEditorImg.js**         : `FroalaEditorImg` component: init on 'img' tag
-    - **lib/froalaEditorInput.js**       : `FroalaEditorInput` component: init on 'input' tag
-
-  - **lib/froalaView.js**                : `FroalaView` component for displaing the editor HTML; can be used standalone without the mixin.
-
- ***NB***: You must ensure jQuery is included *before* React.
+```bash
+npm install react-highcharts --save
+```
 
 ## Usage
 
-1.&nbsp;Import froala components into your html file:
+#### Webpack/Browserify
 
-```html
-<script type="text/babel" src="path/to/lib/froalaEditorFunctionality.js"></script>
-<script type="text/babel" src="path/to/lib/froalaEditor.js"></script>
-<script type="text/babel" src="path/to/lib/froalaEditorButton.js"></script>
-<script type="text/babel" src="path/to/lib/froalaEditorInput.js"></script>
-<script type="text/babel" src="path/to/lib/froalaEditorA.js"></script>
-<script type="text/babel" src="path/to/lib/froalaEditorImg.js"></script>
-
-<script type="text/babel" src="path/to/lib/froalaView.js"></script>
+1. Install the React component.
+```bash
+npm install react-froala-wysiwyg react --save
 ```
 
-2.&nbsp;Use them in your component:
+2. Require and use Froala Editor component inside your application.
+```jsx
+var React = require('react');
+var ReactDOM = require('react-dom');
+
+// Require Editor JS files.
+require("froala-editor/js/froala_editor.pkgd.min.js");
+require("froala-editor/css/froala_editor.pkgd.min.css");
+
+// Require Font Awesome.
+require('font-awesome/css/font-awesome.css');
+
+var FroalaEditor = require('react-froala-wysiwyg');
+
+// Include special components if required.
+// var FroalaEditorView = require('react-froala-wysiwyg/FroalaEditorView');
+// var FroalaEditorA = require('react-froala-wysiwyg/FroalaEditorA');
+// var FroalaEditorButton= require('react-froala-wysiwyg/FroalaEditorButton');
+// var FroalaEditorImg = require('react-froala-wysiwyg/FroalaEditorImg');
+// var FroalaEditorInput = require('react-froala-wysiwyg/FroalaEditorInput');
+
+// Render Froala Editor component.
+ReactDOM.render(<FroalaEditor tag='textarea'/>, document.getElementById('editor'));
+```
+
+3. Make sure you have the right Webpack settings for loading the CSS files, Font Awesome and jQuery.
+
+```json
+var webpack = require("webpack");
+
+module.exports = {
+  module: {
+    loaders: [
+      {
+        test: /\.jsx$/,
+        loader: 'babel',
+        query: {
+          cacheDirectory: true,
+          presets: ['react','es2015', 'stage-2']
+        }
+      }, {
+        test: /\.css$/,
+        loader: "style-loader!css-loader?root=."
+      },
+      {
+        test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url?limit=10000&mimetype=application/font-woff"
+      }, {
+        test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url?limit=10000&mimetype=application/font-woff"
+      }, {
+        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url?limit=10000&mimetype=application/octet-stream"
+      }, {
+        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "file"
+      }, {
+        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url?limit=10000&mimetype=image/svg+xml"
+      }
+    ]
+  },
+  resolve: {
+    modulesDirectories: ['node_modules']
+  },
+  plugins: [
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery"
+    })
+  ]
+};
+```
+
+#### Passing properties to the wrapping DOM element
 
 ```js
 <FroalaEditor
@@ -51,13 +106,6 @@
 
 There are special tags: **a**, **button**, **img**, **input**. Do not use them in FroalaEditor component. To initialize the editor on a special tag, use `FroalaEditorA`, `FroalaEditorButton`, `FroalaEditorImg` and `FroalaEditorInput` components.
 
- ***NB***: The code is written in React JSX. You must load **babel-standalone** in your HTML **before** lib files. Or you can compile them to plain javascript.
-
-You can check **src/** dir for a more detailed usage example.
-
-* 'src' directory contains a working example that will need a server to run. To run them: `npm start`.
-
-* 'demo' directory contains a minified working example that can run without a server. To build demo/app.js in case you've modified the sources(src dir): `npm run build`. To run: open demo/index.html directly into browser.
 
 ### Options
 
@@ -225,18 +273,15 @@ If you want to contribute to react-froala-wyswiyg, you will first need to instal
 * [Node Package Manager](https://npmjs.org/) (NPM)
 * [Git](http://git-scm.com/)
 
-#### Dependencies
-
-* [Bower](http://bower.io/) (package management)
-
-##### 1. Install Bower
-
-    $ npm install -g grunt-cli bower
-
-##### 2. Install project dependencies
+#### Install dependencies
 
     $ npm install
-    $ bower install
 
-##### 3. Run in development mode. Is loads the src files that make use of lib/ components
-    $ npm start
+#### Build
+
+    $ npm run build
+
+#### Run Demo
+
+    $ npm run demo
+
