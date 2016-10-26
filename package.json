@@ -2,7 +2,7 @@
   "name": "react-froala-wysiwyg",
   "version": "2.3.5-1",
   "description": "React component for Froala WYSIWYG HTML rich text editor",
-  "main": "dist/froalaEditor.js",
+  "main": "dist/index.js",
   "author": "Froala Labs",
   "keywords": [
     "react",
@@ -55,7 +55,8 @@
   },
   "scripts": {
     "build": "webpack && webpack -p && webpack -b && webpack -p -b",
-    "demo": "cd demo && webpack && ../node_modules/.bin/webpack-dev-server --port 4000 --content-base dist/"
+    "demo": "cd demo && webpack && ../node_modules/.bin/webpack-dev-server --port 4000 --content-base dist/",
+    "prepublish": "npm run build && bash lib/copy_bundles.sh"
   },
   "repository": {
     "type": "git",
