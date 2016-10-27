@@ -2,12 +2,6 @@
 
 >react-froala-wyswiyg provides React bindings to the Froala WYSIWYG editor VERSION 2.
 
-## Installation
-
-```bash
-npm install react-highcharts --save
-```
-
 ## Usage
 
 #### 1. Install the React component.
