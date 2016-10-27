@@ -5,7 +5,7 @@
 ## Installation
 
 ```bash
-npm install react-highcharts --save
+npm install react-froala-wysiwyg --save
 ```
 
 ## Usage
