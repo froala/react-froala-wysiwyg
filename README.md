@@ -24,6 +24,9 @@ var ReactDOM = require('react-dom');
 
 // Require Editor JS files.
 require("froala-editor/js/froala_editor.pkgd.min.js");
+
+// Require Editor CSS files.
+require("froala-editor/css/froala_style.min.css");
 require("froala-editor/css/froala_editor.pkgd.min.css");
 
 // Require Font Awesome.
