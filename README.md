@@ -10,13 +10,7 @@ npm install react-froala-wysiwyg --save
 
 ## Usage
 
-#### 1. Install the React component.
-
-```bash
-npm install react-froala-wysiwyg react --save
-```
-
-#### 2. Require and use Froala Editor component inside your application.
+#### 1. Require and use Froala Editor component inside your application.
 
 ```jsx
 var React = require('react');
@@ -42,7 +36,7 @@ var FroalaEditor = require('react-froala-wysiwyg');
 ReactDOM.render(<FroalaEditor tag='textarea'/>, document.getElementById('editor'));
 ```
 
-#### 3. Make sure you have the right Webpack settings for loading the CSS files, Font Awesome and jQuery.
+#### 2. Make sure you have the right Webpack settings for loading the CSS files, Font Awesome and jQuery.
 
 ```js
 var webpack = require("webpack");
