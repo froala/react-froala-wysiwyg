@@ -218,7 +218,7 @@ config: {
 },
  ```
 
-### Manual Instantiation
+## Manual Instantiation
 
 Gets the functionality to operate on the editor: create, destroy and get editor instance. Use it if you want to manually initialize the editor.
 
@@ -237,7 +237,7 @@ The object received by the function will contain the following methods:
 - **getEditor**: Call this method to retrieve the editor that was created. This method will return *null* if the editor was not yet created
 
 
-### Displaying HTML
+## Displaying HTML
 
 To display content created with the froala editor use the `FroalaEditorView` component.
 
