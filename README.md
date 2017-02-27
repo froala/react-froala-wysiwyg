@@ -10,13 +10,7 @@ npm install react-froala-wysiwyg --save
 
 ## Usage
 
-#### 1. Install the React component.
-
-```bash
-npm install react-froala-wysiwyg react --save
-```
-
-#### 2. Require and use Froala Editor component inside your application.
+#### 1. Require and use Froala Editor component inside your application.
 
 ```jsx
 var React = require('react');
@@ -24,6 +18,9 @@ var ReactDOM = require('react-dom');
 
 // Require Editor JS files.
 require("froala-editor/js/froala_editor.pkgd.min.js");
+
+// Require Editor CSS files.
+require("froala-editor/css/froala_style.min.css");
 require("froala-editor/css/froala_editor.pkgd.min.css");
 
 // Require Font Awesome.
@@ -42,7 +39,7 @@ var FroalaEditor = require('react-froala-wysiwyg');
 ReactDOM.render(<FroalaEditor tag='textarea'/>, document.getElementById('editor'));
 ```
 
-#### 3. Make sure you have the right Webpack settings for loading the CSS files, Font Awesome and jQuery.
+#### 2. Make sure you have the right Webpack settings for loading the CSS files, Font Awesome and jQuery.
 
 ```js
 var webpack = require("webpack");
@@ -224,7 +221,7 @@ config: {
 },
  ```
 
-### Manual Instantiation
+## Manual Instantiation
 
 Gets the functionality to operate on the editor: create, destroy and get editor instance. Use it if you want to manually initialize the editor.
 
@@ -243,7 +240,7 @@ The object received by the function will contain the following methods:
 - **getEditor**: Call this method to retrieve the editor that was created. This method will return *null* if the editor was not yet created
 
 
-### Displaying HTML
+## Displaying HTML
 
 To display content created with the froala editor use the `FroalaEditorView` component.
 
