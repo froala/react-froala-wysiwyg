@@ -1,4 +1,5 @@
 var React = require('react');
+var createReactClass = require('create-react-class');
 var ReactDOM = require('react-dom');
 
 // Note that Froala Editor has to be required separately
@@ -12,7 +13,7 @@ var FroalaEditor = require('react-froala-wysiwyg');
 var FroalaEditorInput = require('react-froala-wysiwyg/FroalaEditorInput');
 
 // Render Froala Editor component.
-var EditorComponent = React.createClass({
+var EditorComponent = createReactClass({
   getInitialState: function() {
     return {content: {placeholder: 'I am an input!'}};
   },
