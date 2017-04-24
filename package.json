@@ -23,6 +23,7 @@
     "react-dom": "~0.14 || ^15.0.0"
   },
   "dependencies": {
+    "create-react-class": "^15.5.2",
     "froala-editor": ">=2.5.1"
   },
   "devDependencies": {
