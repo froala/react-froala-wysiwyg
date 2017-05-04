@@ -1,4 +1,5 @@
 var React = require('react');
+var createReactClass = require('create-react-class');
 var ReactDOM = require('react-dom');
 
 // Note that Froala Editor has to be required separately
@@ -11,7 +12,7 @@ require('font-awesome/css/font-awesome.css');
 var FroalaEditor = require('react-froala-wysiwyg');
 
 // Render Froala Editor component.
-var EditorComponent = React.createClass({
+var EditorComponent = createReactClass({
   config: {
     placeholderText: 'Add a Title',
     charCounterCount: false,

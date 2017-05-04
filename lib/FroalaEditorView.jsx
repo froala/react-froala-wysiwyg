@@ -1,6 +1,7 @@
 var React = require('react');
+var createReactClass = require('create-react-class');
 
-var FroalaEditorView = React.createClass({
+var FroalaEditorView = createReactClass({
 
   defaultTag: 'div',
 

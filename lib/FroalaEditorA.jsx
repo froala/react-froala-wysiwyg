@@ -1,7 +1,8 @@
 var React = require('react');
+var createReactClass = require('create-react-class');
 var FroalaEditorFunctionality = require('./FroalaEditorFunctionality.jsx');
 
-var FroalaEditorA = React.createClass({
+var FroalaEditorA = createReactClass({
 
   mixins: [FroalaEditorFunctionality],
   render: function() {
