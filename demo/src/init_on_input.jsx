@@ -1,26 +1,38 @@
-var React = require('react');
-var createReactClass = require('create-react-class');
-var ReactDOM = require('react-dom');
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 // Note that Froala Editor has to be required separately
-require("froala-editor/js/froala_editor.min.js");
-require("froala-editor/css/froala_editor.min.css");
+import 'froala-editor/js/froala_editor.min.js';
+import 'froala-editor/css/froala_editor.min.css';
 
 // Require Font Awesome.
-require('font-awesome/css/font-awesome.css');
+import 'font-awesome/css/font-awesome.css';
 
-var FroalaEditor = require('react-froala-wysiwyg');
-var FroalaEditorInput = require('react-froala-wysiwyg/FroalaEditorInput');
+import FroalaEditor from 'react-froala-wysiwyg';
+import FroalaEditorInput from 'react-froala-wysiwyg/FroalaEditorInput';
 
 // Render Froala Editor component.
-var EditorComponent = createReactClass({
-  getInitialState: function() {
-    return {content: {placeholder: 'I am an input!'}};
-  },
-  handleModelChange: function(model) {
-    this.setState({content: model});
-  },
-  render: function() {
+class EditorComponent extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      content: {
+        placeholder: 'I am an input!'
+      }
+    };
+
+    this.handleModelChange = this.handleModelChange.bind(this);
+  }
+
+  handleModelChange (model) {
+    this.setState({
+      content: model
+    });
+  }
+
+  render () {
     return(
       <div className="sample">
         <h2>Sample 7: Editor on 'input' tag</h2>
@@ -33,8 +45,8 @@ var EditorComponent = createReactClass({
       </div>
     );
   }
-});
+}
 
 ReactDOM.render(<EditorComponent/>, document.getElementById('editor'));
 
-require("file?name=[name].[ext]!./init_on_input.html");
+import 'file?name=[name].[ext]!./init_on_input.html';

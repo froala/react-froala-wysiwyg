@@ -1,20 +1,23 @@
-var React = require('react');
-var createReactClass = require('create-react-class');
+import React from 'react';
 
-var FroalaEditorView = createReactClass({
+class FroalaEditorView extends React.Component {
 
-  defaultTag: 'div',
+  constructor(props) {
+    super(props)
 
-  getTrustedHtml: function() {
+    this.defaultTag = 'div';
+  }
+
+  getTrustedHtml () {
     return {__html: this.props.model};
-  },
+  }
 
-  render: function() {
+  render () {
     this.tag = this.props.tag || this.defaultTag;
     return (
       <this.tag className='fr-view' dangerouslySetInnerHTML={this.getTrustedHtml()}></this.tag>
     );
   }
-});
+}
 
 module.exports = FroalaEditorView;

@@ -31,48 +31,14 @@ var EditorComponent = createReactClass({
     this.state.initControls.getEditor()('undo.reset');
     this.state.initControls.getEditor()('undo.saveStep');
   },
-
-  handleController: function(initControls) {
-
-    this.initControls = initControls;
-    this.setState({initControls: initControls});
-  },
-
-  handleModelChange: function(model) {
-    this.setState({content: model});
-  },
-
-  initializeEditor: function() {
-    this.state.initControls.initialize();
-    this.setState({initControls: this.state.initControls});
-  },
-
-  destroyEditor: function() {
-    this.state.initControls.destroy();
-    this.setState({initControls: this.state.initControls});
-  },
   render: function() {
     return(
       <div className="sample">
-        <h2>Editor on 'a' tag. Manual Initialization</h2>
-        {this.state.initControls ?
-            <button className="manual" onClick={this.initializeEditor}>Initialize Editor</button>
-            :
-          null
-        }
-        {this.state.initControls && this.state.initControls.getEditor() ?
-          <span>
-            <button className="button" onClick={this.destroyEditor}>Close Editor</button>
-            <button className="button" onClick={this.deleteAll}>Delete All</button>
-          </span>
-            :
-          null
-        }
+        <h2>Editor on 'a' tag.</h2>
         <div>
           <FroalaEditorA
             model={this.state.content}
             onModelChange={this.handleModelChange}
-            onManualControllerReady={this.handleController}
           >
             Froala Editor
           </FroalaEditorA>
