@@ -7,14 +7,6 @@ var path = require('path');
 var src = (process.argv.indexOf('-p') === -1);
 var filenamePostfix = src ? '.src' : '';
 
-/**
- * If -b flag is set, build bundles, and not exclude highcharts from the build
- * @type {boolean}
- */
-var bundles = (process.argv.indexOf('-b') !== -1);
-var bundlePrefix = (bundles ? 'bundle/' : '');
-
-
 var froalaExternals = {
   'froala-editor': {
     root: 'froala-editor',
@@ -40,10 +32,6 @@ var reactExternals = {
 };
 
 var externals = [reactExternals];
-if(!bundles){
-  externals.push(froalaExternals);
-}
-
 
 module.exports = {
   entry: {
@@ -72,7 +60,7 @@ module.exports = {
     modulesDirectories: ['node_modules']
   },
   output: {
-    filename: 'dist/' + bundlePrefix + '[name]' + filenamePostfix + '.js',
+    filename: 'dist/[name]' + filenamePostfix + '.js',
     libraryTarget: 'umd',
     library: '[name]'
   }

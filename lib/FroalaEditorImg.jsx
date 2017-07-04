@@ -1,15 +1,10 @@
-var React = require('react');
-var createReactClass = require('create-react-class');
-var FroalaEditorFunctionality = require('./FroalaEditorFunctionality.jsx');
+import React from 'react';
+import FroalaEditorFunctionality from './FroalaEditorFunctionality.jsx';
 
-var FroalaEditorImg = createReactClass({
-
-  mixins: [FroalaEditorFunctionality],
-  render: function() {
+export default class FroalaEditorImg extends FroalaEditorFunctionality {
+  render () {
     return (
       <img ref='el'/>
     );
   }
-});
-
-module.exports = FroalaEditorImg;
+}

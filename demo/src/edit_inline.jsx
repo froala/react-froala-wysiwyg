@@ -1,56 +1,66 @@
-var React = require('react');
-var createReactClass = require('create-react-class');
-var ReactDOM = require('react-dom');
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 // Note that Froala Editor has to be required separately
-require("froala-editor/js/froala_editor.min.js");
-require("froala-editor/css/froala_editor.min.css");
+import 'froala-editor/js/froala_editor.min.js';
+import 'froala-editor/css/froala_editor.min.css';
 
 // Require Font Awesome.
-require('font-awesome/css/font-awesome.css');
+import 'font-awesome/css/font-awesome.css';
 
-var FroalaEditor = require('react-froala-wysiwyg');
+import FroalaEditor from 'react-froala-wysiwyg';
 
 // Render Froala Editor component.
-var EditorComponent = createReactClass({
-  config: {
-    placeholderText: 'Add a Title',
-    charCounterCount: false,
-    toolbarInline: true,
-    events: {
-      'froalaEditor.initialized': function() {
-        console.log('initialized');
+class EditorComponent extends React.Component {
+  constructor() {
+    super();
+
+    this.config = {
+      placeholderText: 'Add a Title',
+      charCounterCount: false,
+      toolbarInline: true,
+      events: {
+        'froalaEditor.initialized': function() {
+          console.log('initialized');
+        }
       }
-    }
-  },
+    };
 
-  getInitialState: function() {
-    return {myTitle: ''};
-  },
+    this.state = {
+      myTitle: 'Click here to edit this text.'
+    };
 
-  handleModelChange: function(model) {
-    this.setState({myTitle: model});
-  },
+    this.handleModelChange = this.handleModelChange.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+  }
 
-  handleInputChange: function(e) {
-    this.setState({myTitle: e.target.value});
-  },
+  handleModelChange (model) {
+    this.setState({
+      myTitle: model
+    })
+  }
 
-  render: function() {
+  handleInputChange (e) {
+    this.setState({
+      myTitle: e.target.value
+    })
+  }
+
+  render () {
     return(
       <div className="sample">
-        <h2>Sample 1: Inline Edit</h2>
+        <h2>Inline Edit</h2>
         <FroalaEditor
           tag='textarea'
           config={this.config}
           model={this.state.myTitle}
           onModelChange={this.handleModelChange}
         />
-        <input value={this.state.myTitle} onChange={this.handleInputChange}/>
+        <textarea value={this.state.myTitle} onChange={this.handleInputChange}></textarea>
       </div>
     );
   }
-});
+}
 
 ReactDOM.render(<EditorComponent/>, document.getElementById('editor'));
 

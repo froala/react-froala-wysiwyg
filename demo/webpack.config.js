@@ -1,4 +1,5 @@
 var webpack = require("webpack");
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -12,6 +13,7 @@ module.exports = {
     init_on_link: './src/init_on_link.jsx',
     init_on_input: './src/init_on_input.jsx'
   },
+
   module: {
     loaders: [
       {
@@ -43,21 +45,26 @@ module.exports = {
       }
     ]
   },
+
   resolve: {
     alias: {
       "react-froala-wysiwyg": '../../dist'
     },
     modulesDirectories: ['node_modules']
   },
+
   output: {
     path: 'dist/',
     filename: '[name].js',
     publicPath: '/'
   },
+
   plugins: [
     new webpack.ProvidePlugin({
       $: "jquery",
       jQuery: "jquery"
-    })
+    }),
+
+    new CopyWebpackPlugin([{ from: './src/index.html'}, {from: './src/image.jpg'} ])
   ]
 };

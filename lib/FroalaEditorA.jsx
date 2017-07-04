@@ -1,15 +1,11 @@
-var React = require('react');
-var createReactClass = require('create-react-class');
-var FroalaEditorFunctionality = require('./FroalaEditorFunctionality.jsx');
+import React from 'react';
+import FroalaEditorFunctionality from './FroalaEditorFunctionality.jsx';
 
-var FroalaEditorA = createReactClass({
+export default class FroalaEditorA extends FroalaEditorFunctionality {
 
-  mixins: [FroalaEditorFunctionality],
-  render: function() {
+  render () {
     return (
       <a ref='el'>{this.props.children}</a>
     );
   }
-});
-
-module.exports = FroalaEditorA;
+}

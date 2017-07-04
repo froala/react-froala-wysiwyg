@@ -13,27 +13,27 @@ npm install react-froala-wysiwyg --save
 #### 1. Require and use Froala Editor component inside your application.
 
 ```jsx
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 // Require Editor JS files.
-require("froala-editor/js/froala_editor.pkgd.min.js");
+import 'froala-editor/js/froala_editor.pkgd.min.js';
 
 // Require Editor CSS files.
-require("froala-editor/css/froala_style.min.css");
-require("froala-editor/css/froala_editor.pkgd.min.css");
+import 'froala-editor/css/froala_style.min.css';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
 
 // Require Font Awesome.
-require('font-awesome/css/font-awesome.css');
+import 'font-awesome/css/font-awesome.css';
 
-var FroalaEditor = require('react-froala-wysiwyg');
+import FroalaEditor from 'react-froala-wysiwyg';
 
 // Include special components if required.
-// var FroalaEditorView = require('react-froala-wysiwyg/FroalaEditorView');
-// var FroalaEditorA = require('react-froala-wysiwyg/FroalaEditorA');
-// var FroalaEditorButton= require('react-froala-wysiwyg/FroalaEditorButton');
-// var FroalaEditorImg = require('react-froala-wysiwyg/FroalaEditorImg');
-// var FroalaEditorInput = require('react-froala-wysiwyg/FroalaEditorInput');
+// import FroalaEditorView from 'react-froala-wysiwyg/FroalaEditorView';
+// import FroalaEditorA from 'react-froala-wysiwyg/FroalaEditorA';
+// import FroalaEditorButton from 'react-froala-wysiwyg/FroalaEditorButton';
+// import FroalaEditorImg from 'react-froala-wysiwyg/FroalaEditorImg';
+// import FroalaEditorInput from 'react-froala-wysiwyg/FroalaEditorInput';
 
 // Render Froala Editor component.
 ReactDOM.render(<FroalaEditor tag='textarea'/>, document.getElementById('editor'));
@@ -120,7 +120,7 @@ config: {
 ```
 
 Aditional option is used:
- * **immediateReactModelUpdate**: (default: false) This option updates the React model as soon as a key is released in the editor. Note that it may affect performances.
+* **immediateReactModelUpdate**: (default: false) This option updates the React model as soon as a key is released in the editor. Note that it may affect performances.
 
 ### Events and Methods
 
@@ -145,25 +145,37 @@ Froala events are described in the [events docs](https://froala.com/wysiwyg-edit
 
 The WYSIWYG HTML editor content model.
 
-`model={this.state.model}`
+`model = {this.state.model}`
 
 Two way binding:
 
-```js
-getInitialState: function() {
-  return {model: 'Example text'};
-},
+```jsx
+import React from 'react';
 
-handleModelChange: function(model) {
-  this.setState({model: model});
-},
+class EditorComponent extends React.Component {
+  constructor () {
+    super();
 
-// ...
+    this.handleModelChange = this.handleModelChange.bind(this);
 
-<FroalaEditor
-  model={this.state.model}
-  onModelChange={this.handleModelChange}
-/>
+    this.state = {
+      model: 'Example text'
+    };
+  }
+
+  handleModelChange: function(model) {
+    this.setState({
+      model: model
+    });
+  }
+
+  render () {
+    return <FroalaEditor
+			  model={this.state.model}
+			  onModelChange={this.handleModelChange}
+           />
+  }
+}
 ```
 
 To achieve one way binding and pass only the initial editor content, simply do not pass `onModelChange` attribute.
@@ -195,25 +207,29 @@ You can also use the editor on **img**, **button**, **input** and **a** tags:
 The model must be an object containing the attributes for your special tags. Example:
 
 ```js
-getInitialState: function() {
-  return {model: {src: 'path/to/image.jpg'}};
-},
-```
+constructor () {
+  super();
 
-The model will change as the attributes change during usage if you use two way binding and pass `onModelChange` function.
+  this.handleModelChange = this.handleModelChange.bind(this);
+
+  this.state = {
+    model: {src: 'path/to/image.jpg'}
+  };
+}
+```
 
 * The model can contain a special attribute named **innerHTML** which inserts innerHTML in the element: If you are using 'button' tag, you can specify the button text like this:
 
 ```js
-getInitialState: function() {
-  return {content: {innerHTML: 'Click Me'}};
-},
+this.state = {
+  model: {innerHTML: 'Click Me'}
+};
 ```
 As the button text is modified by the editor, the **innerHTML** attribute from buttonModel model will be modified too.
 
 #### Specific option for special tags
 
- * **reactIgnoreAttrs**: (default: null) This option is an array of attributes that you want to ignore when the editor updates the froalaModel:
+* **reactIgnoreAttrs**: (default: null) This option is an array of attributes that you want to ignore when the editor updates the froalaModel:
 
  ```js
 config: {

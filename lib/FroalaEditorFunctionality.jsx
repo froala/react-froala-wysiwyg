@@ -1,39 +1,45 @@
-var FroalaEditorFunctionality = {
+import React from 'react';
 
-  // Tag on which the editor is initialized.
-  tag: null,
-  defaultTag: 'div',
-  listeningEvents: [],
+export default class FroalaEditorFunctionality extends React.Component {
 
-  // Jquery wrapped element.
-  $element: null,
+  constructor(props) {
+    super(props)
 
-  // Editor element.
-  $editor: null,
+    // Tag on which the editor is initialized.
+    this.tag = null;
+    this.defaultTag = 'div';
+    this.listeningEvents = [];
 
-  // Editor options config
-  config: {
-    immediateReactModelUpdate: false,
-    reactIgnoreAttrs: null
-  },
+    // Jquery wrapped element.
+    this.$element = null;
 
-  editorInitialized: false,
+    // Editor element.
+    this.editor = null;
 
-  SPECIAL_TAGS: ['img', 'button', 'input', 'a'],
-  INNER_HTML_ATTR: 'innerHTML',
-  hasSpecialTag: false,
+    // Editor options config
+    this.config = {
+      immediateReactModelUpdate: false,
+      reactIgnoreAttrs: null
+    };
 
-  oldModel: null,
+    this.editorInitialized = false;
+
+    this.SPECIAL_TAGS = ['img', 'button', 'input', 'a'];
+    this.INNER_HTML_ATTR = 'innerHTML';
+    this.hasSpecialTag = false;
+
+    this.oldModel = null;
+  }
 
   // Before first time render.
-  componentWillMount: function() {
+  componentWillMount () {
     this.tag = this.props.tag || this.defaultTag;
-  },
+  }
 
   // After first time render.
-  componentDidMount: function() {
+  componentDidMount () {
 
-    var tagName = this.refs.el.tagName.toLowerCase();
+    let tagName = this.refs.el.tagName.toLowerCase();
     if (this.SPECIAL_TAGS.indexOf(tagName) != -1) {
 
       this.tag = tagName;
@@ -45,22 +51,22 @@ var FroalaEditorFunctionality = {
     } else {
       this.createEditor();
     }
-  },
+  }
 
-  componentWillUnmount: function() {
+  componentWillUnmount () {
     this.destroyEditor();
-  },
+  }
 
-  componentDidUpdate: function() {
+  componentDidUpdate () {
 
     if (JSON.stringify(this.oldModel) == JSON.stringify(this.props.model)) {
       return;
     }
 
     this.setContent();
-  },
+  }
 
-  createEditor: function() {
+  createEditor () {
 
     if (this.editorInitialized) {
       return;
@@ -77,9 +83,9 @@ var FroalaEditorFunctionality = {
     this.initListeners();
 
     this.editorInitialized = true;
-  },
+  }
 
-  setContent: function(firstTime) {
+  setContent (firstTime) {
 
     if (!this.editorInitialized && !firstTime) {
       return;
@@ -95,11 +101,11 @@ var FroalaEditorFunctionality = {
         this.setNormalTagContent(firstTime);
       }
     }
-  },
+  }
 
-  setNormalTagContent: function(firstTime) {
+  setNormalTagContent (firstTime) {
 
-    var self = this;
+    let self = this;
 
     function htmlSet() {
 
@@ -117,16 +123,16 @@ var FroalaEditorFunctionality = {
       htmlSet();
     }
 
-  },
+  }
 
-  setSpecialTagContent: function() {
+  setSpecialTagContent () {
 
-    var tags = this.props.model;
+    let tags = this.props.model;
 
     // add tags on element
     if (tags) {
 
-      for (var attr in tags) {
+      for (let attr in tags) {
         if (tags.hasOwnProperty(attr) && attr != this.INNER_HTML_ATTR) {
           this.$element.attr(attr, tags[attr]);
         }
@@ -136,9 +142,9 @@ var FroalaEditorFunctionality = {
         this.$element[0].innerHTML = tags[this.INNER_HTML_ATTR];
       }
     }
-  },
+  }
 
-  destroyEditor: function() {
+  destroyEditor () {
 
     if (this.$element) {
 
@@ -149,44 +155,45 @@ var FroalaEditorFunctionality = {
       this.$element = null;
       this.editorInitialized = false;
     }
-  },
+  }
 
-  getEditor: function() {
+  getEditor () {
 
     if (this.$element) {
       return this.$element.froalaEditor.bind(this.$element);
     }
+
     return null;
-  },
+  }
 
-  generateManualController: function() {
+  generateManualController () {
+    let self = this;
 
-    var self = this;
-    var controls = {
-      initialize: this.createEditor,
-      destroy: this.destroyEditor,
-      getEditor: this.getEditor,
+    let controls = {
+      initialize: () => self.createEditor.call(self),
+      destroy: () => self.destroyEditor.call(self),
+      getEditor: () => self.getEditor.call(self)
     };
 
     this.props.onManualControllerReady(controls);
-  },
+  }
 
-  updateModel: function() {
+  updateModel () {
 
     if (!this.props.onModelChange) {
       return;
     }
 
-    var modelContent = '';
+    let modelContent = '';
 
     if (this.hasSpecialTag) {
 
-      var attributeNodes = this.$element[0].attributes;
-      var attrs = {};
+      let attributeNodes = this.$element[0].attributes;
+      let attrs = {};
 
-      for (var i = 0; i < attributeNodes.length; i++ ) {
+      for (let i = 0; i < attributeNodes.length; i++ ) {
 
-        var attrName = attributeNodes[i].name;
+        let attrName = attributeNodes[i].name;
         if (this.config.reactIgnoreAttrs && this.config.reactIgnoreAttrs.indexOf(attrName) != -1) {
           continue;
         }
@@ -200,7 +207,7 @@ var FroalaEditorFunctionality = {
       modelContent = attrs;
     } else {
 
-      var returnedHtml = this.$element.froalaEditor('html.get');
+      let returnedHtml = this.$element.froalaEditor('html.get');
       if (typeof returnedHtml === 'string') {
         modelContent = returnedHtml;
       }
@@ -208,10 +215,10 @@ var FroalaEditorFunctionality = {
 
     this.oldModel = modelContent;
     this.props.onModelChange(modelContent);
-  },
+  }
 
-  initListeners: function() {
-    var self = this;
+  initListeners () {
+    let self = this;
 
     // bind contentChange and keyup event to froalaModel
     this.registerEvent(this.$element, 'froalaEditor.contentChanged',function () {
@@ -222,10 +229,10 @@ var FroalaEditorFunctionality = {
         self.updateModel();
       });
     }
-  },
+  }
 
   // register event on jquery editor element
-  registerEvent: function(element, eventName, callback) {
+  registerEvent (element, eventName, callback) {
 
     if (!element || !eventName || !callback) {
       return;
@@ -233,16 +240,16 @@ var FroalaEditorFunctionality = {
 
     this.listeningEvents.push(eventName);
     element.on(eventName, callback);
-  },
+  }
 
-  registerEvents: function() {
+  registerEvents () {
 
-    var events = this.config.events;
+    let events = this.config.events;
     if (!events) {
       return;
     }
 
-    for (var event in events) {
+    for (let event in events) {
       if (events.hasOwnProperty(event)) {
         this.registerEvent(this.$element, event, events[event]);
       }
@@ -250,5 +257,3 @@ var FroalaEditorFunctionality = {
 
   }
 };
-
-module.exports = FroalaEditorFunctionality;
