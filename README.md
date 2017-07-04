@@ -153,16 +153,16 @@ Two way binding:
 import React from 'react';
 
 class EditorComponent extends React.Component {
-  constructor (props) {
-    super(props);
-    
+  constructor () {
+    super();
+
     this.handleModelChange = this.handleModelChange.bind(this);
 
     this.state = {
       model: 'Example text'
     };
   }
-  
+
   handleModelChange: function(model) {
     this.setState({
       model: model
@@ -172,7 +172,7 @@ class EditorComponent extends React.Component {
   render () {
     return <FroalaEditor
 			  model={this.state.model}
-			  onModelChange={this.handleModelChange} 
+			  onModelChange={this.handleModelChange}
            />
   }
 }
@@ -207,8 +207,8 @@ You can also use the editor on **img**, **button**, **input** and **a** tags:
 The model must be an object containing the attributes for your special tags. Example:
 
 ```js
-constructor (props) {
-  super(props);
+constructor () {
+  super();
 
   this.handleModelChange = this.handleModelChange.bind(this);
 

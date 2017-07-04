@@ -56,7 +56,7 @@
   "scripts": {
     "build": "webpack && webpack -p && webpack -b && webpack -p -b",
     "demo": "cd demo && webpack && ../node_modules/.bin/webpack-dev-server --port 4000 --content-base dist/",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build && bash lib/copy_bundles.sh"
   },
   "repository": {
     "type": "git",
