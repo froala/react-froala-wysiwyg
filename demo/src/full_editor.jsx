@@ -13,9 +13,8 @@ import FroalaEditorView from 'react-froala-wysiwyg/FroalaEditorView';
 
 // Render Froala Editor component.
 class EditorComponent extends React.Component {
-
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
 
     this.state = {
       content: '<span>My Document\'s Title</span>'

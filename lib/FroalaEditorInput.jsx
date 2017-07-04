@@ -1,7 +1,7 @@
 import React from 'react';
 import FroalaEditorFunctionality from './FroalaEditorFunctionality.jsx';
 
-class FroalaEditorInput extends FroalaEditorFunctionality {
+export default class FroalaEditorInput extends FroalaEditorFunctionality {
 
   render () {
     return (
@@ -9,5 +9,3 @@ class FroalaEditorInput extends FroalaEditorFunctionality {
     );
   }
 }
-
-module.exports = FroalaEditorInput;

@@ -12,9 +12,8 @@ import FroalaEditor from 'react-froala-wysiwyg';
 
 // Render Froala Editor component.
 class EditorComponent extends React.Component {
-
-  constructor (props) {
-    super(props);
+  constructor () {
+    super();
 
     this.state = {
       content: 'Type here and the other input should update.'

@@ -1,6 +1,6 @@
 import React from 'react';
 
-class FroalaEditorView extends React.Component {
+export default class FroalaEditorView extends React.Component {
 
   constructor(props) {
     super(props)
@@ -19,5 +19,3 @@ class FroalaEditorView extends React.Component {
     );
   }
 }
-
-module.exports = FroalaEditorView;

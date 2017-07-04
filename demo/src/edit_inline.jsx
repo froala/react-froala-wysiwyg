@@ -12,9 +12,8 @@ import FroalaEditor from 'react-froala-wysiwyg';
 
 // Render Froala Editor component.
 class EditorComponent extends React.Component {
-
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
 
     this.config = {
       placeholderText: 'Add a Title',

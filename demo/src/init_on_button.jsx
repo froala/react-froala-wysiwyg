@@ -13,9 +13,8 @@ import FroalaEditorButton from 'react-froala-wysiwyg/FroalaEditorButton';
 
 // Render Froala Editor component.
 class EditorComponent extends React.Component {
-
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
 
     this.state = {
       content: {

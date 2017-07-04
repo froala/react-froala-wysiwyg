@@ -13,9 +13,8 @@ import FroalaEditorImg from 'react-froala-wysiwyg/FroalaEditorImg';
 
 // Render Froala Editor component.
 class EditorComponent extends React.Component {
-
-  constructor (props) {
-    super(props);
+  constructor () {
+    super();
 
     this.config = {
       reactIgnoreAttrs: ['tmpattr']

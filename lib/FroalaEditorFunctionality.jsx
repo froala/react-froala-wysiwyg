@@ -1,6 +1,6 @@
 import React from 'react';
 
-class FroalaEditorFunctionality extends React.Component {
+export default class FroalaEditorFunctionality extends React.Component {
 
   constructor(props) {
     super(props)
@@ -169,11 +169,11 @@ class FroalaEditorFunctionality extends React.Component {
   generateManualController () {
     let self = this;
 
-    let controls = Object.assign({
+    let controls = {
       initialize: () => self.createEditor.call(self),
       destroy: () => self.destroyEditor.call(self),
       getEditor: () => self.getEditor.call(self)
-    });
+    };
 
     this.props.onManualControllerReady(controls);
   }
@@ -257,5 +257,3 @@ class FroalaEditorFunctionality extends React.Component {
 
   }
 };
-
-module.exports = FroalaEditorFunctionality;
