@@ -8,6 +8,11 @@
 npm install react-froala-wysiwyg --save
 ```
 
+## Update editor version
+```bash
+npm update froala-editor
+```
+
 ## Usage
 
 #### 1. Require and use Froala Editor component inside your application.
