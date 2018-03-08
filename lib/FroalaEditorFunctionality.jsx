@@ -1,9 +1,9 @@
+/* global $ */
 import React from 'react';
 
 export default class FroalaEditorFunctionality extends React.Component {
-
   constructor(props) {
-    super(props)
+    super(props);
 
     // Tag on which the editor is initialized.
     this.tag = null;
@@ -38,10 +38,8 @@ export default class FroalaEditorFunctionality extends React.Component {
 
   // After first time render.
   componentDidMount () {
-
     let tagName = this.refs.el.tagName.toLowerCase();
     if (this.SPECIAL_TAGS.indexOf(tagName) != -1) {
-
       this.tag = tagName;
       this.hasSpecialTag = true;
     }
@@ -58,7 +56,6 @@ export default class FroalaEditorFunctionality extends React.Component {
   }
 
   componentDidUpdate () {
-
     if (JSON.stringify(this.oldModel) == JSON.stringify(this.props.model)) {
       return;
     }
@@ -67,7 +64,6 @@ export default class FroalaEditorFunctionality extends React.Component {
   }
 
   createEditor () {
-
     if (this.editorInitialized) {
       return;
     }
@@ -81,18 +77,10 @@ export default class FroalaEditorFunctionality extends React.Component {
     this.registerEvents();
     this.$editor = this.$element.froalaEditor(this.config).data('froala.editor').$el;
     this.initListeners();
-
-    this.editorInitialized = true;
   }
 
   setContent (firstTime) {
-
-    if (!this.editorInitialized && !firstTime) {
-      return;
-    }
-
     if (this.props.model || this.props.model == '') {
-
       this.oldModel = this.props.model;
 
       if (this.hasSpecialTag) {
@@ -104,34 +92,41 @@ export default class FroalaEditorFunctionality extends React.Component {
   }
 
   setNormalTagContent (firstTime) {
-
     let self = this;
 
     function htmlSet() {
-
       self.$element.froalaEditor('html.set', self.props.model || '', true);
-      //This will reset the undo stack everytime the model changes externally. Can we fix this?
-      self.$element.froalaEditor('undo.reset');
-      self.$element.froalaEditor('undo.saveStep');
+      if (self.editorInitialized) {
+        //This will reset the undo stack everytime the model changes externally. Can we fix this?
+        self.$element.froalaEditor('undo.reset');
+        self.$element.froalaEditor('undo.saveStep');
+      }
     }
 
     if (firstTime) {
-      this.registerEvent(this.$element, 'froalaEditor.initialized', function () {
-        htmlSet();
-      });
+      if (this.config.initOnClick) {
+        this.registerEvent(this.$element, 'froalaEditor.initializationDelayed', () => {
+          htmlSet();
+        });
+        this.registerEvent(this.$element, 'froalaEditor.initialized', () => {
+          this.editorInitialized = true;
+        });
+      } else {
+        this.registerEvent(this.$element, 'froalaEditor.initialized', () => {
+          this.editorInitialized = true;
+          htmlSet();
+        });
+      }
     } else {
       htmlSet();
     }
-
   }
 
   setSpecialTagContent () {
-
     let tags = this.props.model;
 
     // add tags on element
     if (tags) {
-
       for (let attr in tags) {
         if (tags.hasOwnProperty(attr) && attr != this.INNER_HTML_ATTR) {
           this.$element.attr(attr, tags[attr]);
@@ -145,10 +140,8 @@ export default class FroalaEditorFunctionality extends React.Component {
   }
 
   destroyEditor () {
-
     if (this.$element) {
-
-      this.listeningEvents && this.$element.off(this.listeningEvents.join(" "));
+      this.listeningEvents && this.$element.off(this.listeningEvents.join(' '));
       this.$editor.off('keyup');
       this.$element.froalaEditor('destroy');
       this.listeningEvents.length = 0;
@@ -158,7 +151,6 @@ export default class FroalaEditorFunctionality extends React.Component {
   }
 
   getEditor () {
-
     if (this.$element) {
       return this.$element.froalaEditor.bind(this.$element);
     }
@@ -179,7 +171,6 @@ export default class FroalaEditorFunctionality extends React.Component {
   }
 
   updateModel () {
-
     if (!this.props.onModelChange) {
       return;
     }
@@ -187,12 +178,10 @@ export default class FroalaEditorFunctionality extends React.Component {
     let modelContent = '';
 
     if (this.hasSpecialTag) {
-
       let attributeNodes = this.$element[0].attributes;
       let attrs = {};
 
       for (let i = 0; i < attributeNodes.length; i++ ) {
-
         let attrName = attributeNodes[i].name;
         if (this.config.reactIgnoreAttrs && this.config.reactIgnoreAttrs.indexOf(attrName) != -1) {
           continue;
@@ -206,7 +195,6 @@ export default class FroalaEditorFunctionality extends React.Component {
 
       modelContent = attrs;
     } else {
-
       let returnedHtml = this.$element.froalaEditor('html.get');
       if (typeof returnedHtml === 'string') {
         modelContent = returnedHtml;
@@ -233,7 +221,6 @@ export default class FroalaEditorFunctionality extends React.Component {
 
   // register event on jquery editor element
   registerEvent (element, eventName, callback) {
-
     if (!element || !eventName || !callback) {
       return;
     }
@@ -243,7 +230,6 @@ export default class FroalaEditorFunctionality extends React.Component {
   }
 
   registerEvents () {
-
     let events = this.config.events;
     if (!events) {
       return;
@@ -254,6 +240,5 @@ export default class FroalaEditorFunctionality extends React.Component {
         this.registerEvent(this.$element, event, events[event]);
       }
     }
-
   }
 };
