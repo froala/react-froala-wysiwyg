@@ -44,20 +44,24 @@ module.exports = {
     'FroalaEditorView': ['./lib/FroalaEditorView.jsx']
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx$/,
-        loader: 'babel',
-        query: {
-          cacheDirectory: true,
-          presets: ['react','es2015', 'stage-2']
-        }
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              cacheDirectory: true,
+              presets: ['react','es2015', 'stage-2']
+            }
+          }
+        ]
       }
     ]
   },
   externals: externals,
   resolve: {
-    modulesDirectories: ['node_modules']
+    modules: ['./node_modules']
   },
   output: {
     filename: 'dist/[name]' + filenamePostfix + '.js',
