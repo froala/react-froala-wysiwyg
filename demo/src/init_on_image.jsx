@@ -1,15 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-
 // Note that Froala Editor has to be required separately
 import 'froala-editor/js/froala_editor.pkgd.min.js';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
-
 // Require Font Awesome.
 import 'font-awesome/css/font-awesome.css';
+import 'file-loader?name=[name].[ext]!./init_on_image.html';
 
 import FroalaEditor from 'react-froala-wysiwyg';
 import FroalaEditorImg from 'react-froala-wysiwyg/FroalaEditorImg';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 // Render Froala Editor component.
 class EditorComponent extends React.Component {
@@ -60,4 +59,3 @@ class EditorComponent extends React.Component {
 
 ReactDOM.render(<EditorComponent/>, document.getElementById('editor'));
 
-import 'file?name=[name].[ext]!./init_on_image.html';

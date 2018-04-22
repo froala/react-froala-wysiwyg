@@ -15,33 +15,38 @@ module.exports = {
   },
 
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx$/,
-        loader: 'babel',
-        query: {
-          cacheDirectory: true,
-          presets: ['react','es2015', 'stage-2']
+        use: {
+          loader: 'babel-loader',
+          options: {
+            cacheDirectory: true,
+            presets: ['react','es2015', 'stage-2']
+          }
         }
       }, {
         test: /\.css$/,
-        loader: "style-loader!css-loader?root=."
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
       },
       {
         test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=application/font-woff"
+        use: "url-loader?limit=10000&mimetype=application/font-woff"
       }, {
         test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=application/font-woff"
+        use: "url-loader?limit=10000&mimetype=application/font-woff"
       }, {
         test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=application/octet-stream"
+        use: "url-loader?limit=10000&mimetype=application/octet-stream"
       }, {
         test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "file"
+        use: "file-loader"
       }, {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=image/svg+xml"
+        use: "url-loader?limit=10000&mimetype=image/svg+xml"
       }
     ]
   },
@@ -50,11 +55,11 @@ module.exports = {
     alias: {
       "react-froala-wysiwyg": '../../dist'
     },
-    modulesDirectories: ['node_modules']
+    modules: ['node_modules']
   },
 
   output: {
-    path: 'dist/',
+    path: __dirname + '/dist/',
     filename: '[name].js',
     publicPath: '/'
   },
