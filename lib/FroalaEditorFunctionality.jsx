@@ -16,10 +16,15 @@ export default class FroalaEditorFunctionality extends React.Component {
     // Editor element.
     this.editor = null;
 
-    // Editor options config
+    // Editor config
     this.config = {
       immediateReactModelUpdate: false,
       reactIgnoreAttrs: null
+    };
+
+    // Editor options
+    this.options = {
+      
     };
 
     this.editorInitialized = false;
@@ -69,6 +74,7 @@ export default class FroalaEditorFunctionality extends React.Component {
     }
 
     this.config = this.props.config || this.config;
+    this.options = this.props.options || this.options;
 
     this.$element = $(this.refs.el);
 
@@ -230,7 +236,7 @@ export default class FroalaEditorFunctionality extends React.Component {
   }
 
   registerEvents () {
-    let events = this.config.events;
+    let events = this.options.events;
     if (!events) {
       return;
     }
