@@ -64,7 +64,7 @@ module.exports = {
     modules: ['./node_modules']
   },
   output: {
-    filename: 'dist/[name]' + filenamePostfix + '.js',
+    filename: '[name]' + filenamePostfix + '.js',
     libraryTarget: 'umd',
     library: '[name]'
   }
