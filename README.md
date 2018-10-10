@@ -168,7 +168,7 @@ module.exports = {
 There are special tags: **a**, **button**, **img**, **input**. Do not use them in FroalaEditor component. To initialize the editor on a special tag, use `FroalaEditorA`, `FroalaEditorButton`, `FroalaEditorImg` and `FroalaEditorInput` components.
 
 
-### Options
+### Config
 
 You can pass editor options as component attribute (optional).
 
@@ -177,10 +177,10 @@ You can pass editor options as component attribute (optional).
 You can pass any existing Froala option. Consult the [Froala documentation](https://www.froala.com/wysiwyg-editor/docs/options) to view the list of all the available options:
 
 ```js
-config: {
+config={{
   placeholderText: 'Edit Your Content Here!',
   charCounterCount: false
-}
+}}
 ```
 
 Aditional option is used:
@@ -191,14 +191,14 @@ Aditional option is used:
 Events can be passed in with the options, with a key events and object where the key is the event name and the value is the callback function.
 
 ```js
-options: {
+config={{
   placeholder: "Edit Me",
   events : {
     'froalaEditor.focus' : function(e, editor) {
       console.log(editor.selection.get());
     }
   }
-}
+}}
 ```
 
 Using the editor instance from the arguments of the callback you can call editor methods as described in the [method docs](http://froala.com/wysiwyg-editor/docs/methods).
