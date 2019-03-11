@@ -71,8 +71,11 @@ export default class FroalaEditorFunctionality extends React.Component {
     this.config = this.props.config || this.config;
 
     this.$element = $(this.refs.el);
-    if(this.props.model)
-    this.$element[0].innerHTML=this.props.model;
+    
+    if(this.props.model) {
+      this.$element[0].innerHTML = this.props.model;
+    }
+    
     this.setContent(true);
 
     this.registerEvents();
