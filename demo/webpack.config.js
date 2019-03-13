@@ -53,7 +53,7 @@ module.exports = {
 
   resolve: {
     alias: {
-      "react-froala-wysiwyg": '../../dist'
+      "react-froala-wysiwyg": '../../dist/dist'
     },
     modules: ['node_modules']
   },
