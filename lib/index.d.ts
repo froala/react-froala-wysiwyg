@@ -1,48 +1,52 @@
 import React from 'react';
-interface configuration
+
+export interface MyComponentProps {
+   tag?:string;
+   config?: object;
+   model?: string| object|null;
+   onModelChange?: function;
+   onManualControllerReady?: function;
+}
+
+
+declare class  FroalaEditor extends React.Component<MyComponentProps>{
+   destroy():void;
+   getEditor(): any;
+   initialize() : object;
+}
+export default FroalaEditor;
+
+declare class  FroalaEditorInput extends React.Component<MyComponentProps>
 {
-    immediateReactModelUpdate: boolean;
-    reactIgnoreAttrs: any;
 
 }
-export class FroalaEditorFunctionality extends React.Component{
-    constructor(props : object);
-    tag: string;
-    defaultTag: string;
-    listeningEvents: string[];
-    $element: object;
-    $editor: object;
-    config: configuration;
-    editorInitialized: boolean;
-    SPECIAL_TAGS: string[];
-    INNER_HTML_ATTR: string;
-    hasSpecialTag: boolean;
-    oldmodel: any;
-    createEditor():void;
-    setContent(flag: boolean):void;
-    setNormalTagContent(flag: boolean):void;
-    setSpecialTagContent():void;
-    destroyEditor():void;
-    getEditor(): object;
-    generateManualController():void;
-    updateModel(): void;
-    initListeners():void;
-    registerEvent (element:object, eventName:string, callback:Function):void;
-    registerEvents():void;
-}
-export  class FroalaEditorView extends React.Component{
-    defaultTag: string;
-    getTrustedHtml(): object;
-}
-export  class FroalaEditorA extends FroalaEditorFunctionality{
+export default FroalaEditorInput;
+
+declare class  FroalaEditorView extends React.Component<MyComponentProps>
+{
 
 }
-export  class FroalaEditorButton extends FroalaEditorFunctionality{
+export default FroalaEditorView;
+
+declare class  FroalaEditorButton extends React.Component<MyComponentProps>
+{
 
 }
-export  class FroalaEditorImg extends FroalaEditorFunctionality{
+export default FroalaEditorButton;
+
+declare class  FroalaEditorImg extends React.Component<MyComponentProps>
+{
 
 }
-export  class FroalaEditorInput extends FroalaEditorFunctionality{
+export default FroalaEditorImg;
+declare class  FroalaEditorInput extends React.Component<MyComponentProps>
+{
 
 }
+export default FroalaEditorInput;
+
+declare class  FroalaEditorA extends React.Component<MyComponentProps>
+{
+
+}
+export default FroalaEditorA;
