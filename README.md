@@ -326,6 +326,7 @@ The object received by the function will contain the following methods:
 ```
 where path is the location of index.d.ts file.
 
+
 ## Displaying HTML
 
 To display content created with the froala editor use the `FroalaEditorView` component.
