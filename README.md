@@ -347,10 +347,6 @@ To display content created with the froala editor use the `FroalaEditorView` com
 />
 ```
 
-## Usage with create-react-app
-In order to use froala editor with create-react-app, you need to include below lines in your code:
-import $ from 'jquery';
-window.$ = $;
 
 ## License
 
