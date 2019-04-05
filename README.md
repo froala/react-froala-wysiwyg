@@ -320,8 +320,11 @@ The object received by the function will contain the following methods:
 - **getEditor**: Call this method to retrieve the editor that was created. This method will return *null* if the editor was not yet created
 
 ## Using type definition file
-
-index.d.ts file is the type definition file for this repository. It is placed inside lib folder.In order to use it in your code , put this file inside react-froala-wysiwyg package.
+`index.d.ts` file is the type definition file for this repository. It is placed inside lib folder.In order to use it in your code , use the following line:
+```
+///<reference path= "index.d.ts" />
+```
+where path is the location of index.d.ts file.
 
 
 ## Displaying HTML
