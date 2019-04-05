@@ -44,6 +44,7 @@ module.exports = {
     'FroalaEditorView': ['./lib/FroalaEditorView.jsx']
   },
   module: {
+    
     rules: [
       {
         test: /\.jsx$/,

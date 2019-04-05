@@ -1,11 +1,10 @@
 // Note that Froala Editor has to be required separately
-import 'froala-editor/js/froala_editor.min.js';
+import  'froala-editor/js/froala_editor.min.js';
 import 'froala-editor/css/froala_editor.min.css';
-// Require Font Awesome.
-import 'font-awesome/css/font-awesome.css';
-import 'file-loader?name=[name].[ext]!./init_on_button.html';
+import  'froala-editor/js/plugins/edit_in_popup.min.js';
 
-import FroalaEditor from 'react-froala-wysiwyg';
+
+//import FroalaEditor from 'react-froala-wysiwyg';
 import FroalaEditorButton from 'react-froala-wysiwyg/FroalaEditorButton';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -48,3 +47,4 @@ class EditorComponent extends React.Component {
 
 ReactDOM.render(<EditorComponent/>, document.getElementById('editor'));
 
+import 'file-loader?name=[name].[ext]!./init_on_button.html';

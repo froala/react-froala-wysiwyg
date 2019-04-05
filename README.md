@@ -48,7 +48,7 @@ import FroalaEditor from 'react-froala-wysiwyg';
 ReactDOM.render(<FroalaEditor tag='textarea'/>, document.getElementById('editor'));
 ```
 
-#### 2. Make sure you have the right Webpack settings for loading the CSS files, Font Awesome and jQuery.
+#### 2. Make sure you have the right Webpack settings for loading the CSS files and Font Awesome .
 
 #### Webpack <= 3
 ```js
@@ -87,15 +87,19 @@ module.exports = {
     ]
   },
   resolve: {
-    modulesDirectories: ['node_modules']
+   alias: {
+     FroalaEditor: 'file_name'
+    },
+
+    modulesDirectories: ['../node_modules/froala-editor/js','node_modules']
   },
   plugins: [
     new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery"
+      FroalaEditor: 'file_name'
     })
   ]
 };
+file_name : froala_editor.min.js/froala_editor.pkgd.min.js 
 ```
 
 
@@ -141,15 +145,18 @@ module.exports = {
     ]
   },
   resolve: {
-    modules: ['node_modules']
+    alias: {
+     FroalaEditor: 'file_name'
+    },
+    modules: ['../node_modules/froala-editor/js','node_modules']
   },
   plugins: [
     new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery"
+       FroalaEditor: 'file_name'
     })
   ]
 };
+file_name : froala_editor.min.js/froala_editor.pkgd.min.js 
 ```
 
 #### Pass properties to the wrapping DOM element
@@ -194,7 +201,7 @@ Events can be passed in with the options, with a key events and object where the
 config={{
   placeholder: "Edit Me",
   events : {
-    'froalaEditor.focus' : function(e, editor) {
+    'focus' : function(e, editor) {
       console.log(editor.selection.get());
     }
   }

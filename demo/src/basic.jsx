@@ -11,5 +11,5 @@ import ReactDOM from 'react-dom';
 // Require Font Awesome.
 
 // Render Froala Editor component.
-ReactDOM.render(<FroalaEditor tag='textarea'/>, document.getElementById('editor'));
+ReactDOM.render(<FroalaEditor tag='textarea' />, document.getElementById('editor'));
 

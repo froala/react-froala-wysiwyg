@@ -1,8 +1,6 @@
 // Note that Froala Editor has to be required separately
 import 'froala-editor/js/froala_editor.min.js';
 import 'froala-editor/css/froala_editor.min.css';
-// Require Font Awesome.
-import 'font-awesome/css/font-awesome.css';
 import 'file-loader?name=[name].[ext]!./manual_initialization.html';
 
 import FroalaEditor from 'react-froala-wysiwyg';
@@ -34,9 +32,9 @@ class EditorComponent extends React.Component {
     if (!this.state.initControls) {
       return;
     }
-    this.state.initControls.getEditor()('html.set', '');
-    this.state.initControls.getEditor()('undo.reset');
-    this.state.initControls.getEditor()('undo.saveStep');
+    this.state.initControls.getEditor().html.set();
+    this.state.initControls.getEditor().undo.reset();
+    this.state.initControls.getEditor().undo.saveStep();
   }
 
   handleController (initControls) {
