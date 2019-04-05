@@ -326,7 +326,6 @@ The object received by the function will contain the following methods:
 ```
 where path is the location of index.d.ts file.
 
-
 ## Displaying HTML
 
 To display content created with the froala editor use the `FroalaEditorView` component.
@@ -340,6 +339,11 @@ To display content created with the froala editor use the `FroalaEditorView` com
   model={this.state.content}
 />
 ```
+
+## Usage with create-react-app
+In order to use froala editor with create-react-app, you need to include below lines in your code:
+import $ from 'jquery';
+window.$ = $;
 
 ## License
 
