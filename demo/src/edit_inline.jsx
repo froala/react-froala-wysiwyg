@@ -1,8 +1,6 @@
 // Note that Froala Editor has to be required separately
-import 'froala-editor/js/froala_editor.min.js';
+import  'froala-editor/js/froala_editor.min.js';
 import 'froala-editor/css/froala_editor.min.css';
-// Require Font Awesome.
-import 'font-awesome/css/font-awesome.css';
 
 import FroalaEditor from 'react-froala-wysiwyg';
 import React from 'react';
@@ -18,7 +16,7 @@ class EditorComponent extends React.Component {
       charCounterCount: false,
       toolbarInline: true,
       events: {
-        'froalaEditor.initialized': function() {
+        'initialized': function() {
           console.log('initialized');
         }
       }
