@@ -1,8 +1,7 @@
 // Note that Froala Editor has to be required separately
 import 'froala-editor/js/froala_editor.min.js';
 import 'froala-editor/css/froala_editor.min.css';
-// Require Font Awesome.
-import 'font-awesome/css/font-awesome.css';
+
 import 'file-loader?name=[name].[ext]!./two_way_binding.html';
 
 import FroalaEditor from 'react-froala-wysiwyg';

@@ -53,9 +53,10 @@ module.exports = {
 
   resolve: {
     alias: {
-      "react-froala-wysiwyg": '../../dist/dist'
+      "react-froala-wysiwyg": '../../dist/dist',
+     FroalaEditor: 'froala_editor.min.js',
     },
-    modules: ['node_modules']
+    modules: ['../node_modules/froala-editor/js','node_modules']
   },
 
   output: {
@@ -66,8 +67,7 @@ module.exports = {
 
   plugins: [
     new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery"
+     FroalaEditor: 'froala_editor.min.js'
     }),
 
     new CopyWebpackPlugin([{ from: './src/index.html'}, {from: './src/image.jpg'} ])

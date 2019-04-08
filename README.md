@@ -48,7 +48,7 @@ import FroalaEditor from 'react-froala-wysiwyg';
 ReactDOM.render(<FroalaEditor tag='textarea'/>, document.getElementById('editor'));
 ```
 
-#### 2. Make sure you have the right Webpack settings for loading the CSS files, Font Awesome and jQuery.
+#### 2. Make sure you have the right Webpack settings for loading the CSS files and Font Awesome .
 
 #### Webpack <= 3
 ```js
@@ -87,15 +87,19 @@ module.exports = {
     ]
   },
   resolve: {
-    modulesDirectories: ['node_modules']
+   alias: {
+     FroalaEditor: 'file_name'
+    },
+
+    modulesDirectories: ['../node_modules/froala-editor/js','node_modules']
   },
   plugins: [
     new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery"
+      FroalaEditor: 'file_name'
     })
   ]
 };
+file_name : froala_editor.min.js/froala_editor.pkgd.min.js 
 ```
 
 
@@ -141,15 +145,18 @@ module.exports = {
     ]
   },
   resolve: {
-    modules: ['node_modules']
+    alias: {
+     FroalaEditor: 'file_name'
+    },
+    modules: ['../node_modules/froala-editor/js','node_modules']
   },
   plugins: [
     new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery"
+       FroalaEditor: 'file_name'
     })
   ]
 };
+file_name : froala_editor.min.js/froala_editor.pkgd.min.js 
 ```
 
 #### Pass properties to the wrapping DOM element
@@ -194,7 +201,7 @@ Events can be passed in with the options, with a key events and object where the
 config={{
   placeholder: "Edit Me",
   events : {
-    'froalaEditor.focus' : function(e, editor) {
+    'focus' : function(e, editor) {
       console.log(editor.selection.get());
     }
   }
@@ -321,7 +328,9 @@ The object received by the function will contain the following methods:
 
 ## Using type definition file
 `index.d.ts` file is the type definition file for this repository. It is placed inside lib folder.In order to use it in your code , use the following line:
+```
 ///<reference path= "index.d.ts" />
+```
 where path is the location of index.d.ts file.
 
 ## Displaying HTML
@@ -338,10 +347,6 @@ To display content created with the froala editor use the `FroalaEditorView` com
 />
 ```
 
-## Usage with create-react-app
-In order to use froala editor with create-react-app, you need to include below lines in your code:
-import $ from 'jquery';
-window.$ = $;
 
 ## License
 

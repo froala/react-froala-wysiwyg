@@ -1,6 +1,7 @@
 /* global $ */
 import React from 'react';
 
+let lastId = 0;
 export default class FroalaEditorFunctionality extends React.Component {
   constructor(props) {
     super(props);
@@ -70,17 +71,20 @@ export default class FroalaEditorFunctionality extends React.Component {
 
     this.config = this.props.config || this.config;
 
-    this.$element = $(this.refs.el);
+    this.$element = this.refs.el;
     
-    if(this.props.model) {
-      this.$element[0].innerHTML = this.props.model;
-    }
     
     this.setContent(true);
-
+    
     this.registerEvents();
-    this.$editor = this.$element.froalaEditor(this.config).data('froala.editor').$el;
-    this.initListeners();
+    if(!this.$element.getAttribute('id'))
+    {
+      lastId++;
+      this.$element.setAttribute('id', `main-editor${lastId}`);
+    }
+    this.initListeners();  
+    this.$element.froalaEditor = new FroalaEditor('#'+this.$element.getAttribute('id'), this.config);
+    this.editor = this.$element.froalaEditor.$el;
   }
 
   setContent (firstTime) {
@@ -99,24 +103,24 @@ export default class FroalaEditorFunctionality extends React.Component {
     let self = this;
 
     function htmlSet() {
-      self.$element.froalaEditor('html.set', self.props.model || '', true);
-      if (self.editorInitialized) {
+      self.$element.froalaEditor.html && self.$element.froalaEditor.html.set(self.props.model || '');
+      if (self.editorInitialized && self.$element.froalaEditor.undo) {
         //This will reset the undo stack everytime the model changes externally. Can we fix this?
-        self.$element.froalaEditor('undo.reset');
-        self.$element.froalaEditor('undo.saveStep');
+        self.$element.froalaEditor.undo.reset();
+        self.$element.froalaEditor.undo.saveStep();
       }
     }
 
     if (firstTime) {
       if (this.config.initOnClick) {
-        this.registerEvent(this.$element, 'froalaEditor.initializationDelayed', () => {
+        this.registerEvent(this.$element, 'initializationDelayed', () => {
           htmlSet();
         });
-        this.registerEvent(this.$element, 'froalaEditor.initialized', () => {
+        this.registerEvent(this.$element, 'initialized', () => {
           this.editorInitialized = true;
         });
       } else {
-        this.registerEvent(this.$element, 'froalaEditor.initialized', () => {
+        this.registerEvent(this.$element, 'initialized', () => {
           this.editorInitialized = true;
           htmlSet();
         });
@@ -133,21 +137,19 @@ export default class FroalaEditorFunctionality extends React.Component {
     if (tags) {
       for (let attr in tags) {
         if (tags.hasOwnProperty(attr) && attr != this.INNER_HTML_ATTR) {
-          this.$element.attr(attr, tags[attr]);
+          this.$element.setAttribute(attr, tags[attr]);
         }
       }
 
       if (tags.hasOwnProperty(this.INNER_HTML_ATTR)) {
-        this.$element[0].innerHTML = tags[this.INNER_HTML_ATTR];
+        this.$element.innerHTML = tags[this.INNER_HTML_ATTR];
       }
     }
   }
 
   destroyEditor () {
     if (this.$element) {
-      this.listeningEvents && this.$element.off(this.listeningEvents.join(' '));
-      this.$editor.off('keyup');
-      this.$element.froalaEditor('destroy');
+      this.$element.froalaEditor.destroy && this.$element.froalaEditor.destroy();
       this.listeningEvents.length = 0;
       this.$element = null;
       this.editorInitialized = false;
@@ -156,7 +158,7 @@ export default class FroalaEditorFunctionality extends React.Component {
 
   getEditor () {
     if (this.$element) {
-      return this.$element.froalaEditor.bind(this.$element);
+      return this.$element.froalaEditor;
     }
 
     return null;
@@ -182,7 +184,7 @@ export default class FroalaEditorFunctionality extends React.Component {
     let modelContent = '';
 
     if (this.hasSpecialTag) {
-      let attributeNodes = this.$element[0].attributes;
+      let attributeNodes = this.$element.attributes;
       let attrs = {};
 
       for (let i = 0; i < attributeNodes.length; i++ ) {
@@ -193,13 +195,13 @@ export default class FroalaEditorFunctionality extends React.Component {
         attrs[attrName] = attributeNodes[i].value;
       }
 
-      if (this.$element[0].innerHTML) {
-        attrs[this.INNER_HTML_ATTR] = this.$element[0].innerHTML;
+      if (this.$element.innerHTML) {
+        attrs[this.INNER_HTML_ATTR] = this.$element.innerHTML;
       }
 
       modelContent = attrs;
     } else {
-      let returnedHtml = this.$element.froalaEditor('html.get');
+      let returnedHtml = this.$element.froalaEditor.html.get();
       if (typeof returnedHtml === 'string') {
         modelContent = returnedHtml;
       }
@@ -213,11 +215,11 @@ export default class FroalaEditorFunctionality extends React.Component {
     let self = this;
 
     // bind contentChange and keyup event to froalaModel
-    this.registerEvent(this.$element, 'froalaEditor.contentChanged',function () {
+    this.registerEvent(this.$element, 'contentChanged', function () {
       self.updateModel();
     });
     if (this.config.immediateReactModelUpdate) {
-      this.registerEvent(this.$editor, 'keyup', function () {
+      this.registerEvent(this.$element, 'keyup', function () {
         self.updateModel();
       });
     }
@@ -230,7 +232,10 @@ export default class FroalaEditorFunctionality extends React.Component {
     }
 
     this.listeningEvents.push(eventName);
-    element.on(eventName, callback);
+    if (!this.config.events) {
+      this.config.events = {};
+    }
+    this.config.events[eventName] = callback;
   }
 
   registerEvents () {
