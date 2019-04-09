@@ -1,48 +1,93 @@
-import React from 'react';
-interface configuration
+declare module 'react-froala-wysiwyg'
 {
-    immediateReactModelUpdate: boolean;
-    reactIgnoreAttrs: any;
+
+
+export interface MyComponentProps {
+   tag?:string;
+   config?: object;
+   model?: string| object|null;
+   onModelChange?: object;
+   onManualControllerReady?: object;
+}
+
+
+export default class  FroalaEditor extends React.Component<MyComponentProps>{
+   destroy():void;
+   getEditor(): any;
+   initialize() : object;
+}
 
 }
-export class FroalaEditorFunctionality extends React.Component{
-    constructor(props : object);
-    tag: string;
-    defaultTag: string;
-    listeningEvents: string[];
-    $element: object;
-    $editor: object;
-    config: configuration;
-    editorInitialized: boolean;
-    SPECIAL_TAGS: string[];
-    INNER_HTML_ATTR: string;
-    hasSpecialTag: boolean;
-    oldmodel: any;
-    createEditor():void;
-    setContent(flag: boolean):void;
-    setNormalTagContent(flag: boolean):void;
-    setSpecialTagContent():void;
-    destroyEditor():void;
-    getEditor(): object;
-    generateManualController():void;
-    updateModel(): void;
-    initListeners():void;
-    registerEvent (element:object, eventName:string, callback:Function):void;
-    registerEvents():void;
-}
-export  class FroalaEditorView extends React.Component{
-    defaultTag: string;
-    getTrustedHtml(): object;
-}
-export  class FroalaEditorA extends FroalaEditorFunctionality{
+
+declare module 'react-froala-wysiwyg/FroalaEditorView'
+{
+   export interface MyComponentProps {
+      tag?:string;
+      config?: object;
+      model?: string| object|null;
+      onModelChange?: object;
+      onManualControllerReady?: object;
+   }
+export  default class  FroalaEditorView extends React.Component<MyComponentProps>
+{
 
 }
-export  class FroalaEditorButton extends FroalaEditorFunctionality{
+}
+
+declare module 'react-froala-wysiwyg/FroalaEditorImg'
+{
+   export interface MyComponentProps {
+      tag?:string;
+      config?: object;
+      model?: string| object|null;
+      onModelChange?: object;
+      onManualControllerReady?: object;
+   }
+export default class  FroalaEditorImg extends React.Component<MyComponentProps>
+{
 
 }
-export  class FroalaEditorImg extends FroalaEditorFunctionality{
+}
+
+declare module 'react-froala-wysiwyg/FroalaEditorA'
+{
+   export interface MyComponentProps {
+      tag?:string;
+      config?: object;
+      model?: string| object|null;
+      onModelChange?: object;
+      onManualControllerReady?: object;
+   }
+export  default class  FroalaEditorA extends React.Component<MyComponentProps>
+{
 
 }
-export  class FroalaEditorInput extends FroalaEditorFunctionality{
+}
+declare module 'react-froala-wysiwyg/FroalaEditorButton'
+{
+   export interface MyComponentProps {
+      tag?:string;
+      config?: object;
+      model?: string| object|null;
+      onModelChange?: object;
+      onManualControllerReady?: object;
+   }
+export default class  FroalaEditorButton extends React.Component<MyComponentProps>
+{
 
+}
+}
+declare module 'react-froala-wysiwyg/FroalaEditorInput'
+{
+   export interface MyComponentProps {
+      tag?:string;
+      config?: object;
+      model?: string| object|null;
+      onModelChange?: object;
+      onManualControllerReady?: object;
+   }
+export default class  FroalaEditorInput extends React.Component<MyComponentProps>
+{
+
+}
 }
