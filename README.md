@@ -25,8 +25,6 @@ npm update froala-editor
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// Require Editor JS files.
-import 'froala-editor/js/froala_editor.pkgd.min.js';
 
 // Require Editor CSS files.
 import 'froala-editor/css/froala_style.min.css';
