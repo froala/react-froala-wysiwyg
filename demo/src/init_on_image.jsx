@@ -1,10 +1,10 @@
 // Note that Froala Editor has to be required separately
-import  'froala-editor/js/froala_editor.pkgd.min.js';
 
 import 'froala-editor/css/froala_editor.pkgd.min.css';
+import 'froala-editor/css/froala_style.css';
 import 'file-loader?name=[name].[ext]!./init_on_image.html';
 
-import FroalaEditor from 'react-froala-wysiwyg';
+
 import FroalaEditorImg from 'react-froala-wysiwyg/FroalaEditorImg';
 import React from 'react';
 import ReactDOM from 'react-dom';

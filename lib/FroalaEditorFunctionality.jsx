@@ -1,5 +1,6 @@
 /* global $ */
 import React from 'react';
+import  FroalaEditor from 'froala-editor/js/froala_editor.pkgd.min.js';
 
 let lastId = 0;
 export default class FroalaEditorFunctionality extends React.Component {
