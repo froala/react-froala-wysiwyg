@@ -56,7 +56,7 @@ module.exports = {
       "react-froala-wysiwyg": '../../dist/dist',
 
     },
-    modules: ['../node_modules/froala-editor/js','node_modules']
+    modules: ['node_modules']
   },
 
   output: {
