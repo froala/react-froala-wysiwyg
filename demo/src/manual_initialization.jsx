@@ -1,6 +1,6 @@
 // Note that Froala Editor has to be required separately
-import 'froala-editor/js/froala_editor.min.js';
-import 'froala-editor/css/froala_editor.min.css';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+import 'froala-editor/css/froala_style.css';
 import 'file-loader?name=[name].[ext]!./manual_initialization.html';
 
 import FroalaEditor from 'react-froala-wysiwyg';
