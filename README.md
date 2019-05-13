@@ -30,9 +30,6 @@ import ReactDOM from 'react-dom';
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 
-// Require Font Awesome.
-import 'font-awesome/css/font-awesome.css';
-
 import FroalaEditor from 'react-froala-wysiwyg';
 
 // Include special components if required.
@@ -46,7 +43,7 @@ import FroalaEditor from 'react-froala-wysiwyg';
 ReactDOM.render(<FroalaEditor tag='textarea'/>, document.getElementById('editor'));
 ```
 
-#### 2. Make sure you have the right Webpack settings for loading the CSS files and Font Awesome .
+#### 2. Make sure you have the right Webpack settings for loading the CSS files.
 
 #### Webpack <= 3
 ```js
