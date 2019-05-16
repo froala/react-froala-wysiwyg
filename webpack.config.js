@@ -31,7 +31,7 @@ var reactExternals = {
   }
 };
 
-var externals = [reactExternals];
+var externals = [reactExternals,'froala-editor/js/froala_editor.pkgd.min.js'];
 
 module.exports = {
   entry: {
