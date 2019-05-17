@@ -83,18 +83,18 @@ module.exports = {
   },
   resolve: {
    alias: {
-     FroalaEditor: 'file_name'
+    "react-froala-wysiwyg": '../../dist',
     },
 
-    modulesDirectories: ['../node_modules/froala-editor/js','node_modules']
+    modulesDirectories: ['node_modules']
   },
   plugins: [
     new webpack.ProvidePlugin({
-      FroalaEditor: 'file_name'
+    
     })
   ]
 };
-file_name : froala_editor.min.js/froala_editor.pkgd.min.js 
+
 ```
 
 
@@ -141,17 +141,17 @@ module.exports = {
   },
   resolve: {
     alias: {
-     FroalaEditor: 'file_name'
+"react-froala-wysiwyg": '../../dist',
     },
-    modules: ['../node_modules/froala-editor/js','node_modules']
+    modules: ['node_modules']
   },
   plugins: [
     new webpack.ProvidePlugin({
-       FroalaEditor: 'file_name'
+      
     })
   ]
 };
-file_name : froala_editor.min.js/froala_editor.pkgd.min.js 
+
 ```
 
 #### Pass properties to the wrapping DOM element

@@ -31,7 +31,7 @@ var reactExternals = {
   }
 };
 
-var externals = [reactExternals];
+var externals = [reactExternals,'froala-editor/js/froala_editor.pkgd.min.js'];
 
 module.exports = {
   entry: {
@@ -65,7 +65,7 @@ module.exports = {
     modules: ['./node_modules']
   },
   output: {
-    filename: 'dist/[name]' + filenamePostfix + '.js',
+    filename: '[name]' + filenamePostfix + '.js',
     libraryTarget: 'umd',
     library: '[name]'
   }
