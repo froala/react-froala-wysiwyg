@@ -32,6 +32,12 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 
 import FroalaEditor from 'react-froala-wysiwyg';
 
+
+// Include font-awesome css if required.
+// import 'font-awesome/css/font-awesome.css';
+// install using "npm install font-awesome --save"
+
+
 // Include special components if required.
 // import FroalaEditorView from 'react-froala-wysiwyg/FroalaEditorView';
 // import FroalaEditorA from 'react-froala-wysiwyg/FroalaEditorA';
