@@ -82,9 +82,7 @@ module.exports = {
     ]
   },
   resolve: {
-   alias: {
-    "react-froala-wysiwyg": '../../dist',
-    },
+  
 
     modulesDirectories: ['node_modules']
   },
@@ -140,9 +138,7 @@ module.exports = {
     ]
   },
   resolve: {
-    alias: {
-"react-froala-wysiwyg": '../../dist',
-    },
+   
     modules: ['node_modules']
   },
   plugins: [
