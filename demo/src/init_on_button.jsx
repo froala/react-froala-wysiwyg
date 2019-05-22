@@ -1,9 +1,7 @@
 // Note that Froala Editor has to be required separately
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/froala_style.css';
-
-
-
+import 'file-loader?name=[name].[ext]!./init_on_button.html';
 
 import FroalaEditorButton from 'react-froala-wysiwyg/FroalaEditorButton';
 import React from 'react';
@@ -47,4 +45,3 @@ class EditorComponent extends React.Component {
 
 ReactDOM.render(<EditorComponent/>, document.getElementById('editor'));
 
-import 'file-loader?name=[name].[ext]!./init_on_button.html';

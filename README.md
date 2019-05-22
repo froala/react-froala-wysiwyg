@@ -88,13 +88,13 @@ module.exports = {
     ]
   },
   resolve: {
-  
+
 
     modulesDirectories: ['node_modules']
   },
   plugins: [
     new webpack.ProvidePlugin({
-    
+
     })
   ]
 };
@@ -144,12 +144,12 @@ module.exports = {
     ]
   },
   resolve: {
-   
+
     modules: ['node_modules']
   },
   plugins: [
     new webpack.ProvidePlugin({
-      
+
     })
   ]
 };

@@ -14,6 +14,10 @@ module.exports = {
     init_on_input: './src/init_on_input.jsx'
   },
 
+  optimization: {
+    concatenateModules: false
+  },
+
   module: {
     rules: [
       {
@@ -53,8 +57,7 @@ module.exports = {
 
   resolve: {
     alias: {
-      "react-froala-wysiwyg": '../../dist',
-
+      "react-froala-wysiwyg": '../../dist'
     },
     modules: ['node_modules']
   },
@@ -67,7 +70,7 @@ module.exports = {
 
   plugins: [
     new webpack.ProvidePlugin({
-   
+
     }),
 
     new CopyWebpackPlugin([{ from: './src/index.html'}, {from: './src/image.jpg'} ])

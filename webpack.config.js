@@ -31,7 +31,7 @@ var reactExternals = {
   }
 };
 
-var externals = [reactExternals,'froala-editor/js/froala_editor.pkgd.min.js'];
+var externals = [reactExternals,'froala-editor'];
 
 module.exports = {
   entry: {
@@ -44,7 +44,7 @@ module.exports = {
     'FroalaEditorView': ['./lib/FroalaEditorView.jsx']
   },
   module: {
-    
+
     rules: [
       {
         test: /\.jsx$/,
