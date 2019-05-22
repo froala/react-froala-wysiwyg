@@ -1,6 +1,4 @@
-var FroalaEditor = require('froala-editor');
-
-/* global $ */
+import FroalaEditor from 'froala-editor';
 import React from 'react';
 
 let lastId = 0;
