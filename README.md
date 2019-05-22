@@ -30,8 +30,13 @@ import ReactDOM from 'react-dom';
 import 'froala-editor/css/froala_style.min.css';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 
-import FroalaEditor from 'react-froala-wysiwyg';
+import FroalaEditorComponent from 'react-froala-wysiwyg';
 
+// Import all Froala Editor plugins;
+// import 'froala-editor/js/plugins.pkgd.min.js';
+
+// Import a single Froala Editor plugin.
+// import 'froala-editor/js/plugins/align.min.js';
 
 // Include font-awesome css if required.
 // import 'font-awesome/css/font-awesome.css';
@@ -46,7 +51,7 @@ import FroalaEditor from 'react-froala-wysiwyg';
 // import FroalaEditorInput from 'react-froala-wysiwyg/FroalaEditorInput';
 
 // Render Froala Editor component.
-ReactDOM.render(<FroalaEditor tag='textarea'/>, document.getElementById('editor'));
+ReactDOM.render(<FroalaEditorComponent tag='textarea'/>, document.getElementById('editor'));
 ```
 
 #### 2. Make sure you have the right Webpack settings for loading the CSS files.
@@ -88,15 +93,8 @@ module.exports = {
     ]
   },
   resolve: {
-
-
     modulesDirectories: ['node_modules']
-  },
-  plugins: [
-    new webpack.ProvidePlugin({
-
-    })
-  ]
+  }
 };
 
 ```
@@ -144,14 +142,8 @@ module.exports = {
     ]
   },
   resolve: {
-
     modules: ['node_modules']
-  },
-  plugins: [
-    new webpack.ProvidePlugin({
-
-    })
-  ]
+  }
 };
 
 ```
