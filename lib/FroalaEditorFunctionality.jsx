@@ -237,7 +237,7 @@ export default class FroalaEditorFunctionality extends React.Component {
       return;
     }
 
-    if (eventName == 'initialied') {
+    if (eventName == 'initialized') {
       if (!this._initEvents) this._initEvents = [];
       this._initEvents.push(callback);
     }
