@@ -73,16 +73,14 @@ export default class FroalaEditorFunctionality extends React.Component {
 
     this.element = this.refs.el;
 
-
     this.setContent(true);
 
-    this.registerEvents();
-    if(!this.element.getAttribute('id'))
-    {
-      lastId++;
-      this.element.setAttribute('id', `main-editor${lastId}`);
-    }
-    this.initListeners();
+    // Default initialized.
+    this.registerEvent('initialized', this.config.event && this.config.events.initialized);
+
+    // Check if events are set.
+    if (!this.config.events) this.config.events = {};
+    this.config.events.initialized = () => this.initListeners();
 
     this.editor = new FroalaEditor(this.element, this.config);
   }
@@ -113,14 +111,15 @@ export default class FroalaEditorFunctionality extends React.Component {
 
     if (firstTime) {
       if (this.config.initOnClick) {
-        this.registerEvent(this.element, 'initializationDelayed', () => {
+        this.registerEvent('initializationDelayed', () => {
           htmlSet();
         });
-        this.registerEvent(this.element, 'initialized', () => {
+
+        this.registerEvent('initialized', () => {
           this.editorInitialized = true;
         });
       } else {
-        this.registerEvent(this.element, 'initialized', () => {
+        this.registerEvent('initialized', () => {
           this.editorInitialized = true;
           htmlSet();
         });
@@ -215,39 +214,39 @@ export default class FroalaEditorFunctionality extends React.Component {
     let self = this;
 
     // bind contentChange and keyup event to froalaModel
-    this.registerEvent(this.element, 'contentChanged', function () {
+    this.editor.events.on('contentChanged', function () {
       self.updateModel();
     });
     if (this.config.immediateReactModelUpdate) {
-      this.registerEvent(this.element, 'keyup', function () {
+      this.editor.events.on('keyup', function () {
         self.updateModel();
       });
+    }
+
+    // Call init events.
+    if (this._initEvents) {
+      for (let i = 0; i < this._initEvents.length; i++) {
+        this._initEvents[i].call(this.editor);
+      }
     }
   }
 
   // register event on jquery editor element
-  registerEvent (element, eventName, callback) {
-    if (!element || !eventName || !callback) {
+  registerEvent (eventName, callback) {
+    if (!eventName || !callback) {
       return;
     }
 
-    this.listeningEvents.push(eventName);
-    if (!this.config.events) {
-      this.config.events = {};
+    if (eventName == 'initialied') {
+      if (!this._initEvents) this._initEvents = [];
+      this._initEvents.push(callback);
     }
-    this.config.events[eventName] = callback;
-  }
-
-  registerEvents () {
-    let events = this.config.events;
-    if (!events) {
-      return;
-    }
-
-    for (let event in events) {
-      if (events.hasOwnProperty(event)) {
-        this.registerEvent(this.element, event, events[event]);
+    else {
+      if (!this.config.events) {
+        this.config.events = {};
       }
+
+      this.config.events[eventName] = callback;
     }
   }
 };
