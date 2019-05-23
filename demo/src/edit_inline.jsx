@@ -1,6 +1,7 @@
 // Note that Froala Editor has to be required separately
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/froala_style.css';
+
 import FroalaEditor from 'react-froala-wysiwyg';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -15,7 +16,7 @@ class EditorComponent extends React.Component {
       charCounterCount: false,
       toolbarInline: true,
       events: {
-        'initialized': function() {
+        initialized: function() {
           console.log('initialized');
         }
       }

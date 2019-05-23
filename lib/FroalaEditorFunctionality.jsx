@@ -76,7 +76,7 @@ export default class FroalaEditorFunctionality extends React.Component {
     this.setContent(true);
 
     // Default initialized.
-    this.registerEvent('initialized', this.config.event && this.config.events.initialized);
+    this.registerEvent('initialized', this.config.events && this.config.events.initialized);
 
     // Check if events are set.
     if (!this.config.events) this.config.events = {};
