@@ -11,7 +11,8 @@ module.exports = {
     init_on_image: './src/init_on_image.jsx',
     init_on_button: './src/init_on_button.jsx',
     init_on_link: './src/init_on_link.jsx',
-    init_on_input: './src/init_on_input.jsx'
+    init_on_input: './src/init_on_input.jsx',
+	custombutton: './src/custombutton.jsx'
   },
 
   optimization: {
