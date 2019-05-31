@@ -203,6 +203,55 @@ Using the editor instance from the arguments of the callback you can call editor
 
 Froala events are described in the [events docs](https://froala.com/wysiwyg-editor/docs/events).
 
+### Custom Buttons
+
+You can pass the custom buttons to the editor by following way:
+
+```javascript
+<script>
+import Froalaeditor from 'froala-editor';
+Froalaeditor.DefineIcon('alert', {NAME: 'info', SVG_KEY: 'help'});
+  Froalaeditor.RegisterCommand('alert', {
+    title: 'Hello',
+    focus: false,
+    undo: false,
+    refreshAfterCallback: false,
+    callback: function () {
+      alert('Hello!');
+    }
+  });
+
+  Froalaeditor.DefineIcon('clear', {NAME: 'remove', SVG_KEY: 'remove'});
+  Froalaeditor.RegisterCommand('clear', {
+    title: 'Clear HTML',
+    focus: false,
+    undo: true,
+    refreshAfterCallback: true,
+    callback: function () {
+      this.html.set('');
+      this.events.focus();
+    }
+  });
+
+  Froalaeditor.DefineIcon('insert', {NAME: 'plus', SVG_KEY: 'add'});
+  Froalaeditor.RegisterCommand('insert', {
+    title: 'Insert HTML',
+    focus: true,
+    undo: true,
+    refreshAfterCallback: true,
+    callback: function () {
+      this.html.insert('My New HTML');
+    }
+  });
+  </script>
+  
+ ```
+ Now you can use these buttons in options:
+ ```javascript
+ toolbarButtons: [['undo', 'redo' , 'bold'], ['alert', 'clear', 'insert']],
+
+ ```
+
 ### Model
 
 The WYSIWYG HTML editor content model.
