@@ -38,7 +38,7 @@ export default class FroalaEditorFunctionality extends React.Component {
 
   // After first time render.
   componentDidMount () {
-    let tagName = this.refs.el.tagName.toLowerCase();
+    let tagName = this.el.tagName.toLowerCase();
     if (this.SPECIAL_TAGS.indexOf(tagName) != -1) {
       this.tag = tagName;
       this.hasSpecialTag = true;
@@ -70,12 +70,12 @@ export default class FroalaEditorFunctionality extends React.Component {
 
     this.config = this.props.config || this.config;
 
-    this.$element = $(this.refs.el);
-    
+    this.$element = $(this.el);
+
     if(this.props.model) {
       this.$element[0].innerHTML = this.props.model;
     }
-    
+
     this.setContent(true);
 
     this.registerEvents();
