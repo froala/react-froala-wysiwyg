@@ -11,9 +11,6 @@ export default class FroalaEditorFunctionality extends React.Component {
     this.defaultTag = 'div';
     this.listeningEvents = [];
 
-    // Jquery wrapped element.
-    this.element = null;
-
     // Editor element.
     this.editor = null;
 
@@ -71,11 +68,6 @@ export default class FroalaEditorFunctionality extends React.Component {
 
     this.config = this.props.config || this.config;
 
-    this.$element = $(this.el);
-
-    if(this.props.model) {
-      this.$element[0].innerHTML = this.props.model;
-    }
 
     this.setContent(true);
 
@@ -86,7 +78,7 @@ export default class FroalaEditorFunctionality extends React.Component {
     if (!this.config.events) this.config.events = {};
     this.config.events.initialized = () => this.initListeners();
 
-    this.editor = new FroalaEditor(this.element, this.config);
+    this.editor = new FroalaEditor(this.el, this.config);
   }
 
   setContent (firstTime) {
@@ -140,27 +132,27 @@ export default class FroalaEditorFunctionality extends React.Component {
     if (tags) {
       for (let attr in tags) {
         if (tags.hasOwnProperty(attr) && attr != this.INNER_HTML_ATTR) {
-          this.element.setAttribute(attr, tags[attr]);
+          this.el.setAttribute(attr, tags[attr]);
         }
       }
 
       if (tags.hasOwnProperty(this.INNER_HTML_ATTR)) {
-        this.element.innerHTML = tags[this.INNER_HTML_ATTR];
+        this.el.innerHTML = tags[this.INNER_HTML_ATTR];
       }
     }
   }
 
   destroyEditor () {
-    if (this.element) {
+    if (this.el) {
       this.editor.destroy && this.editor.destroy();
       this.listeningEvents.length = 0;
-      this.element = null;
+      this.el = null;
       this.editorInitialized = false;
     }
   }
 
   getEditor () {
-    if (this.element) {
+    if (this.el) {
       return this.editor;
     }
 
@@ -187,7 +179,7 @@ export default class FroalaEditorFunctionality extends React.Component {
     let modelContent = '';
 
     if (this.hasSpecialTag) {
-      let attributeNodes = this.element.attributes;
+      let attributeNodes = this.el.attributes;
       let attrs = {};
 
       for (let i = 0; i < attributeNodes.length; i++ ) {
@@ -198,8 +190,8 @@ export default class FroalaEditorFunctionality extends React.Component {
         attrs[attrName] = attributeNodes[i].value;
       }
 
-      if (this.element.innerHTML) {
-        attrs[this.INNER_HTML_ATTR] = this.element.innerHTML;
+      if (this.el.innerHTML) {
+        attrs[this.INNER_HTML_ATTR] = this.el.innerHTML;
       }
 
       modelContent = attrs;
