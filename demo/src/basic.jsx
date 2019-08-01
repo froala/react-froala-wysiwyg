@@ -9,5 +9,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 // Render Froala Editor component.
-ReactDOM.render(<FroalaEditor tag='textarea' config={{pluginsEnabled:['align', 'link'], language: 'ro'}} />, document.getElementById('editor'));
+ReactDOM.render(<FroalaEditor tag='textarea' config={{
+  pluginsEnabled: ['align', 'link'],
+  language: 'ro',
+  events: {
+    initialized: function (e) {
+      var editor = this;
+      console.log('@@@@@@initialized', editor, e);
+    }
+  }
+}} />, document.getElementById('editor'));
 
