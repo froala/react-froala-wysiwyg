@@ -3,6 +3,7 @@
   "version": "3.0.5",
   "description": "React component for Froala WYSIWYG HTML rich text editor.",
   "main": "index.js",
+  "types": "./lib/index.d.ts",
   "author": "Froala Labs",
   "keywords": [
     "react",
