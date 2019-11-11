@@ -56,98 +56,11 @@ import FroalaEditorComponent from 'react-froala-wysiwyg';
 ReactDOM.render(<FroalaEditorComponent tag='textarea'/>, document.getElementById('editor'));
 ```
 
-#### 2. Make sure you have the right Webpack settings for loading the CSS files.
-
-#### Webpack <= 3
-```js
-var webpack = require("webpack");
-
-module.exports = {
-  module: {
-    loaders: [
-      {
-        test: /\.jsx$/,
-        loader: 'babel',
-        query: {
-          cacheDirectory: true,
-          presets: ['react','es2015', 'stage-2']
-        }
-      }, {
-        test: /\.css$/,
-        loader: "style-loader!css-loader?root=."
-      },
-      {
-        test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=application/font-woff"
-      }, {
-        test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=application/font-woff"
-      }, {
-        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=application/octet-stream"
-      }, {
-        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "file"
-      }, {
-        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=image/svg+xml"
-      }
-    ]
-  },
-  resolve: {
-    modulesDirectories: ['node_modules']
-  }
-};
+#### Add editor to UI by passing id to html element
 
 ```
-
-
-#### Webpack 4
-```js
-var webpack = require("webpack");
-
-module.exports = {
-  module: {
-    rules: [
-      {
-        test: /\.jsx$/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            cacheDirectory: true,
-            presets: ['react','es2015', 'stage-2']
-          }
-        }
-      }, {
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          'css-loader'
-        ]
-      },
-      {
-        test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-        use: "url-loader?limit=10000&mimetype=application/font-woff"
-      }, {
-        test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-        use: "url-loader?limit=10000&mimetype=application/font-woff"
-      }, {
-        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        use: "url-loader?limit=10000&mimetype=application/octet-stream"
-      }, {
-        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        use: "file-loader"
-      }, {
-        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        use: "url-loader?limit=10000&mimetype=image/svg+xml"
-      }
-    ]
-  },
-  resolve: {
-    modules: ['node_modules']
-  }
-};
-
+<div  id="editor">
+</div>
 ```
 
 #### Pass properties to the wrapping DOM element
