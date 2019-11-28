@@ -41,9 +41,11 @@ import FroalaEditorComponent from 'react-froala-wysiwyg';
 // Import a language file.
 // import 'froala-editor/js/languages/de.js';
 
-// Include font-awesome css if required.
-// import 'font-awesome/css/font-awesome.css';
-// install using "npm install font-awesome --save"
+// Import a third-party plugin.
+// import 'froala-editor/js/third_party/image_tui.min.js';
+// import 'froala-editor/js/third_party/embedly.min.js';
+// import 'froala-editor/js/third_party/spell_checker.min.js';
+// import 'froala-editor/js/third_party/font_awesome.min.js';
 
 // Include special components if required.
 // import FroalaEditorView from 'react-froala-wysiwyg/FroalaEditorView';
