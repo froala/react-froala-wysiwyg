@@ -1,5 +1,6 @@
 import FroalaEditor from 'froala-editor';
 import React from 'react';
+import $ from "jquery";
 
 let lastId = 0;
 export default class FroalaEditorFunctionality extends React.Component {
@@ -40,6 +41,12 @@ export default class FroalaEditorFunctionality extends React.Component {
   // After first time render.
   componentDidMount() {
     let tagName = this.el.tagName.toLowerCase();
+
+    if (this.props.config && this.props.config.pluginsEnabled && this.props.config.pluginsEnabled.indexOf('wiris') != -1) {
+      $.FroalaEditor = FroalaEditor;
+      require('../node_modules/@wiris/mathtype-froala/wiris.js');
+    }
+
     if (this.SPECIAL_TAGS.indexOf(tagName) != -1) {
       this.tag = tagName;
       this.hasSpecialTag = true;
