@@ -1,4 +1,5 @@
 var path = require('path');
+var webpack = require("webpack");
 
 /**
  * If -p flag is set, minify the files
@@ -60,6 +61,12 @@ module.exports = {
       }
     ]
   },
+  plugins: [
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery"
+    })
+  ],
   externals: externals,
   resolve: {
     modules: ['./node_modules']
