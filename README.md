@@ -151,7 +151,13 @@ module.exports = {
   ]
 };
 ```
-
+## Install webpack loaders
+```bash
+npm i url-loader --save
+npm i html-loader --save
+npm i css-loader --save
+npm i style-loader --save
+```
 #### Pass properties to the wrapping DOM element
 
 ```js
@@ -344,6 +350,12 @@ To display content created with the froala editor use the `FroalaEditorView` com
 In order to use froala editor with create-react-app, you need to include below lines in your code:
 import $ from 'jquery';
 window.$ = $;
+
+## Use Third Party plugins
+To include third party plugins you need to follow instructions given on Froala.com. You need to include Third Party resources (JS and CSS) in your project.
+Following tools/packages can help in doing so -
+https://www.npmjs.com/package/sass-loader
+https://www.npmjs.com/package/react-async-script-loader  
 
 ## License
 
