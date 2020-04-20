@@ -353,7 +353,9 @@ window.$ = $;
 
 ## Use Third Party plugins
 To include third party plugins you need to follow instructions given on Froala.com. You need to include Third Party resources (JS and CSS) in your project.
+
 Following tools/packages can help in doing so -
+
 https://www.npmjs.com/package/sass-loader
 https://www.npmjs.com/package/react-async-script-loader  
 
