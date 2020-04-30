@@ -1,6 +1,6 @@
 {
   "name": "react-froala-wysiwyg",
-  "version": "2.9.7",
+  "version": "2.9.8",
   "description": "React component for Froala WYSIWYG HTML rich text editor.",
   "main": "index.js",
   "author": "Froala Labs",
@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "create-react-class": "^15.5.2",
-    "froala-editor": "2.9.7"
+    "froala-editor": "2.9.8"
   },
   "devDependencies": {
     "babel": "^6.23.0",
