@@ -7,8 +7,8 @@ export default class FroalaEditorFunctionality extends React.Component {
     super(props);
 
     // Tag on which the editor is initialized.
-    this.tag = null;
     this.defaultTag = 'div';
+    this.tag = props.tag || this.defaultTag;
     this.listeningEvents = [];
 
     // Jquery wrapped element.
@@ -30,11 +30,6 @@ export default class FroalaEditorFunctionality extends React.Component {
     this.hasSpecialTag = false;
 
     this.oldModel = null;
-  }
-
-  // Before first time render.
-  componentWillMount() {
-    this.tag = this.props.tag || this.defaultTag;
   }
 
   // After first time render.
