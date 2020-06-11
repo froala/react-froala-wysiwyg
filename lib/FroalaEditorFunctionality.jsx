@@ -82,12 +82,6 @@ export default class FroalaEditorFunctionality extends React.Component {
     this.config.events.initialized = () => this.initListeners();
 
     this.editor = new FroalaEditor(this.element, this.config);
-    // Call init events.
-    if (this._initEvents) {
-      for (let i = 0; i < this._initEvents.length; i++) {
-        this._initEvents[i].call(this.editor);
-      }
-    }
   }
 
   setContent(firstTime) {
@@ -226,6 +220,13 @@ export default class FroalaEditorFunctionality extends React.Component {
       this.editor.events.on('keyup', function () {
         self.updateModel();
       });
+    }
+
+    // Call init events.
+    if (this._initEvents) {
+      for (let i = 0; i < this._initEvents.length; i++) {
+        this._initEvents[i].call(this.editor);
+      }
     }
   }
 
