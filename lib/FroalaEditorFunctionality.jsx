@@ -64,12 +64,17 @@ export default class FroalaEditorFunctionality extends React.Component {
     this.setContent();
   }
 
+  // Return cloned object
+  clone(item) {
+    return JSON.parse(JSON.stringify(item))
+  }
+  
   createEditor() {
     if (this.editorInitialized) {
       return;
     }
 
-    this.config = this.props.config || this.config;
+    this.config = this.clone(this.props.config || this.config);
 
     this.element = this.el;
 
