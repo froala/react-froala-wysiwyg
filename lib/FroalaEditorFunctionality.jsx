@@ -7,8 +7,8 @@ export default class FroalaEditorFunctionality extends React.Component {
     super(props);
 
     // Tag on which the editor is initialized.
-    this.tag = null;
     this.defaultTag = 'div';
+    this.tag = props.tag || this.defaultTag;
     this.listeningEvents = [];
 
     // Jquery wrapped element.
@@ -30,11 +30,6 @@ export default class FroalaEditorFunctionality extends React.Component {
     this.hasSpecialTag = false;
 
     this.oldModel = null;
-  }
-
-  // Before first time render.
-  componentWillMount() {
-    this.tag = this.props.tag || this.defaultTag;
   }
 
   // After first time render.
@@ -87,12 +82,6 @@ export default class FroalaEditorFunctionality extends React.Component {
     this.config.events.initialized = () => this.initListeners();
 
     this.editor = new FroalaEditor(this.element, this.config);
-    // Call init events.
-    if (this._initEvents) {
-      for (let i = 0; i < this._initEvents.length; i++) {
-        this._initEvents[i].call(this.editor);
-      }
-    }
   }
 
   setContent(firstTime) {
@@ -231,6 +220,13 @@ export default class FroalaEditorFunctionality extends React.Component {
       this.editor.events.on('keyup', function () {
         self.updateModel();
       });
+    }
+
+    // Call init events.
+    if (this._initEvents) {
+      for (let i = 0; i < this._initEvents.length; i++) {
+        this._initEvents[i].call(this.editor);
+      }
     }
   }
 
