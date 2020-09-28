@@ -8,8 +8,8 @@ export default class FroalaEditorFunctionality extends React.Component {
     super(props);
 
     // Tag on which the editor is initialized.
-    this.tag = null;
     this.defaultTag = 'div';
+    this.tag = props.tag || this.defaultTag;
     this.listeningEvents = [];
 
     // Jquery wrapped element.
@@ -31,11 +31,6 @@ export default class FroalaEditorFunctionality extends React.Component {
     this.hasSpecialTag = false;
 
     this.oldModel = null;
-  }
-
-  // Before first time render.
-  componentWillMount() {
-    this.tag = this.props.tag || this.defaultTag;
   }
 
   // After first time render.
@@ -71,12 +66,62 @@ export default class FroalaEditorFunctionality extends React.Component {
     this.setContent();
   }
 
+  // Return cloned object
+   clone(item) {
+  	const me = this;  
+      if (!item) { return item; } // null, undefined values check
+
+      let types = [ Number, String, Boolean ], 
+          result;
+
+      // normalizing primitives if someone did new String('aaa'), or new Number('444');
+      types.forEach(function(type) {
+          if (item instanceof type) {
+              result = type( item );
+          }
+      });
+
+      if (typeof result == "undefined") {
+          if (Object.prototype.toString.call( item ) === "[object Array]") {
+              result = [];
+              item.forEach(function(child, index, array) { 
+                  result[index] = me.clone( child );
+              });
+          } else if (typeof item == "object") {
+              // testing that this is DOM
+              if (item.nodeType && typeof item.cloneNode == "function") {
+                  result = item.cloneNode( true );    
+              } else if (!item.prototype) { // check that this is a literal
+                  if (item instanceof Date) {
+                      result = new Date(item);
+                  } else {
+                      // it is an object literal
+                      result = {};
+                      for (var i in item) {
+                          result[i] = me.clone( item[i] );
+                      }
+                  }
+              } else {
+                  if (false && item.constructor) {
+                      result = new item.constructor();
+                  } else {
+                      result = item;
+                  }
+              }
+          } else {
+              result = item;
+          }
+      }
+      return result;
+  }
+  
   createEditor() {
     if (this.editorInitialized) {
       return;
     }
 
-    this.config = this.props.config || this.config;
+    this.config = this.clone(this.props.config || this.config);
+    this.config =  {...this.config};
 
     this.element = this.el;
 
@@ -94,12 +139,6 @@ export default class FroalaEditorFunctionality extends React.Component {
     this.config.events.initialized = () => this.initListeners();
 
     this.editor = new FroalaEditor(this.element, this.config);
-    // Call init events.
-    if (this._initEvents) {
-      for (let i = 0; i < this._initEvents.length; i++) {
-        this._initEvents[i].call(this.editor);
-      }
-    }
   }
 
   setContent(firstTime) {
@@ -238,6 +277,13 @@ export default class FroalaEditorFunctionality extends React.Component {
       this.editor.events.on('keyup', function () {
         self.updateModel();
       });
+    }
+
+    // Call init events.
+    if (this._initEvents) {
+      for (let i = 0; i < this._initEvents.length; i++) {
+        this._initEvents[i].call(this.editor);
+      }
     }
   }
 
