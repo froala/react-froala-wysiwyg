@@ -4,7 +4,7 @@
 [![npm](https://img.shields.io/npm/dm/react-froala-wysiwyg.svg)](https://www.npmjs.com/package/react-froala-wysiwyg)
 [![npm](https://img.shields.io/npm/l/react-froala-wysiwyg.svg)](https://www.npmjs.com/package/react-froala-wysiwyg)
 
->react-froala-wyswiyg provides React bindings to the Froala WYSIWYG editor VERSION 3.
+>react-froala-wyswiyg provides React bindings to the Froala WYSIWYG editor VERSION 4.
 
 ## Installation
 
@@ -380,7 +380,7 @@ The object received by the function will contain the following methods:
 - **getEditor**: Call this method to retrieve the editor that was created. This method will return *null* if the editor was not yet created
 
 ## Using type definition file
-`index.d.ts` file is the type definition file for this repository. It is placed inside lib folder.In order to use it in your code , use the following line:
+`index.d.ts` file is the type definition file for this repository. It is placed inside lib folder. In order to use it in your code, use the following line:
 ```
 ///<reference path= "index.d.ts" />
 ```
