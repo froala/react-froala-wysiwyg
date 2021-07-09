@@ -25,6 +25,9 @@ export default class FroalaEditorFunctionality extends React.Component {
 
     this.editorInitialized = false;
 
+    // Track status of this.editor for prop updates
+    this.isEditorAvailable = false;
+
     this.SPECIAL_TAGS = ['img', 'button', 'input', 'a'];
     this.INNER_HTML_ATTR = 'innerHTML';
     this.hasSpecialTag = false;
@@ -52,8 +55,18 @@ export default class FroalaEditorFunctionality extends React.Component {
   }
 
   componentDidUpdate() {
-    if (JSON.stringify(this.oldModel) == JSON.stringify(this.props.model)) {
+    // Only return when props match if the editor is available. Otherwise, we need still need to update to keep
+    // things in sync
+    if (
+      JSON.stringify(this.oldModel) == JSON.stringify(this.props.model) &&
+      this.isEditorAvailable === true
+    ) {
       return;
+    }
+
+    // Update editor availability status when it first becomes available
+    if (this.isEditorAvailable === false && this.editor.html) {
+      this.isEditorAvailable = true;
     }
 
     this.setContent();
