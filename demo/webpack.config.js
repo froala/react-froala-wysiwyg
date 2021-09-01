@@ -27,7 +27,14 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             cacheDirectory: true,
-            presets: ['react','es2015', 'stage-2']
+              presets: [
+                ['@babel/preset-env', {
+                  'targets': { 
+                    "ie": "11"
+                  },
+                  "useBuiltIns": "entry"
+                }],
+                '@babel/preset-react']
           }
         }
       }, {
