@@ -27,7 +27,7 @@ declare module 'react-froala-wysiwyg/FroalaEditorView'
       model?: string| object|null;
       onModelChange?: object;
       onManualControllerReady?: object;
-      unsetUndo?: boolean|false;
+      skipReset?: boolean|false;
    }
 export  default class  FroalaEditorView extends React.Component<MyComponentProps>
 {
@@ -43,7 +43,7 @@ declare module 'react-froala-wysiwyg/FroalaEditorImg'
       model?: string| object|null;
       onModelChange?: object;
       onManualControllerReady?: object;
-      unsetUndo?: boolean|false;
+      skipReset?: boolean|false;
    }
 export default class  FroalaEditorImg extends React.Component<MyComponentProps>
 {
@@ -59,7 +59,7 @@ declare module 'react-froala-wysiwyg/FroalaEditorA'
       model?: string| object|null;
       onModelChange?: object;
       onManualControllerReady?: object;
-      unsetUndo?: boolean|false;
+      skipReset?: boolean|false;
    }
 export  default class  FroalaEditorA extends React.Component<MyComponentProps>
 {
@@ -74,7 +74,7 @@ declare module 'react-froala-wysiwyg/FroalaEditorButton'
       model?: string| object|null;
       onModelChange?: object;
       onManualControllerReady?: object;
-      unsetUndo?: boolean|false;
+      skipReset?: boolean|false;
    }
 export default class  FroalaEditorButton extends React.Component<MyComponentProps>
 {
@@ -89,7 +89,7 @@ declare module 'react-froala-wysiwyg/FroalaEditorInput'
       model?: string| object|null;
       onModelChange?: object;
       onManualControllerReady?: object;
-      unsetUndo?: boolean|false;
+      skipReset?: boolean|false;
    }
 export default class  FroalaEditorInput extends React.Component<MyComponentProps>
 {
