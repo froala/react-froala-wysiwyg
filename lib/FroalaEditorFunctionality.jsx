@@ -154,7 +154,7 @@ export default class FroalaEditorFunctionality extends React.Component {
       if (self.editorInitialized && self.editor.undo) {
         //This will reset the undo stack everytime the model changes externally. Can we fix this?
         //https://github.com/froala-labs/froala-editor-js-2/issues/4214
-        if (self.props.skipReset) {
+        if (!self.props.skipReset) {
           self.editor.undo.reset();
         }
         self.editor.undo.saveStep();
