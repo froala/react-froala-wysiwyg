@@ -29,6 +29,7 @@ export default class FroalaEditorFunctionality extends React.Component {
     this.INNER_HTML_ATTR = 'innerHTML';
     this.hasSpecialTag = false;
 
+    this.initialModel = props.model;
     this.oldModel = null;
   }
 
@@ -129,7 +130,13 @@ export default class FroalaEditorFunctionality extends React.Component {
 
     // Check if events are set.
     if (!this.config.events) this.config.events = {};
-    this.config.events.initialized = () => this.initListeners();
+    this.config.events.initialized = () => {
+        this.initListeners();
+
+        if (this.props.model !== this.initialModel) {
+            this.setContent();
+        }
+    }
 
     this.editor = new FroalaEditor(this.element, this.config);
   }
