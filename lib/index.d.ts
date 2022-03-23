@@ -8,6 +8,7 @@ export interface MyComponentProps {
    model?: string| object|null;
    onModelChange?: object;
    onManualControllerReady?: object;
+   skipReset?: boolean|false;
 }
 
 
