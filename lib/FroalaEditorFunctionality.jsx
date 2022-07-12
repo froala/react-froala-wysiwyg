@@ -61,10 +61,10 @@ export default class FroalaEditorFunctionality extends React.Component {
 
   // Return cloned object
    clone(item) {
-  	const me = this;  
+  	const me = this;
       if (!item) { return item; } // null, undefined values check
 
-      let types = [ Number, String, Boolean ], 
+      let types = [ Number, String, Boolean ],
           result;
 
       // normalizing primitives if someone did new String('aaa'), or new Number('444');
@@ -77,13 +77,13 @@ export default class FroalaEditorFunctionality extends React.Component {
       if (typeof result == "undefined") {
           if (Object.prototype.toString.call( item ) === "[object Array]") {
               result = [];
-              item.forEach(function(child, index, array) { 
+              item.forEach(function(child, index, array) {
                   result[index] = me.clone( child );
               });
           } else if (typeof item == "object") {
               // testing that this is DOM
               if (item.nodeType && typeof item.cloneNode == "function") {
-                  result = item.cloneNode( true );    
+                  result = item.cloneNode( true );
               } else if (!item.prototype) { // check that this is a literal
                   if (item instanceof Date) {
                       result = new Date(item);
@@ -107,7 +107,7 @@ export default class FroalaEditorFunctionality extends React.Component {
       }
       return result;
   }
-  
+
   createEditor() {
     if (this.editorInitialized) {
       return;
@@ -117,10 +117,6 @@ export default class FroalaEditorFunctionality extends React.Component {
     this.config =  {...this.config};
 
     this.element = this.el;
-
-    if (this.props.model) {
-      this.element.innerHTML = this.props.model;
-    }
 
     this.setContent(true);
 
