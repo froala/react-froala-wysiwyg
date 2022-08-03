@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "create-react-class": "^15.5.2",
+    "dompurify": "^2.2.7",
     "froala-editor": "4.0.13"
   },
   "devDependencies": {

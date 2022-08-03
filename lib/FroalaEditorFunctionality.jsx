@@ -1,5 +1,6 @@
 import FroalaEditor from 'froala-editor';
 import React from 'react';
+import DOMPurify from 'dompurify';
 
 let lastId = 0;
 export default class FroalaEditorFunctionality extends React.Component {
@@ -119,7 +120,14 @@ export default class FroalaEditorFunctionality extends React.Component {
     this.element = this.el;
 
     if (this.props.model) {
-      this.element.innerHTML = this.props.model;
+      let ValidDom = DOMPurify.sanitize(this.props.model, {
+        ALLOW_UNKNOWN_PROTOCOLS: true,
+        ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp|xxx):|[^a-z]|[a-z+.]+(?:[^a-z+.\-:]|$))/i
+      });
+      if (JSON.stringify(this.oldModel) == JSON.stringify(this.props.model)) {
+        return;
+      }
+      this.element.innerHTML = ValidDom;
     }
 
     this.setContent(true);
