@@ -118,10 +118,6 @@ export default class FroalaEditorFunctionality extends React.Component {
 
     this.element = this.el;
 
-    if (this.props.model) {
-      this.element.dangerouslySetInnerHTML = this.props.model;
-    }
-
     this.setContent(true);
 
     // Default initialized.
