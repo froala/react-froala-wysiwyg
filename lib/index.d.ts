@@ -12,19 +12,19 @@ interface FroalaConfig {
   toolbarButtons?:
     | {
         moreText?: {
-          buttons: MoreTextButton[];
+          buttons: MoreTextButton[] | string[];
         };
         moreParagraph?: {
-          buttons: MoreParagraphButton[];
+          buttons: MoreParagraphButton[] | string[];
         };
         moreRich?: {
-          buttons: MoreRichButton[];
+          buttons: MoreRichButton[] | string[];
         };
         moreMisc?: {
-          buttons: MoreMiscButton[];
+          buttons: MoreMiscButton[] | string[];
         };
         moreTrackChanges?: {
-          buttons: MoreTrackChangeButton[];
+          buttons: MoreTrackChangeButton[] | string[];
         };
       }
     | string[];
