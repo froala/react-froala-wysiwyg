@@ -8,6 +8,8 @@ import {
 } from "./buttons";
 import { Plugin } from "./plugins";
 
+type HtmlTag = keyof HTMLElementTagNameMap;
+
 interface FroalaConfig {
   toolbarButtons?:
     | {
@@ -29,7 +31,7 @@ interface FroalaConfig {
       }
     | string[];
   pluginsEnabled?: Plugin[];
-  htmlAllowedTags?: string[];
+  htmlAllowedTags?: HtmlTag[] | string[];
   pasteDeniedAttrs?: string[];
   pasteAllowedStyleProps?: string[];
   htmlAllowedStyleProps?: string[];
