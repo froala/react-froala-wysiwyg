@@ -1,7 +1,7 @@
 #!/bin/bash
 if [ ${TRAVIS_PULL_REQUEST} != "false" ];  then echo "Not deploying on a pull request !!!" && exit 0; fi
 PACKAGE_VERSION=`jq '.version' version.json | tr -d '"'`
-export IMAGE_NAME=`echo "froala-${BUILD_REPO_NAME}_${TRAVIS_BRANCH}:${PACKAGE_VERSION}" | tr '[:upper:]' '[:lower:]'`
+export IMAGE_NAME=`echo "${BUILD_REPO_NAME}_${TRAVIS_BRANCH}:${PACKAGE_VERSION}" | tr '[:upper:]' '[:lower:]'`
 export BASE_DOMAIN="froala-infra.com"
 export SDK_ENVIRONMENT=""
 export DEPLOYMENT_SERVER=""
