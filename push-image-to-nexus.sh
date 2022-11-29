@@ -17,7 +17,7 @@ export SHORT_COMMIT=`git rev-parse --short=7 ${TRAVIS_COMMIT}`
 echo "short commit $SHORT_COMMIT"
 sudo apt-get update
 sudo apt-get install -y jq
-IMAGE_NAME=`echo "${BUILD_REPO_NAME}_${TRAVIS_BRANCH}" | tr '[:upper:]' '[:lower:]'`
+IMAGE_NAME=`echo "froala-${BUILD_REPO_NAME}_${TRAVIS_BRANCH}:${PACKAGE_VERSION}" | tr '[:upper:]' '[:lower:]'`
 PACKAGE_NAME=`jq '.name' version.json | tr -d '"'` 
 PACKAGE_VERSION=`jq '.version' version.json | tr -d '"'`
 echo "Package name : ${PACKAGE_NAME}"
