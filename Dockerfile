@@ -1,31 +1,23 @@
-FROM node:14 as build
+FROM node:14.17.3
 
-LABEL maintainer="rizwan@celestialsys.com"
+LABEL maintainer="froala_git_travis_bot@idera.com"
 
 ARG PackageName
 ARG PackageVersion
 ARG NexusUser
 ARG NexusPassword
 
-
-WORKDIR /app
+WORKDIR /app/
 COPY . .
 
 RUN apt update -y \
     && apt install -y jq unzip wget
 RUN wget --no-check-certificate --user ${NexusUser}  --password ${NexusPassword} https://nexus.tools.froala-infra.com/repository/Froala-npm/${PackageName}/-/${PackageName}-${PackageVersion}.tgz
-RUN npm install -g bower
 RUN npm install
-RUN bower install
+RUN npm run build
 RUN rm -rf node_modules/froala-editor/
-RUN rm -rf bower_components/froala-wysiwyg-editor/
 RUN tar -xvf ${PackageName}-${PackageVersion}.tgz
-RUN mkdir node_modules/froala-editor/ \
-   && cp -a package/. node_modules/froala-editor/
-RUN mkdir bower_components/froala-wysiwyg-editor/ \
-   && cp -a package/. bower_components/froala-wysiwyg-editor/
-RUN rm -rf package/ ${PackageName}-${PackageVersion}.tgz
-FROM nginx:alpine
-copy --from=build /app /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+RUN mv package/ node_modules/froala-editor/
+RUN rm -rf ${PackageName}-${PackageVersion}.tgz
+EXPOSE 4000
+CMD ["npm","run","demo"]
