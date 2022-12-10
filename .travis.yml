@@ -1,10 +1,9 @@
----
-git:
+git: 
   depth: false
   quiet: false
 language: generic
 dist: bionic
-sudo: required
+sudo: required  
 branches:
   only:
     - /dev*/
@@ -14,19 +13,12 @@ branches:
     - /RC*/
     - /Release-Master*/
 env:
-  - SHORT_COMMIT= `git rev-parse --short=7 ${TRAVIS_COMMIT}`
+- SHORT_COMMIT= `git rev-parse --short=7 ${TRAVIS_COMMIT}`
 before_install:
   - echo $TRAVIS_BRANCH
   - echo $PWD
   - echo $TRAVIS_COMMIT
   - echo $BUILD_REPO_NAME
-  - curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-  - sudo apt-get update
-  - sudo apt-get install -y nodejs
-  - nvm install 14.19.0
-  - nvm ls
-  - nvm use 14.19.0
-  - echo $(npm -v)
 jobs:
   include:
     if: commit_message =~ /(deploy-yes)/
