@@ -15,5 +15,5 @@ RUN apt update -y \
 RUN wget --no-check-certificate --user ${NexusUser}  --password ${NexusPassword} https://nexus.tools.froala-infra.com/repository/Froala-npm/${PackageName}/-/${PackageName}-${PackageVersion}.tgz
 RUN npm install
 RUN npm run build
-EXPOSE 4000
+EXPOSE 4100
 CMD ["npm","run","demo"]
