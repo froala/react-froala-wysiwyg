@@ -1,6 +1,5 @@
 #!/bin/bash
 
-if [ ${TRAVIS_PULL_REQUEST} != "false" ];  then echo "Not publishing a pull request !!!" && exit 0; fi  
 export BRANCH_NAME=`echo "${TRAVIS_BRANCH}" | tr '[:upper:]' '[:lower:]'`
 case "${BRANCH_NAME}" in
         dev*) echo "Branch ${TRAVIS_BRANCH} is eligible for CI/CD" ;;
@@ -16,6 +15,7 @@ esac
 
 echo $TRAVIS_BRANCH
 echo ${DEPLOYMENT_SERVER}
+
 export SHORT_COMMIT=`git rev-parse --short=7 ${TRAVIS_COMMIT}`
 echo "short commit $SHORT_COMMIT"
 
@@ -31,8 +31,10 @@ cat package.json
 docker build -t  ${IMAGE_NAME}:${SHORT_COMMIT} --build-arg PackageName=${PACKAGE_NAME} --build-arg PackageVersion=${PACKAGE_VERSION} --build-arg NexusUser=${NEXUS_USER} --build-arg NexusPassword=${NEXUS_USER_PWD} .
 sleep 3
 docker image ls 
-if [ ${TRAVIS_PULL_REQUEST} != "false" ];  then echo "Not publishing a pull request !!!" && exit 0; fi  
+if [ ${TRAVIS_PULL_REQUEST} != "false" ];  then echo "Not publishing a pull request !!!" && exit 0; fi
+
 echo "uploading to nexus" ${PACKAGE_NAME}
+
 docker login -u ${NEXUS_USER} -p ${NEXUS_USER_PWD} ${NEXUS_CR_TOOLS_URL}
 docker tag  ${IMAGE_NAME}:${SHORT_COMMIT} ${NEXUS_CR_TOOLS_URL}/froala-${IMAGE_NAME}:${PACKAGE_VERSION}
 docker push ${NEXUS_CR_TOOLS_URL}/froala-${IMAGE_NAME}:${PACKAGE_VERSION}
