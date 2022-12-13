@@ -67,7 +67,7 @@
   },
   "scripts": {
     "build": "webpack-cli && webpack-cli -p",
-    "demo": "cd demo && webpack-cli && \"../node_modules/.bin/webpack-dev-server\" --port 4100 --content-base dist/",
+    "demo": "cd demo && webpack-cli && \"../node_modules/.bin/webpack-dev-server\" --port 3000 --content-base dist/",
     "prepublishOnly": "npm run build && bash lib/copy_bundles.sh"
   },
   "repository": {
