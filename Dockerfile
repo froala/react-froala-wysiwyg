@@ -17,4 +17,4 @@ RUN npm install
 RUN npm run build
 
 EXPOSE 4100
-CMD ["npm","run","build","demo"]
+CMD ["npm","run","demo"]
