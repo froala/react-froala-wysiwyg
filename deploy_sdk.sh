@@ -121,16 +121,16 @@ function deploy_service(){
   ssh -o "StrictHostKeyChecking no" -i  /tmp/sshkey.pem ${SSH_USER}@${DEPLOYMENT_SERVER} " cd /services/${SERVICE_NAME}/ && sudo docker-compose up -d"
   sleep 10 && ssh -o "StrictHostKeyChecking no" -i  /tmp/sshkey.pem ${SSH_USER}@${DEPLOYMENT_SERVER} " sudo docker ps -a | grep -i ${SERVICE_NAME}" 
   echo "Docker-compose is in : /services/${SERVICE_NAME} "
-	sleep 30
-	RET_CODE=`curl -k -s -o /tmp/notimportant.txt -w "%{http_code}" https://${DEPLOYMENT_URL}`
-	echo "validation code: $RET_CODE for  https://${DEPLOYMENT_URL}"
-	if [ $RET_CODE -ne 200 ]; then 
-		echo "Deployment validation failed!!! Please check pipeline logs." 
-		exit -1 
-	else 
-		echo " Service available at URL: https://${DEPLOYMENT_URL}"
+  sleep 30
+  RET_CODE=`curl -k -s -o /tmp/notimportant.txt -w "%{http_code}" https://${DEPLOYMENT_URL}`
+  echo "validation code: $RET_CODE for  https://${DEPLOYMENT_URL}"
+  if [ $RET_CODE -ne 200 ]; then 
+	echo "Deployment validation failed!!! Please check pipeline logs." 
+	exit -1 
+  else 
+	echo " Service available at URL: https://${DEPLOYMENT_URL}"
 
-	fi
+  fi
 }
 DEPLOYMENT_IS_RUNNING=`echo "${LW_REPO_NAME}-${AO_IDENTIFIER}-${CT_LOWER_INDEX}" | tr '[:upper:]' '[:lower:]'`
 REDEPLOYMENT=`ssh -o "StrictHostKeyChecking no" -i  /tmp/sshkey.pem ${SSH_USER}@${DEPLOYMENT_SERVER} " sudo docker ps -a | grep -i "${DEPLOYMENT_IS_RUNNING}-${AO_IDENTIFIER}" | wc -l" `
