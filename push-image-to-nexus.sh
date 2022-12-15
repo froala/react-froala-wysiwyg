@@ -25,7 +25,7 @@ echo "Package name : ${PACKAGE_NAME}"
 jq --arg froalaeditor "file:${PACKAGE_NAME}-${PACKAGE_VERSION}.tgz" '.dependencies["froala-editor"] |= $froalaeditor' package.json  > new.file && cat new.file > package.json && rm -f new.file
 echo "verify package"
 cat package.json
-docker build -t  ${IMAGE_NAME}:${SHORT_COMMIT} --build-arg PackageName=${PACKAGE_NAME} --build-arg PackageVersion=${PACKAGE_VERSION} --build-arg NexusUser=${NEXUS_USER} --build-arg NexusPassword=${NEXUS_USER_PWD} .
+docker build -t  ${IMAGE_NAME}:${SHORT_COMMIT} --no-cache --build-arg PackageName=${PACKAGE_NAME} --build-arg PackageVersion=${PACKAGE_VERSION} --build-arg NexusUser=${NEXUS_USER} --build-arg NexusPassword=${NEXUS_USER_PWD} .
 sleep 3
 docker image ls 
 echo "uploading to nexus ${PACKAGE_NAME}, if not a new PR"
