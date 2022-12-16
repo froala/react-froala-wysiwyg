@@ -16,5 +16,5 @@ RUN wget --no-check-certificate --user ${NexusUser}  --password ${NexusPassword}
 RUN npm install
 RUN npm run build
 
-EXPOSE 4100
+EXPOSE 4000
 CMD ["npm","run","demo"]
