@@ -16,6 +16,10 @@ npm install react-froala-wysiwyg --save
 ```bash
 npm update froala-editor
 ```
+## Install font-awesome 
+```
+npm install font-awesome
+```
 
 ## Usage
 
@@ -59,7 +63,10 @@ import FroalaEditorComponent from 'react-froala-wysiwyg';
 // import FroalaEditorInput from 'react-froala-wysiwyg/FroalaEditorInput';
 
 // Render Froala Editor component.
-ReactDOM.render(<FroalaEditorComponent tag='textarea'/>, document.getElementById('editor'));
+const root = ReactDOM.createRoot(document.getElementById('editor'));
+root.render(
+  <FroalaEditorComponent tag='textarea'/>
+)
 ```
 
 #### Add editor to UI by passing id to html element
@@ -68,109 +75,14 @@ ReactDOM.render(<FroalaEditorComponent tag='textarea'/>, document.getElementById
 <div  id="editor">
 </div>
 ```
-
-#### 2. Make sure you have the right Webpack settings for loading the CSS files.
-
-#### Webpack <= 3
-```js
-var webpack = require("webpack");
-
-module.exports = {
-  module: {
-    loaders: [
-      {
-        test: /\.jsx$/,
-        loader: 'babel',
-        query: {
-          cacheDirectory: true,
-          presets: ['react','es2015', 'stage-2']
-        }
-      }, {
-        test: /\.css$/,
-        loader: "style-loader!css-loader?root=."
-      },
-      {
-        test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=application/font-woff"
-      }, {
-        test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=application/font-woff"
-      }, {
-        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=application/octet-stream"
-      }, {
-        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "file"
-      }, {
-        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=image/svg+xml"
-      }
-    ]
-  },
-  resolve: {
-    modulesDirectories: ['node_modules']
-  }
-};
-
-```
-
-
-#### Webpack 4
-```js
-var webpack = require("webpack");
-
-module.exports = {
-  module: {
-    rules: [
-      {
-        test: /\.jsx$/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            cacheDirectory: true,
-            presets: ['react','es2015', 'stage-2']
-          }
-        }
-      }, {
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          'css-loader'
-        ]
-      },
-      {
-        test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-        use: "url-loader?limit=10000&mimetype=application/font-woff"
-      }, {
-        test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-        use: "url-loader?limit=10000&mimetype=application/font-woff"
-      }, {
-        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        use: "url-loader?limit=10000&mimetype=application/octet-stream"
-      }, {
-        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        use: "file-loader"
-      }, {
-        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        use: "url-loader?limit=10000&mimetype=image/svg+xml"
-      }
-    ]
-  },
-  resolve: {
-    modules: ['node_modules']
-  }
-};
-
-```
-
 #### Pass properties to the wrapping DOM element
 
 ```js
 <FroalaEditor
   tag='textarea'
-  config={this.config}
-  model={this.state.model}
-  onModelChange={this.handleModelChange}
+  config={config}
+  model={model}
+  onModelChange={handleModelChange}
 />
 ```
 
@@ -183,7 +95,7 @@ There are special tags: **a**, **button**, **img**, **input**. Do not use them i
 
 You can pass editor options as component attribute (optional).
 
-`config={this.config}`
+`config={config}`
 
 You can pass any existing Froala option. Consult the [Froala documentation](https://www.froala.com/wysiwyg-editor/docs/options) to view the list of all the available options:
 
@@ -269,36 +181,30 @@ Froalaeditor.DefineIcon('alert', {NAME: 'info', SVG_KEY: 'help'});
 
 The WYSIWYG HTML editor content model.
 
-`model = {this.state.model}`
+`model = {model}`
 
 Two way binding:
 
 ```jsx
-import React from 'react';
+import React,{ useState } from 'react';
 
-class EditorComponent extends React.Component {
-  constructor () {
-    super();
-
-    this.handleModelChange = this.handleModelChange.bind(this);
-
-    this.state = {
-      model: 'Example text'
-    };
+const App=()=> {
+  const [model,setModel] = useState("Example Set");
+  
+  const handleModelChange= (event)=>{
+    setModel(event)
   }
-
-  handleModelChange: function(model) {
-    this.setState({
-      model: model
-    });
-  }
-
-  render () {
-    return <FroalaEditor
-			  model={this.state.model}
-			  onModelChange={this.handleModelChange}
-           />
-  }
+  return (
+    <div className="App">
+      <FroalaEditorComponent 
+        tag='textarea'
+        onModelChange={handleModelChange}
+      />
+      <FroalaEditorView
+        model={model}
+    />
+    </div>
+  );
 }
 ```
 
@@ -307,7 +213,7 @@ To achieve one way binding and pass only the initial editor content, simply do n
 Use the content in other places:
 
 ```js
-<input value={this.state.model}/>
+<input value={model}/>
 ```
 
 ### Special tags
@@ -315,39 +221,33 @@ You can also use the editor on **img**, **button**, **input** and **a** tags:
 
 ```js
 <FroalaEditorImg
-  config={this.config}
+  model={model}
 />
 <FroalaEditorButton
-  config={this.config}
+  model={model}
 />
 <FroalaEditorInput
-  config={this.config}
+  model={model}
 />
 <FroalaEditorA
-  config={this.config}
+  model={model}
 />
+
 ```
 
 The model must be an object containing the attributes for your special tags. Example:
 
 ```js
-constructor () {
-  super();
-
-  this.handleModelChange = this.handleModelChange.bind(this);
-
-  this.state = {
-    model: {src: 'path/to/image.jpg'}
-  };
-}
+    model={{src: 'path/to/image.jpg',
+        width:"300px",
+        alt:"Old Clock"
+    }} 
 ```
 
 * The model can contain a special attribute named **innerHTML** which inserts innerHTML in the element: If you are using 'button' tag, you can specify the button text like this:
 
 ```js
-this.state = {
-  model: {innerHTML: 'Click Me'}
-};
+model={{innerHTML: 'Click Me'}}
 ```
 As the button text is modified by the editor, the **innerHTML** attribute from buttonModel model will be modified too.
 
@@ -365,10 +265,10 @@ config: {
 
 Gets the functionality to operate on the editor: create, destroy and get editor instance. Use it if you want to manually initialize the editor.
 
-`onManualControllerReady={this.handleManualController}`
+`onManualControllerReady={handleManualController}`
 
 ```js
-handleManualController: function(initControls) {
+const handleManualController=(initControls) =>{
   //...
 }
 ```
@@ -392,11 +292,11 @@ To display content created with the froala editor use the `FroalaEditorView` com
 
 ```js
 <FroalaEditor
-  model={this.state.content}
-  onModelChange={this.handleModelChange}
+  model={content}
+  onModelChange={handleModelChange}
 />
 <FroalaEditorView
-  model={this.state.content}
+  model={content}
 />
 ```
 
