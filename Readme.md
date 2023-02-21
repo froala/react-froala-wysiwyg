@@ -16,6 +16,10 @@ npm install react-froala-wysiwyg --save
 ```bash
 npm update froala-editor
 ```
+## Install font-awesome
+```bash
+npm install font-awesome --save
+```
 
 ## Usage
 
@@ -24,7 +28,6 @@ npm update froala-editor
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 
 // Require Editor CSS files.
 import 'froala-editor/css/froala_style.min.css';
@@ -60,107 +63,19 @@ import FroalaEditorComponent from 'react-froala-wysiwyg';
 
 // Render Froala Editor component.
 ReactDOM.render(<FroalaEditorComponent tag='textarea'/>, document.getElementById('editor'));
-```
 
+// Render Froala Editor component latest react version.
+const root = ReactDOM.createRoot(document.getElementById('editor'));
+root.render(
+  <FroalaEditorComponent tag='textarea'/>
+)
+
+```
 #### Add editor to UI by passing id to html element
 
 ```
 <div  id="editor">
 </div>
-```
-
-#### 2. Make sure you have the right Webpack settings for loading the CSS files.
-
-#### Webpack <= 3
-```js
-var webpack = require("webpack");
-
-module.exports = {
-  module: {
-    loaders: [
-      {
-        test: /\.jsx$/,
-        loader: 'babel',
-        query: {
-          cacheDirectory: true,
-          presets: ['react','es2015', 'stage-2']
-        }
-      }, {
-        test: /\.css$/,
-        loader: "style-loader!css-loader?root=."
-      },
-      {
-        test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=application/font-woff"
-      }, {
-        test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=application/font-woff"
-      }, {
-        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=application/octet-stream"
-      }, {
-        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "file"
-      }, {
-        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url?limit=10000&mimetype=image/svg+xml"
-      }
-    ]
-  },
-  resolve: {
-    modulesDirectories: ['node_modules']
-  }
-};
-
-```
-
-
-#### Webpack 4
-```js
-var webpack = require("webpack");
-
-module.exports = {
-  module: {
-    rules: [
-      {
-        test: /\.jsx$/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            cacheDirectory: true,
-            presets: ['react','es2015', 'stage-2']
-          }
-        }
-      }, {
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          'css-loader'
-        ]
-      },
-      {
-        test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-        use: "url-loader?limit=10000&mimetype=application/font-woff"
-      }, {
-        test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-        use: "url-loader?limit=10000&mimetype=application/font-woff"
-      }, {
-        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        use: "url-loader?limit=10000&mimetype=application/octet-stream"
-      }, {
-        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        use: "file-loader"
-      }, {
-        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        use: "url-loader?limit=10000&mimetype=image/svg+xml"
-      }
-    ]
-  },
-  resolve: {
-    modules: ['node_modules']
-  }
-};
-
 ```
 
 #### Pass properties to the wrapping DOM element
@@ -172,8 +87,15 @@ module.exports = {
   model={this.state.model}
   onModelChange={this.handleModelChange}
 />
-```
 
+//latest React Version - Functional component 
+<FroalaEditor
+  tag='textarea'
+  config={config}
+  model={model}
+  onModelChange={handleModelChange}
+/>
+```
 **tag** attr is used to tell on which tag the editor is initialized.
 
 There are special tags: **a**, **button**, **img**, **input**. Do not use them in FroalaEditor component. To initialize the editor on a special tag, use `FroalaEditorA`, `FroalaEditorButton`, `FroalaEditorImg` and `FroalaEditorInput` components.
@@ -273,7 +195,8 @@ The WYSIWYG HTML editor content model.
 
 Two way binding:
 
-```jsx
+```jsx 
+//class component 
 import React from 'react';
 
 class EditorComponent extends React.Component {
@@ -300,6 +223,29 @@ class EditorComponent extends React.Component {
            />
   }
 }
+
+//latest React Version - Functional component 
+
+import React,{ useState } from 'react';
+
+const App=()=> {
+  const [model,setModel] = useState("Example Set");
+  
+  const handleModelChange= (event)=>{
+    setModel(event)
+  }
+  return (
+    <div className="App">
+      <FroalaEditorComponent 
+        tag='textarea'
+        onModelChange={handleModelChange}
+      />
+      <FroalaEditorView
+        model={model}
+    />
+    </div>
+  );
+}
 ```
 
 To achieve one way binding and pass only the initial editor content, simply do not pass `onModelChange` attribute.
@@ -307,13 +253,16 @@ To achieve one way binding and pass only the initial editor content, simply do n
 Use the content in other places:
 
 ```js
-<input value={this.state.model}/>
+<input value={this.state.model}/> 
+or 
+<input value={model}/>
 ```
 
 ### Special tags
 You can also use the editor on **img**, **button**, **input** and **a** tags:
 
 ```js
+//Class component 
 <FroalaEditorImg
   config={this.config}
 />
@@ -326,11 +275,28 @@ You can also use the editor on **img**, **button**, **input** and **a** tags:
 <FroalaEditorA
   config={this.config}
 />
+
+//latest React Version - Functional component 
+<FroalaEditorImg
+  model={model}
+/>
+<FroalaEditorButton
+  model={model}
+/>
+<FroalaEditorInput
+  model={model}
+/>
+<FroalaEditorA
+  model={model}
+/>
+
+ 
 ```
 
 The model must be an object containing the attributes for your special tags. Example:
 
 ```js
+//Class component
 constructor () {
   super();
 
@@ -340,14 +306,24 @@ constructor () {
     model: {src: 'path/to/image.jpg'}
   };
 }
+
+//latest React Version - Functional component 
+ model={{src: 'path/to/image.jpg',
+      width:"300px",
+      alt:"Old Clock"
+  }} 
 ```
 
 * The model can contain a special attribute named **innerHTML** which inserts innerHTML in the element: If you are using 'button' tag, you can specify the button text like this:
 
 ```js
+//Class Component
 this.state = {
   model: {innerHTML: 'Click Me'}
 };
+
+//Function component 
+model={{innerHTML: 'Click Me'}}
 ```
 As the button text is modified by the editor, the **innerHTML** attribute from buttonModel model will be modified too.
 
@@ -397,6 +373,15 @@ To display content created with the froala editor use the `FroalaEditorView` com
 />
 <FroalaEditorView
   model={this.state.content}
+/>
+
+//latest React Version - Functional component 
+<FroalaEditor
+  model={content}
+  onModelChange={handleModelChange}
+/>
+<FroalaEditorView
+  model={content}
 />
 ```
 
