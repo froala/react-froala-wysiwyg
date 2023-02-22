@@ -63,14 +63,13 @@ import FroalaEditorComponent from 'react-froala-wysiwyg';
 // import FroalaEditorInput from 'react-froala-wysiwyg/FroalaEditorInput';
 
 // Render Froala Editor component.
-// Render Froala Editor component.
 ReactDOM.render(<FroalaEditorComponent tag='textarea'/>, document.getElementById('editor'));
 ```
 
 #### Add editor to UI by passing id to html element
 
 ```
-<div  id="editor">
+<div id="editor">
 </div>
 ```
 #### Pass properties to the wrapping DOM element
@@ -157,9 +156,9 @@ class EditorComponent extends React.Component {
 
   render () {
     return <FroalaEditor
-			  model={this.state.model}
-			  onModelChange={this.handleModelChange}
-           />
+			model={this.state.model}
+			onModelChange={this.handleModelChange}
+    />
   }
 }
 ```
@@ -295,7 +294,7 @@ root.render(
 #### Add editor to UI by passing id to html element
 
 ```
-<div  id="editor">
+<div id="editor">
 </div>
 ```
 
