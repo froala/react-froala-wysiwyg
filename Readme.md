@@ -156,8 +156,8 @@ class EditorComponent extends React.Component {
 
   render () {
     return <FroalaEditor
-			model={this.state.model}
-			onModelChange={this.handleModelChange}
+		model={this.state.model}
+		onModelChange={this.handleModelChange}
     />
   }
 }
