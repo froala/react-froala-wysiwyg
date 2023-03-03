@@ -3,7 +3,7 @@ import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/froala_style.css';
 import 'file-loader?name=[name].[ext]!./full_editor.html';
 import 'froala-editor/js/plugins.pkgd.min.js';
-
+import 'froala-editor/css/plugins.pkgd.min.css';
 import FroalaEditor from 'react-froala-wysiwyg';
 import FroalaEditorView from 'react-froala-wysiwyg/FroalaEditorView';
 import React from 'react';
