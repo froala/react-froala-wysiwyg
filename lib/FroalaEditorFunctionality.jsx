@@ -41,10 +41,6 @@ export default class FroalaEditorFunctionality extends React.Component {
       this.hasSpecialTag = true;
     }
 
-    if(this.editor){
-      createEditorFlag = this.editor.id
-    }
-
     if (this.props.onManualControllerReady) {
       this.generateManualController();
     } else {
@@ -132,12 +128,9 @@ export default class FroalaEditorFunctionality extends React.Component {
     if (!this.config.events) this.config.events = {};
     this.config.events.initialized = () => this.initListeners();
 
-    if(this.editor && this.editor.id != this.editor.sid && createEditorFlag!=this.editor.id){
-      this.editor = new FroalaEditor(this.element, this.config);
-    }else if(!this.editor){
+    if(!this.editor){
       this.editor = new FroalaEditor(this.element, this.config);
     }
-    createEditorFlag++;
   }
 
   setContent(firstTime) {
