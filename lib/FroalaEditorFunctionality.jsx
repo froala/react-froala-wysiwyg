@@ -48,6 +48,7 @@ export default class FroalaEditorFunctionality extends React.Component {
   }
 
   componentWillUnmount() {
+    this.element=null
     this.destroyEditor();
   }
 
