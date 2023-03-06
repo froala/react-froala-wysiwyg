@@ -2,7 +2,6 @@ import FroalaEditor from 'froala-editor';
 import React from 'react';
 
 let lastId = 0;
-let createEditorFlag = 0;
 export default class FroalaEditorFunctionality extends React.Component {
   constructor(props) {
     super(props);
@@ -128,6 +127,7 @@ export default class FroalaEditorFunctionality extends React.Component {
     if (!this.config.events) this.config.events = {};
     this.config.events.initialized = () => this.initListeners();
 
+    //prevent rendering of the editor twice in latest react 18 version
     if(!this.editor){
       this.editor = new FroalaEditor(this.element, this.config);
     }
