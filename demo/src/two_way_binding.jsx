@@ -3,7 +3,6 @@
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/froala_style.css'
 import 'file-loader?name=[name].[ext]!./two_way_binding.html';
-import 'froala-editor/css/plugins.pkgd.min.css';
 
 import FroalaEditor from 'react-froala-wysiwyg';
 import React from 'react';
