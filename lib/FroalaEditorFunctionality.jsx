@@ -130,6 +130,8 @@ export default class FroalaEditorFunctionality extends React.Component {
     //prevent rendering of the editor twice in latest react 18 version
     if(!this.editor){
       this.editor = new FroalaEditor(this.element, this.config);
+    }else{
+      this.destroyEditor();
     }
   }
 
@@ -203,7 +205,6 @@ export default class FroalaEditorFunctionality extends React.Component {
       this.listeningEvents.length = 0;
       this.element = null;
       this.editorInitialized = false;
-      this.editor.destroy = false;
       if(this.props.onManualControllerReady){
         this.editor=null
       }
