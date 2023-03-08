@@ -127,12 +127,7 @@ export default class FroalaEditorFunctionality extends React.Component {
     if (!this.config.events) this.config.events = {};
     this.config.events.initialized = () => this.initListeners();
 
-    //prevent rendering of the editor twice in latest react 18 version
-    if(!this.editor){
-      this.editor = new FroalaEditor(this.element, this.config);
-    }else{
-      this.destroyEditor();
-    }
+    this.editor = new FroalaEditor(this.element, this.config);
   }
 
   setContent(firstTime) {
@@ -205,8 +200,11 @@ export default class FroalaEditorFunctionality extends React.Component {
       this.listeningEvents.length = 0;
       this.element = null;
       this.editorInitialized = false;
-      if(this.props.onManualControllerReady){
-        this.editor=null
+      let tagName = this.el.tagName.toLowerCase();
+      if (this.SPECIAL_TAGS.indexOf(tagName) == -1) {
+        if(this.editor && this.editor.destrying && !this.props.onManualControllerReady){
+          this.editor.$box.remove()
+        }
       }
     }
   }
