@@ -200,6 +200,10 @@ export default class FroalaEditorFunctionality extends React.Component {
       this.listeningEvents.length = 0;
       this.element = null;
       this.editorInitialized = false;
+      this.config = {
+        immediateReactModelUpdate: false,
+        reactIgnoreAttrs: null
+      };
       let tagName = this.el.tagName.toLowerCase();
       if (this.SPECIAL_TAGS.indexOf(tagName) == -1) {
         if(this.editor && this.editor.destrying && !this.props.onManualControllerReady){
