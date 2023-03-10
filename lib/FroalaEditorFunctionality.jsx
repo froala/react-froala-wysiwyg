@@ -272,9 +272,12 @@ export default class FroalaEditorFunctionality extends React.Component {
     let self = this;
 
     // bind contentChange and keyup event to froalaModel
-    this.editor.events.on('contentChanged', function () {
-      self.updateModel();
-    });
+    if(this.editor && this.editor.events){
+      this.editor.events.on('contentChanged', function () {
+        self.updateModel();
+      });
+    }
+    
     if (this.config.immediateReactModelUpdate) {
       this.editor.events.on('keyup', function () {
         self.updateModel();
