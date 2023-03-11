@@ -206,12 +206,12 @@ export default class FroalaEditorFunctionality extends React.Component {
       };
       let tagName = this.el.tagName.toLowerCase();
       if (this.SPECIAL_TAGS.indexOf(tagName) == -1) {
-        if(this.editor && this.editor.destrying && !this.props.onManualControllerReady && this.tag!="div"){
+        if(this.editor && this.editor.destrying && !this.props.onManualControllerReady && this.tag=="textarea"){
           this.editor.$box.remove()
         }
       }
-      if(this.tag=="div"){
-        this.editor.$wp=""
+      if(this.tag!="textarea"){
+        this.editor.$wp="";
       }
     }
   }
