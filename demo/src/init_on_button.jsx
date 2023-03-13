@@ -2,7 +2,7 @@
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/froala_style.css';
 import 'file-loader?name=[name].[ext]!./init_on_button.html';
-
+import 'froala-editor/js/plugins.pkgd.min.js';
 import FroalaEditorButton from 'react-froala-wysiwyg/FroalaEditorButton';
 import React from 'react';
 import ReactDOM from 'react-dom';
