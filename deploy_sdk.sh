@@ -142,7 +142,7 @@ function deploy(){
     
     # Run docker-compose up on deployment_server
     ssh -o "StrictHostKeyChecking no" -i  /tmp/sshkey.pem "${SSH_USER}"@"${DEPLOYMENT_SERVER}" "cd /services/${SERVICE_NAME}/ && sudo docker-compose up -d --force-recreate"
-    sleep 240
+    sleep 360
 
     RET_CODE=$(curl -k -s -o /tmp/notimportant.txt -w "%{http_code}" https://"${DEPLOYMENT_URL}")
     echo "validation code: $RET_CODE for  https://${DEPLOYMENT_URL}"
