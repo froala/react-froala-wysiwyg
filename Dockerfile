@@ -10,8 +10,8 @@ ARG NexusPassword
 WORKDIR /app/
 COPY . .
 
-RUN apt update -y \
-    && apt install -y jq unzip wget
+# RUN apt update -y \
+#     && apt install -y jq unzip wget
 RUN wget --no-check-certificate --user ${NexusUser}  --password ${NexusPassword} https://nexus.tools.froala-infra.com/repository/Froala-npm/${PackageName}/-/${PackageName}-${PackageVersion}.tgz
 RUN npm install
 RUN npm run build
