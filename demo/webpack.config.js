@@ -12,7 +12,7 @@ module.exports = {
     init_on_button: './src/init_on_button.jsx',
     init_on_link: './src/init_on_link.jsx',
     init_on_input: './src/init_on_input.jsx',
-	custombutton: './src/custombutton.jsx'
+    custombutton: './src/custombutton.jsx'
   },
 
   optimization: {
@@ -29,7 +29,7 @@ module.exports = {
             cacheDirectory: true,
               presets: [
                 ['@babel/preset-env', {
-                  'targets': { 
+                  'targets': {
                     "ie": "11"
                   },
                   "useBuiltIns": "entry"
@@ -81,6 +81,11 @@ module.exports = {
 
     }),
 
-    new CopyWebpackPlugin([{ from: './src/index.html'}, {from: './src/image.jpg'} ])
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: './src/index.html' },
+        { from: './src/image.jpg' }
+      ]
+    })
   ]
 };
