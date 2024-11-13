@@ -32,6 +32,7 @@ module.exports = {
                   'targets': {
                     "ie": "11"
                   },
+                  "corejs": 3,
                   "useBuiltIns": "entry"
                 }],
                 '@babel/preset-react']
