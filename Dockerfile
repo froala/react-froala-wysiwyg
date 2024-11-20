@@ -1,4 +1,4 @@
-FROM node:14.19.0
+FROM node:18
 
 LABEL maintainer="froala_git_travis_bot@idera.com"
 

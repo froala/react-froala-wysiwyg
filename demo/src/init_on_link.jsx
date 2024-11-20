@@ -7,7 +7,7 @@ import 'froala-editor/js/plugins.pkgd.min.js';
 
 import FroalaEditorA from 'react-froala-wysiwyg/FroalaEditorA';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 
 // Render Froala Editor component.
 class EditorComponent extends React.Component {
@@ -47,6 +47,7 @@ class EditorComponent extends React.Component {
   }
 }
 
-ReactDOM.render(<EditorComponent/>, document.getElementById('editor'));
+const root = ReactDOM.createRoot(document.getElementById('editor'));
+root.render(<EditorComponent/>);
 
 import "file-loader?name=[name].[ext]!./init_on_link.html";
