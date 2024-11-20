@@ -27,7 +27,7 @@ npm install font-awesome --save
 
 ```jsx
 import React from 'react';
-import ReactDOMClient from 'react-dom/client';
+import ReactDOM from 'react-dom/client';
 
 
 // Require Editor CSS files.
@@ -63,7 +63,7 @@ import FroalaEditorComponent from 'react-froala-wysiwyg';
 // import FroalaEditorInput from 'react-froala-wysiwyg/FroalaEditorInput';
 
 // Render Froala Editor component.
-const root = ReactDOMClient.createRoot(document.getElementById('editor'));
+const root = ReactDOM.createRoot(document.getElementById('editor'));
 root.render(<FroalaEditorComponent tag='textarea'/>);
 ```
 
@@ -251,7 +251,7 @@ To display content created with the froala editor use the `FroalaEditorView` com
 
 ```jsx
 import React from 'react';
-import ReactDOMClient from 'react-dom/client';
+import ReactDOM from 'react-dom/client';
 
 // Require Editor CSS files.
 import 'froala-editor/css/froala_style.min.css';
@@ -286,7 +286,7 @@ import FroalaEditorComponent from 'react-froala-wysiwyg';
 // import FroalaEditorInput from 'react-froala-wysiwyg/FroalaEditorInput';
 
 // Render Froala Editor component.
-const root = ReactDOMClient.createRoot(document.getElementById('editor'));
+const root = ReactDOM.createRoot(document.getElementById('editor'));
 root.render(
   <FroalaEditorComponent tag='textarea'/>
 )

@@ -6,7 +6,7 @@ import 'file-loader?name=[name].[ext]!./two_way_binding.html';
 
 import FroalaEditor from 'react-froala-wysiwyg';
 import React from 'react';
-import ReactDOMClient from 'react-dom/client';
+import ReactDOM from 'react-dom/client';
 
 // Render Froala Editor component.
 class EditorComponent extends React.Component {
@@ -43,6 +43,6 @@ class EditorComponent extends React.Component {
   }
 }
 
-const root = ReactDOMClient.createRoot(document.getElementById('editor'));
+const root = ReactDOM.createRoot(document.getElementById('editor'));
 root.render(<EditorComponent/>);
 

@@ -17,7 +17,7 @@ var reactExternals = {
     amd: 'react'
   },
   'react-dom': {
-    root: 'ReactDOMClient',
+    root: 'ReactDOM',
     commonjs2: 'react-dom',
     commonjs: 'react-dom',
     amd: 'react-dom'
