@@ -26,6 +26,7 @@ export default class FroalaEditorFunctionality extends React.Component {
     };
 
     this.editorInitialized = false;
+    this.editorCreated = false;
 
     this.SPECIAL_TAGS = ['img', 'button', 'input', 'a'];
     this.INNER_HTML_ATTR = 'innerHTML';
@@ -115,7 +116,7 @@ export default class FroalaEditorFunctionality extends React.Component {
   }
 
   createEditor() {
-    if (this.editorInitialized) {
+    if (this.editorInitialized || this.editorCreated) {
       return;
     }
 
@@ -134,6 +135,7 @@ export default class FroalaEditorFunctionality extends React.Component {
     this.config.events.initialized = () => this.initListeners();
 
     this.editor = new FroalaEditor(this.element, this.config);
+    this.editorCreated = true;
   }
 
   setContent(firstTime) {
