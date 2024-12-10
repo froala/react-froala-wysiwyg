@@ -66,6 +66,8 @@ var config = {
     modules: ['./node_modules']
   },
   output: {
+    globalObject: 'this',
+    publicPath: '',
     filename: '[name].js',
     libraryTarget: 'umd',
     library: '[name]'

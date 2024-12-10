@@ -430,6 +430,84 @@ model={{innerHTML: 'Click Me'}}
 ```
 As the button text is modified by the editor, the **innerHTML** attribute from buttonModel model will be modified too.
 
+## Usage with Server-Side Rendering
+
+When using Server-Side Rendering you can use Froala components as described previously. If you require additonal plugins or translations, you will have to use React lazy loading
+in order to load the plugins first. Please refer to the examples below.
+
+### Class component
+
+```js
+import React, { Suspense } from "react";
+
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+import 'froala-editor/css/froala_style.css';
+
+const FroalaEditor = React.lazy(() => import('react-froala-wysiwyg'));
+
+export default class MyComponent extends React.Component {
+  constructor () {
+    super();
+    this.state = {
+      isInitialized: false
+    };
+  }
+
+  componentDidMount() {
+    // Import all Froala Editor plugins;
+    import('froala-editor/js/plugins.pkgd.min.js').then(() => this.setState({isInitialized: true}));
+  }
+
+  render() {
+	  return <>
+  	  {this.state.isInitialized && (
+	  	  <Suspense fallback={<p>Loading...</p>}>
+		  	  <FroalaEditor
+	  			  model={content}
+    			/>
+	  	  </Suspense>
+      )}
+  	</>;
+  }
+}
+```
+
+### Functional component
+
+```js
+import React, { Suspense, useEffect, useState } from "react";
+
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+import 'froala-editor/css/froala_style.css';
+
+const FroalaEditor = React.lazy(() => import('react-froala-wysiwyg'));
+
+export default function MyComponent() {
+	const [isInitialized, setIsInitialized] = useState(false);
+
+	useEffect(() => {
+		async function initPlugins() {
+      // Import all Froala Editor plugins;
+			await import('froala-editor/js/plugins.pkgd.min.js');
+			setIsInitialized(true);
+		}
+		if (!isInitialized) {
+			initPlugins();
+		}
+	});
+
+	return <>
+	  {isInitialized && (
+		  <Suspense fallback={<p>Loading...</p>}>
+			  <FroalaEditor
+				  model={content}
+			  />
+		  </Suspense>
+    )}
+	</>;
+}
+```
+
 ## Manual Instantiation
 
 Gets the functionality to operate on the editor: create, destroy and get editor instance. Use it if you want to manually initialize the editor.
