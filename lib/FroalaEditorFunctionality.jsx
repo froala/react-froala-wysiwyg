@@ -208,6 +208,7 @@ export default class FroalaEditorFunctionality extends React.Component {
       this.listeningEvents.length = 0;
       this.element = null;
       this.editorInitialized = false;
+      this.editorCreated = false;
       this.config = {
         immediateReactModelUpdate: false,
         reactIgnoreAttrs: null
