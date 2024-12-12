@@ -4,7 +4,7 @@ import 'froala-editor/css/froala_style.css';
 
 import FroalaEditor from 'react-froala-wysiwyg';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 
 // Render Froala Editor component.
 class EditorComponent extends React.Component {
@@ -58,6 +58,7 @@ class EditorComponent extends React.Component {
   }
 }
 
-ReactDOM.render(<EditorComponent/>, document.getElementById('editor'));
+const root = ReactDOM.createRoot(document.getElementById('editor'));
+root.render(<EditorComponent/>);
 
 require("file-loader?name=[name].[ext]!./edit_inline.html");

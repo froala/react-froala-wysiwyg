@@ -1,3 +1,5 @@
+'use client';
+
 import FroalaEditorFunctionality from './FroalaEditorFunctionality.jsx';
 import React from 'react';
 

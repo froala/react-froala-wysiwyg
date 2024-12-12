@@ -21,13 +21,13 @@ npm update froala-editor
 npm install font-awesome --save
 ```
 
-## Usage with Class Component 
+## Usage with Class Component
 
 #### 1. Require and use Froala Editor component inside your application.
 
 ```jsx
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 
 
 // Require Editor CSS files.
@@ -63,7 +63,8 @@ import FroalaEditorComponent from 'react-froala-wysiwyg';
 // import FroalaEditorInput from 'react-froala-wysiwyg/FroalaEditorInput';
 
 // Render Froala Editor component.
-ReactDOM.render(<FroalaEditorComponent tag='textarea'/>, document.getElementById('editor'));
+const root = ReactDOM.createRoot(document.getElementById('editor'));
+root.render(<FroalaEditorComponent tag='textarea'/>);
 ```
 
 #### Add editor to UI by passing id to html element
@@ -244,13 +245,13 @@ To display content created with the froala editor use the `FroalaEditorView` com
 ```
 
 
-## Usage with Functional Component 
+## Usage with Functional Component
 
 #### 1. Require and use Froala Editor component inside your application.
 
 ```jsx
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 
 // Require Editor CSS files.
 import 'froala-editor/css/froala_style.min.css';
@@ -369,13 +370,13 @@ import React,{ useState } from 'react';
 
 const App=()=> {
   const [model,setModel] = useState("Example Set");
-  
+
   const handleModelChange= (event)=>{
     setModel(event)
   }
   return (
     <div className="App">
-      <FroalaEditorComponent 
+      <FroalaEditorComponent
         tag='textarea'
         onModelChange={handleModelChange}
       />
@@ -419,7 +420,7 @@ The model must be an object containing the attributes for your special tags. Exa
     model={{src: 'path/to/image.jpg',
         width:"300px",
         alt:"Old Clock"
-    }} 
+    }}
 ```
 
 * The model can contain a special attribute named **innerHTML** which inserts innerHTML in the element: If you are using 'button' tag, you can specify the button text like this:
@@ -428,6 +429,84 @@ The model must be an object containing the attributes for your special tags. Exa
 model={{innerHTML: 'Click Me'}}
 ```
 As the button text is modified by the editor, the **innerHTML** attribute from buttonModel model will be modified too.
+
+## Usage with Server-Side Rendering
+
+When using Server-Side Rendering you can use Froala components as described previously. If you require additonal plugins or translations, you will have to use React lazy loading
+in order to load the plugins first. Please refer to the examples below.
+
+### Class component
+
+```js
+import React, { Suspense } from "react";
+
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+import 'froala-editor/css/froala_style.css';
+
+const FroalaEditor = React.lazy(() => import('react-froala-wysiwyg'));
+
+export default class MyComponent extends React.Component {
+  constructor () {
+    super();
+    this.state = {
+      isInitialized: false
+    };
+  }
+
+  componentDidMount() {
+    // Import all Froala Editor plugins;
+    import('froala-editor/js/plugins.pkgd.min.js').then(() => this.setState({isInitialized: true}));
+  }
+
+  render() {
+	  return <>
+  	  {this.state.isInitialized && (
+	  	  <Suspense fallback={<p>Loading...</p>}>
+		  	  <FroalaEditor
+	  			  model={content}
+    			/>
+	  	  </Suspense>
+      )}
+  	</>;
+  }
+}
+```
+
+### Functional component
+
+```js
+import React, { Suspense, useEffect, useState } from "react";
+
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+import 'froala-editor/css/froala_style.css';
+
+const FroalaEditor = React.lazy(() => import('react-froala-wysiwyg'));
+
+export default function MyComponent() {
+	const [isInitialized, setIsInitialized] = useState(false);
+
+	useEffect(() => {
+		async function initPlugins() {
+      // Import all Froala Editor plugins;
+			await import('froala-editor/js/plugins.pkgd.min.js');
+			setIsInitialized(true);
+		}
+		if (!isInitialized) {
+			initPlugins();
+		}
+	});
+
+	return <>
+	  {isInitialized && (
+		  <Suspense fallback={<p>Loading...</p>}>
+			  <FroalaEditor
+				  model={content}
+			  />
+		  </Suspense>
+    )}
+	</>;
+}
+```
 
 ## Manual Instantiation
 
@@ -519,7 +598,7 @@ Froalaeditor.DefineIcon('alert', {NAME: 'info', SVG_KEY: 'help'});
     }
   });
   </script>
-  
+
  ```
  Now you can use these buttons in options:
  ```javascript
