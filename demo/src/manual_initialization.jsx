@@ -6,7 +6,7 @@ import 'file-loader?name=[name].[ext]!./manual_initialization.html';
 import FroalaEditor from 'react-froala-wysiwyg';
 import FroalaEditorView from 'react-froala-wysiwyg/FroalaEditorView';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 
 // Render Froala Editor component.
 class EditorComponent extends React.Component {
@@ -80,5 +80,6 @@ class EditorComponent extends React.Component {
   }
 }
 
-ReactDOM.render(<EditorComponent/>, document.getElementById('editor'));
+const root = ReactDOM.createRoot(document.getElementById('editor'));
+root.render(<EditorComponent/>);
 

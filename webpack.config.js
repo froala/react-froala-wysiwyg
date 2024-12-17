@@ -1,12 +1,5 @@
 var path = require('path');
 
-/**
- * If -p flag is set, minify the files
- * @type {boolean}
- */
-var src = (process.argv.indexOf('-p') === -1);
-var filenamePostfix = src ? '.src' : '';
-
 var froalaExternals = {
   'froala-editor': {
     root: 'froala-editor',
@@ -33,7 +26,7 @@ var reactExternals = {
 
 var externals = [reactExternals,'froala-editor'];
 
-module.exports = {
+var config = {
   entry: {
     // Array syntax to workaround https://github.com/webpack/webpack/issues/300
     'index': ['./lib/FroalaEditor.jsx'],
@@ -55,9 +48,10 @@ module.exports = {
               cacheDirectory: true,
               presets: [
                 ['@babel/preset-env', {
-                  'targets': { 
+                  'targets': {
                     "ie": "11"
                   },
+                  "corejs": 3,
                   "useBuiltIns": "entry"
                 }],
                 '@babel/preset-react']
@@ -72,8 +66,17 @@ module.exports = {
     modules: ['./node_modules']
   },
   output: {
-    filename: '[name]' + filenamePostfix + '.js',
+    globalObject: 'this',
+    publicPath: '',
+    filename: '[name].js',
     libraryTarget: 'umd',
     library: '[name]'
   }
 };
+
+module.exports = (env, argv) => {
+  if (argv.mode === 'development') {
+    config.output.filename = '[name].src.js';
+  }
+  return config;
+}
