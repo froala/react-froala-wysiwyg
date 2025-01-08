@@ -6,10 +6,11 @@ import 'file-loader?name=[name].[ext]!./basic.html';
 
 import FroalaEditor from 'react-froala-wysiwyg';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 
 // Render Froala Editor component.
-ReactDOM.render(<FroalaEditor tag='textarea' config={{
+const root = ReactDOM.createRoot(document.getElementById('editor'));
+root.render(<FroalaEditor tag='textarea' config={{
   pluginsEnabled: ['align', 'link'],
   language: 'ro',
   events: {
@@ -18,5 +19,5 @@ ReactDOM.render(<FroalaEditor tag='textarea' config={{
       console.log('@@@@@@initialized', editor, e);
     }
   }
-}} />, document.getElementById('editor'));
+}} />);
 

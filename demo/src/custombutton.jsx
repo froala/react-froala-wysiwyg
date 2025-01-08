@@ -4,7 +4,7 @@ import 'file-loader?name=[name].[ext]!./custombutton.html';
 
 import FroalaEditor from 'react-froala-wysiwyg';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import Froalaeditor from 'froala-editor';
 Froalaeditor.DefineIcon('alert', {NAME: 'info', SVG_KEY: 'help'});
   Froalaeditor.RegisterCommand('alert', {
@@ -41,4 +41,5 @@ Froalaeditor.DefineIcon('alert', {NAME: 'info', SVG_KEY: 'help'});
   });
 
 // Render Froala Editor component.
-ReactDOM.render(<FroalaEditor tag='textarea' config={{pluginsEnabled:['align', 'link'], language: 'ro', toolbarButtons: [['undo', 'redo' , 'bold'], ['alert', 'clear', 'insert']]}} />, document.getElementById('editor'));
+const root = ReactDOM.createRoot(document.getElementById('editor'));
+root.render(<FroalaEditor tag='textarea' config={{pluginsEnabled:['align', 'link'], language: 'ro', toolbarButtons: [['undo', 'redo' , 'bold'], ['alert', 'clear', 'insert']]}} />);
