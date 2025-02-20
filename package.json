@@ -1,6 +1,6 @@
 {
   "name": "react-froala-wysiwyg",
-  "version": "4.4.0",
+  "version": "4.5.0",
   "description": "React component for Froala WYSIWYG HTML rich text editor.",
   "main": "index.js",
   "types": "./lib/index.d.ts",
@@ -22,7 +22,7 @@
     "react-dom": "~0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0"
   },
   "dependencies": {
-    "froala-editor": "4.4.0"
+    "froala-editor": "4.5.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.25.9",
