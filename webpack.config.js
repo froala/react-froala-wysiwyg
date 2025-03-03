@@ -29,49 +29,53 @@ var externals = [reactExternals,'froala-editor'];
 var config = {
   entry: {
     // Array syntax to workaround https://github.com/webpack/webpack/issues/300
-    'index': ['./lib/FroalaEditor.jsx'],
-    'FroalaEditorA': ['./lib/FroalaEditorA.jsx'],
-    'FroalaEditorButton': ['./lib/FroalaEditorButton.jsx'],
-    'FroalaEditorImg': ['./lib/FroalaEditorImg.jsx'],
-    'FroalaEditorInput': ['./lib/FroalaEditorInput.jsx'],
-    'FroalaEditorView': ['./lib/FroalaEditorView.jsx']
+    index: ['./lib/FroalaEditor.jsx'],
+    FroalaEditorA: ['./lib/FroalaEditorA.jsx'],
+    FroalaEditorButton: ['./lib/FroalaEditorButton.jsx'],
+    FroalaEditorImg: ['./lib/FroalaEditorImg.jsx'],
+    FroalaEditorInput: ['./lib/FroalaEditorInput.jsx'],
+    FroalaEditorView: ['./lib/FroalaEditorView.jsx'],
   },
   module: {
-
     rules: [
       {
-        test: /\.jsx$/,
+        test: /\.(js|jsx)$/,
         use: [
           {
             loader: 'babel-loader',
             options: {
               cacheDirectory: true,
               presets: [
-                ['@babel/preset-env', {
-                  'targets': {
-                    "ie": "11"
+                [
+                  '@babel/preset-env',
+                  {
+                    targets: {
+                      ie: '11',
+                    },
+                    corejs: 3,
+                    useBuiltIns: 'entry',
                   },
-                  "corejs": 3,
-                  "useBuiltIns": "entry"
-                }],
-                '@babel/preset-react']
-            }
-          }
-        ]
-      }
-    ]
+                ],
+                '@babel/preset-react',
+              ],
+            },
+          },
+        ],
+      },
+    ],
   },
   externals: externals,
   resolve: {
-    modules: ['./node_modules']
+    modules: ['./node_modules'],
+    extensions: ['.js', '.jsx'],
   },
   output: {
     globalObject: 'this',
     publicPath: '',
     filename: '[name].js',
     libraryTarget: 'umd',
-    library: '[name]'
-  }
+    library: '[name]',
+  },
 };
 
 module.exports = (env, argv) => {
