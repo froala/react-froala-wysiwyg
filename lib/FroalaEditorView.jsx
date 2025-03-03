@@ -1,23 +1,21 @@
-'use client';
+"use client";
 
-import React from 'react';
+import React from "react";
 
-export default class FroalaEditorView extends React.Component {
+const FroalaEditorView = (props) => {
+  const defaultTag = "div";
+  const TagName = props.tag || defaultTag;
 
-  constructor(props) {
-    super(props)
+  const getTrustedHtml = () => {
+    return { __html: props.model };
+  };
 
-    this.defaultTag = 'div';
-  }
+  return (
+    <TagName
+      className="fr-view"
+      dangerouslySetInnerHTML={getTrustedHtml()}
+    ></TagName>
+  );
+};
 
-  getTrustedHtml () {
-    return {__html: this.props.model};
-  }
-
-  render () {
-    this.tag = this.props.tag || this.defaultTag;
-    return (
-      <this.tag className='fr-view' dangerouslySetInnerHTML={this.getTrustedHtml()}></this.tag>
-    );
-  }
-}
+export default FroalaEditorView;
