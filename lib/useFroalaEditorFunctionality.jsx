@@ -7,6 +7,7 @@ const useFroalaEditorFunctionality = (props) => {
   const [editorCreated, setEditorCreated] = useState(false);
   const elementRef = useRef(null);
   const editorRef = useRef(null);
+  const internalEditorRef = props?.ref || editorRef;
   const oldModelRef = useRef(null);
   const initEventsRef = useRef([]);
   const listeningEventsRef = useRef([]);
@@ -101,7 +102,7 @@ const useFroalaEditorFunctionality = (props) => {
 
       modelContent = attrs;
     } else {
-      let returnedHtml = editorRef.current.html.get();
+      let returnedHtml = internalEditorRef.current.html.get();
       if (typeof returnedHtml === "string") {
         modelContent = returnedHtml;
       }
@@ -112,31 +113,31 @@ const useFroalaEditorFunctionality = (props) => {
   };
 
   const initListeners = () => {
-    if (editorRef.current && editorRef.current.events) {
-      editorRef.current.events.on("contentChanged", updateModel);
+    if (internalEditorRef.current && internalEditorRef.current.events) {
+      internalEditorRef.current.events.on("contentChanged", updateModel);
 
       if (configRef.current.immediateReactModelUpdate) {
-        editorRef.current.events.on("keyup", updateModel);
+        internalEditorRef.current.events.on("keyup", updateModel);
       }
     }
 
     if (initEventsRef.current.length > 0) {
       for (let i = 0; i < initEventsRef.current.length; i++) {
-        initEventsRef.current[i].call(editorRef.current);
+        initEventsRef.current[i].call(internalEditorRef.current);
       }
     }
   };
 
   const setNormalTagContent = (firstTime) => {
     const htmlSet = () => {
-      if (editorRef.current && editorRef.current.html) {
-        editorRef.current.html.set(props.model || "");
+      if (internalEditorRef.current && internalEditorRef.current.html) {
+        internalEditorRef.current.html.set(props.model || "");
 
-        if (editorInitialized && editorRef.current.undo) {
+        if (editorInitialized && internalEditorRef.current.undo) {
           if (!props.skipReset) {
-            editorRef.current.undo.reset();
+            internalEditorRef.current.undo.reset();
           }
-          editorRef.current.undo.saveStep();
+          internalEditorRef.current.undo.saveStep();
         }
       }
     };
@@ -208,7 +209,7 @@ const useFroalaEditorFunctionality = (props) => {
 
       setContent(true);
 
-      editorRef.current = new FroalaEditor(
+      internalEditorRef.current = new FroalaEditor(
         elementRef.current,
         configRef.current
       );
@@ -220,8 +221,8 @@ const useFroalaEditorFunctionality = (props) => {
 
   const destroyEditor = () => {
     if (elementRef.current) {
-      if (editorRef.current && editorRef.current.destroy) {
-        editorRef.current.destroy();
+      if (internalEditorRef.current && internalEditorRef.current.destroy) {
+        internalEditorRef.current.destroy();
       }
 
       listeningEventsRef.current = [];
@@ -237,16 +238,16 @@ const useFroalaEditorFunctionality = (props) => {
         const tagName = element.tagName.toLowerCase();
         if (SPECIAL_TAGS.indexOf(tagName) === -1) {
           if (
-            editorRef.current &&
-            editorRef.current.destrying &&
+            internalEditorRef.current &&
+            internalEditorRef.current.destrying &&
             !props.onManualControllerReady &&
             tag === "textarea"
           ) {
-            editorRef.current.$box.remove();
+            internalEditorRef.current.$box.remove();
           }
         }
-        if (tag !== "textarea" && editorRef.current) {
-          editorRef.current.$wp = "";
+        if (tag !== "textarea" && internalEditorRef.current) {
+          internalEditorRef.current.$wp = "";
         }
       }
     }
@@ -254,7 +255,7 @@ const useFroalaEditorFunctionality = (props) => {
 
   const getEditor = () => {
     if (elementRef.current) {
-      return editorRef.current;
+      return internalEditorRef.current;
     }
     return null;
   };
