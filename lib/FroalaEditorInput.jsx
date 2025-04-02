@@ -1,13 +1,12 @@
-'use client';
+"use client";
 
-import FroalaEditorFunctionality from './FroalaEditorFunctionality.jsx';
-import React from 'react';
+import React from "react";
+import useFroalaEditorFunctionality from "./useFroalaEditorFunctionality";
 
-export default class FroalaEditorInput extends FroalaEditorFunctionality {
+const FroalaEditorInput = (props) => {
+  const { elementRef } = useFroalaEditorFunctionality(props);
 
-  render () {
-    return (
-      <input ref={el => this.el = el}/>
-    );
-  }
-}
+  return <input ref={elementRef} />;
+};
+
+export default FroalaEditorInput;

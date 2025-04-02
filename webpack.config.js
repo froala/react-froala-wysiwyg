@@ -63,7 +63,8 @@ var config = {
   },
   externals: externals,
   resolve: {
-    modules: ['./node_modules']
+    modules: ['./node_modules'],
+    extensions: [".jsx"],
   },
   output: {
     globalObject: 'this',
