@@ -3,7 +3,7 @@
 import React from 'react';
 
 let lastId = 0;
-let FroalaEditor = null;
+import FroalaEditor from 'froala-editor';
 export default class FroalaEditorFunctionality extends React.Component {
   constructor(props) {
     super(props);
@@ -37,21 +37,17 @@ export default class FroalaEditorFunctionality extends React.Component {
 
   // After first time render.
   componentDidMount() {
-    import(/*webpackIgnore: true*/ 'froala-editor').then((module) => {
-      FroalaEditor = module.default;
+    let tagName = this.el.tagName.toLowerCase();
+    if (this.SPECIAL_TAGS.indexOf(tagName) != -1) {
+      this.tag = tagName;
+      this.hasSpecialTag = true;
+    }
 
-      let tagName = this.el.tagName.toLowerCase();
-      if (this.SPECIAL_TAGS.indexOf(tagName) != -1) {
-        this.tag = tagName;
-        this.hasSpecialTag = true;
-      }
-
-      if (this.props.onManualControllerReady) {
-        this.generateManualController();
-      } else {
-        this.createEditor();
-      }
-    });
+    if (this.props.onManualControllerReady) {
+      this.generateManualController();
+    } else {
+      this.createEditor();
+    }
   }
 
   componentWillUnmount() {
