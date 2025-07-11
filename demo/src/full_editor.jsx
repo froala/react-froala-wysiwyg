@@ -2,13 +2,13 @@
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/froala_style.css';
 import 'file-loader?name=[name].[ext]!./full_editor.html';
-import 'froala-editor/js/plugins.pkgd.min.js';
 
 import FroalaEditor from 'react-froala-wysiwyg';
 import FroalaEditorView from 'react-froala-wysiwyg/FroalaEditorView';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
+import 'froala-editor/js/plugins.pkgd.min.js';
 // Render Froala Editor component.
 class EditorComponent extends React.Component {
   constructor() {
@@ -32,6 +32,7 @@ class EditorComponent extends React.Component {
       <div className="sample">
         <h2>Full Featured</h2>
         <FroalaEditor
+          config={{key: "YNB3fH3C10C7B7B5D2G2C-8evjgkiB5cejJ-7oA8sD-13F-11oF4I4B3C11A3B5E4B2A3B3=="}}
           model={this.state.content}
           onModelChange={this.handleModelChange}
         />
