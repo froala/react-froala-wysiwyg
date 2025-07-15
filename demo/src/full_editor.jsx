@@ -30,9 +30,13 @@ class EditorComponent extends React.Component {
   render () {
     return(
       <div className="sample">
+        <h2>Unlicensed Froala</h2>
+        <FroalaEditor />
+        <h2>Licensed Froala</h2>
+        <FroalaEditor config={{key: "UBB7jD5D5B3F4A2B10C10bHIMFI1EWBXIJe1BZLZFd1d1MXQLjC10D7D5A3B2A3E4E2C2C4==", fontSizeDefaultSelection: 18, fontFamilyDefaultSelection: 'Tahoma'}} />
         <h2>Full Featured</h2>
         <FroalaEditor
-          config={{key: "YNB3fH3C10C7B7B5D2G2C-8evjgkiB5cejJ-7oA8sD-13F-11oF4I4B3C11A3B5E4B2A3B3=="}}
+          config={{key: "YNB3fH3C10C7B7B5D2G2C-8evjgkiB5cejJ-7oA8sD-13F-11oF4I4B3C11A3B5E4B2A3B3==", fontSizeDefaultSelection: 18, fontFamilyDefaultSelection: 'Tahoma'}}
           model={this.state.content}
           onModelChange={this.handleModelChange}
         />
