@@ -54,7 +54,14 @@ export default class FroalaEditorFunctionality extends React.Component {
     this.destroyEditor();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.config.placeholderText !== prevProps.config.placeholderText
+    ) {
+      this.editor.opts.placeholderText = this.props.config.placeholderText;
+      this.editor.placeholder.refresh();
+    }
+
     if (JSON.stringify(this.oldModel) == JSON.stringify(this.props.model)) {
       return;
     }
