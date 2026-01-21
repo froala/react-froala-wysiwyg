@@ -4,7 +4,7 @@
 [![npm](https://img.shields.io/npm/dm/react-froala-wysiwyg.svg)](https://www.npmjs.com/package/react-froala-wysiwyg)
 [![npm](https://img.shields.io/npm/l/react-froala-wysiwyg.svg)](https://www.npmjs.com/package/react-froala-wysiwyg)
 
->react-froala-wyswiyg provides React bindings to the Froala WYSIWYG editor VERSION 3.
+>react-froala-wyswiyg provides React bindings to the Froala WYSIWYG editor VERSION 4
 
 ## Installation
 
