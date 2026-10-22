@@ -70,8 +70,15 @@ var config = {
     globalObject: 'this',
     publicPath: '',
     filename: '[name].js',
-    libraryTarget: 'umd',
-    library: '[name]'
+    // export: 'default' makes each file's module.exports the component itself,
+    // not { __esModule, default }. Vite 8 (and Node) hand module.exports to a
+    // default import from a "type": "module" app, so the wrapper object there
+    // reached React as the component and nothing rendered.
+    library: {
+      name: '[name]',
+      type: 'umd',
+      export: 'default'
+    }
   }
 };
 
