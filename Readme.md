@@ -332,6 +332,23 @@ config={{
 Aditional option is used:
 * **immediateReactModelUpdate**: (default: false) This option updates the React model as soon as a key is released in the editor. Note that it may affect performances.
 
+### Changing config after mount
+
+`config` is read once, when the editor is created. If you change it later (a new `placeholderText`, a different `language`, a toolbar that depends on state), the editor that's already running won't pick it up. To apply new options, re-mount the component by giving it a `key` that changes along with them:
+
+```jsx
+// Import the language file for each locale you switch to.
+<FroalaEditorComponent
+  key={locale}
+  tag='textarea'
+  config={{ language: locale }}
+  model={model}
+  onModelChange={setModel}
+/>
+```
+
+When `key` changes, React destroys the old editor and creates a new one with the current `config`. The content comes back from `model`, so keep it in state as above. Undo history starts fresh with the new editor.
+
 ### Events and Methods
 
 Events can be passed in with the options, with a key events and object where the key is the event name and the value is the callback function.
@@ -395,6 +412,23 @@ Use the content in other places:
 ```js
 <input value={model}/>
 ```
+
+### Undo history and `skipReset`
+
+When the parent passes in a `model` the editor didn't produce itself (loading a different document, say), the component sets it in the editor and clears the undo history, so Undo can't step back into the previous content. Passing the editor's own value back in from `onModelChange`, as two-way binding does, isn't affected: the component recognises the value it just emitted and leaves the editor and its history alone.
+
+To keep the history across external changes, pass `skipReset`:
+
+```jsx
+<FroalaEditorComponent
+  tag='textarea'
+  model={model}
+  onModelChange={setModel}
+  skipReset={true}
+/>
+```
+
+With `skipReset`, the external change becomes one more undo step, so Undo takes the editor back to what it held before.
 
 ### Special tags
 You can also use the editor on **img**, **button**, **input** and **a** tags:
