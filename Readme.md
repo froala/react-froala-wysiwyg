@@ -86,6 +86,8 @@ const root = ReactDOM.createRoot(document.getElementById('editor'));
 root.render(<FroalaEditorComponent tag='textarea'/>);
 ```
 
+`react-dom/client` and `createRoot` need React 18 or later. On React 17 and earlier, use `import ReactDOM from 'react-dom'` and `ReactDOM.render(<FroalaEditorComponent tag='textarea'/>, document.getElementById('editor'))` instead.
+
 #### 2. Add an element with that id to your HTML.
 
 ```html
@@ -440,7 +442,10 @@ import React, { Suspense, useEffect, useState } from 'react';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/froala_style.min.css';
 
-const FroalaEditor = React.lazy(() => import('react-froala-wysiwyg'));
+// The .then() picks the component out of the module on Vite 8 too (see Vite 8 above).
+const FroalaEditor = React.lazy(() =>
+  import('react-froala-wysiwyg').then(m => ({ default: m.default?.default ?? m.default }))
+);
 
 export default function MyComponent() {
   const [isInitialized, setIsInitialized] = useState(false);
@@ -476,7 +481,10 @@ import React, { Suspense } from 'react';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/froala_style.min.css';
 
-const FroalaEditor = React.lazy(() => import('react-froala-wysiwyg'));
+// The .then() picks the component out of the module on Vite 8 too (see Vite 8 above).
+const FroalaEditor = React.lazy(() =>
+  import('react-froala-wysiwyg').then(m => ({ default: m.default?.default ?? m.default }))
+);
 
 export default class MyComponent extends React.Component {
   constructor () {
