@@ -30,9 +30,10 @@ It supports React 0.14 through 19. The function component examples below use hoo
 Install the wrapper and `froala-editor` together, with `froala-editor` at the exact version the wrapper depends on:
 
 ```bash
-npm view react-froala-wysiwyg dependencies.froala-editor
-npm install react-froala-wysiwyg froala-editor@<that version>
+npm install --save-exact react-froala-wysiwyg froala-editor@$(npm view react-froala-wysiwyg dependencies.froala-editor)
 ```
+
+This works in bash, zsh and PowerShell. In Windows `cmd`, run `npm view react-froala-wysiwyg dependencies.froala-editor` first, then `npm install --save-exact react-froala-wysiwyg froala-editor@` followed by the version it printed. `--save-exact` keeps `froala-editor` at that version in `package.json`, so a later install can't pull in a newer patch next to the wrapper's copy.
 
 The samples below import `froala-editor` directly (its CSS, plugins and the `FroalaEditor` class), so it has to be a direct dependency. npm happens to hoist the wrapper's copy, but pnpm and Yarn PnP don't, and the build fails to resolve `froala-editor/css/...`.
 
@@ -43,9 +44,10 @@ Don't install a different `froala-editor` version. With two copies, plugins and 
 `react-froala-wysiwyg` pins the exact `froala-editor` version it was built and tested against, so update the wrapper to get a newer editor, and move `froala-editor` to the version the new wrapper depends on:
 
 ```bash
-npm view react-froala-wysiwyg@latest dependencies.froala-editor
-npm install react-froala-wysiwyg@latest froala-editor@<that version>
+npm install --save-exact react-froala-wysiwyg@latest froala-editor@$(npm view react-froala-wysiwyg@latest dependencies.froala-editor)
 ```
+
+In Windows `cmd`, run the `npm view` part on its own and paste the version, as above.
 
 ## Usage
 
@@ -360,21 +362,41 @@ config={{
 
 Gets the functionality to operate on the editor: create, destroy and get editor instance. Use it if you want to manually initialize the editor.
 
-`onManualControllerReady={handleManualController}`
+When `onManualControllerReady` is set, the editor doesn't start on mount. It starts when you call `initialize()`:
 
 ```jsx
-const [initControls, setInitControls] = useState(null);
+import { useState } from 'react';
+import FroalaEditorComponent from 'react-froala-wysiwyg';
 
-const handleManualController = (controls) => {
-  setInitControls(controls);
-};
+function ManualEditor() {
+  const [initControls, setInitControls] = useState(null);
 
-// Call these from separate buttons, as the demo does:
-const initializeEditor = () => initControls.initialize();
-const deleteAll = () => initControls.getEditor().html.set('');
+  const handleManualController = (controls) => {
+    setInitControls(controls);
+  };
+
+  const initializeEditor = () => {
+    initControls.initialize();
+  };
+
+  const deleteAll = () => {
+    const editor = initControls && initControls.getEditor();
+    if (editor && editor.html) {
+      editor.html.set('');
+    }
+  };
+
+  return (
+    <>
+      <button onClick={initializeEditor} disabled={!initControls}>Initialize</button>
+      <button onClick={deleteAll}>Delete All</button>
+      <FroalaEditorComponent onManualControllerReady={handleManualController} />
+    </>
+  );
+}
 ```
 
-The editor isn't ready the moment `initialize()` returns, so don't call its methods on the next line. Use them from a later action, as above, or from the `initialized` event.
+`getEditor()` returns `null` until `initialize()` has run, and the editor isn't ready the moment `initialize()` returns either, so don't call its methods on the next line. Guard them as `deleteAll` does, or use them from the `initialized` event.
 
 The object received by the function will contain the following methods:
 
@@ -395,6 +417,8 @@ To display content created with the froala editor use the `FroalaEditorView` com
   model={content}
 />
 ```
+
+`FroalaEditorView` renders `model` as raw HTML and does not sanitize it. Only pass content you trust, and sanitize HTML loaded from storage or from other users first (on the server, or with a library such as DOMPurify).
 
 ## Custom Buttons
 
