@@ -126,7 +126,7 @@ The special components (`FroalaEditorA`, `FroalaEditorButton`, `FroalaEditorImg`
 - **model**: the editor content. See [Model](#model).
 - **onModelChange**: called with the new content when it changes.
 - **onManualControllerReady**: see [Manual Instantiation](#manual-instantiation).
-- **skipReset**: when `true`, setting a new `model` from outside the editor keeps the editor's undo history instead of resetting it.
+- **skipReset**: when `true`, setting a new `model` from outside the editor keeps the editor's undo history instead of resetting it. See [Undo history and `skipReset`](#undo-history-and-skipreset).
 
 There are special tags: **a**, **button**, **img**, **input**. Do not use them in FroalaEditor component. To initialize the editor on a special tag, use `FroalaEditorA`, `FroalaEditorButton`, `FroalaEditorImg` and `FroalaEditorInput` components.
 
@@ -148,7 +148,22 @@ config={{
 Additional option is used:
 * **immediateReactModelUpdate**: (default: false) This option updates the React model as soon as a key is released in the editor. Note that it may affect performance.
 
-`config` is read once, when the editor is created. To apply new options, re-mount the editor by changing its `key`.
+### Changing config after mount
+
+`config` is read once, when the editor is created. If you change it later (a new `placeholderText`, a different `language`, a toolbar that depends on state), the editor that's already running won't pick it up. To apply new options, re-mount the component by giving it a `key` that changes along with them:
+
+```jsx
+// Import the language file for each locale you switch to.
+<FroalaEditorComponent
+  key={locale}
+  tag='textarea'
+  config={{ language: locale }}
+  model={model}
+  onModelChange={setModel}
+/>
+```
+
+When `key` changes, React destroys the old editor and creates a new one with the current `config`. The content comes back from `model`, so keep it in state as above. Undo history starts fresh with the new editor.
 
 ## Events and Methods
 
@@ -239,6 +254,23 @@ Use the content in other places:
 ```jsx
 <input value={model} readOnly/>
 ```
+
+### Undo history and `skipReset`
+
+When the parent passes in a `model` the editor didn't produce itself (loading a different document, say), the component sets it in the editor and clears the undo history, so Undo can't step back into the previous content. Passing the editor's own value back in from `onModelChange`, as two-way binding does, isn't affected: the component recognises the value it just emitted and leaves the editor and its history alone.
+
+To keep the history across external changes, pass `skipReset`:
+
+```jsx
+<FroalaEditorComponent
+  tag='textarea'
+  model={model}
+  onModelChange={setModel}
+  skipReset={true}
+/>
+```
+
+With `skipReset`, the external change becomes one more undo step, so Undo takes the editor back to what it held before.
 
 ## Special tags
 
