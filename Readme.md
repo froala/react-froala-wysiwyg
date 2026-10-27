@@ -110,6 +110,27 @@ const FroalaEditorView = FroalaViewModule.default?.default ?? FroalaViewModule.d
 
 The special components (`FroalaEditorA`, `FroalaEditorButton`, `FroalaEditorImg`, `FroalaEditorInput`) need the same treatment.
 
+In TypeScript, `.default?.default` doesn't type-check, so pick the component with a small helper instead:
+
+```tsx
+import * as FroalaModule from 'react-froala-wysiwyg';
+import * as FroalaViewModule from 'react-froala-wysiwyg/FroalaEditorView';
+
+type Mod<T> = { default: T } | T;
+const pick = <T,>(m: Mod<T>): T => ((m as { default?: T }).default ?? m) as T;
+
+const FroalaEditorComponent = pick(FroalaModule.default as Mod<typeof FroalaModule.default>);
+const FroalaEditorView = pick(FroalaViewModule.default as Mod<typeof FroalaViewModule.default>);
+```
+
+For the [lazy-loading samples](#other-ssr-frameworks), use the same helper in the `.then()`:
+
+```tsx
+const FroalaEditor = React.lazy(() =>
+  import('react-froala-wysiwyg').then(m => ({ default: pick(m.default as Mod<typeof m.default>) }))
+);
+```
+
 #### Component props
 
 ```jsx
@@ -274,7 +295,13 @@ With `skipReset`, the external change becomes one more undo step, so Undo takes 
 
 ## Special tags
 
-You can also use the editor on **img**, **button**, **input** and **a** tags:
+You can also use the editor on **img**, **button**, **input** and **a** tags.
+
+These need the editor's plugins: `image` for `FroalaEditorImg` and `link` for `FroalaEditorA`. Without them the element renders, but clicking it does nothing. Import the plugins, as in the commented-out line in [Usage](#usage):
+
+```jsx
+import 'froala-editor/js/plugins.pkgd.min.js';
+```
 
 ```jsx
 <FroalaEditorImg
@@ -336,10 +363,12 @@ const handleManualController = (controls) => {
   setInitControls(controls);
 };
 
-// Later, for example from a button:
-initControls.initialize();
-initControls.getEditor().html.set('');
+// Call these from separate buttons, as the demo does:
+const initializeEditor = () => initControls.initialize();
+const deleteAll = () => initControls.getEditor().html.set('');
 ```
+
+The editor isn't ready the moment `initialize()` returns, so don't call its methods on the next line. Use them from a later action, as above, or from the `initialized` event.
 
 The object received by the function will contain the following methods:
 
@@ -549,7 +578,13 @@ export default class MyComponent extends React.Component {
 
 ## TypeScript
 
-The package ships its own type definitions (`lib/index.d.ts`) for `react-froala-wysiwyg` and each `react-froala-wysiwyg/FroalaEditor*` component, so TypeScript picks them up without any extra setup.
+The package ships its own type definitions (`lib/index.d.ts`) for `react-froala-wysiwyg` and each `react-froala-wysiwyg/FroalaEditor*` component, so in most projects TypeScript picks them up without any extra setup.
+
+The `react-froala-wysiwyg/FroalaEditor*` types are declared in that same file, so they only load once something imports `react-froala-wysiwyg` itself. If your project imports only a subpath, such as a read-only page that uses just `FroalaEditorView`, add this line to a `.d.ts` file in your project (for example `src/froala.d.ts`):
+
+```ts
+/// <reference types="react-froala-wysiwyg" />
+```
 
 `froala-editor` has types for the options and the editor instance. In strict mode, type `this` in event callbacks:
 
