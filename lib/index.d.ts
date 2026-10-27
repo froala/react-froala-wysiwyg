@@ -44,6 +44,11 @@ declare module 'react-froala-wysiwyg'
     onModelChange?: (model: FroalaSpecialTagModel) => void;
   }
 
+  /** a and button render their children inside the element. */
+  export interface FroalaSpecialTagWithChildrenProps extends FroalaSpecialTagProps {
+    children?: React.ReactNode;
+  }
+
   export interface FroalaEditorViewProps {
     model?: string | null;
     tag?: string;
@@ -93,12 +98,12 @@ declare module 'react-froala-wysiwyg/FroalaEditorA'
 {
   import * as React from 'react';
   import FroalaEditor from 'froala-editor';
-  import { FroalaSpecialTagProps } from 'react-froala-wysiwyg';
+  import { FroalaSpecialTagWithChildrenProps } from 'react-froala-wysiwyg';
 
-  /** @deprecated Use FroalaSpecialTagProps. */
-  export interface MyComponentProps extends FroalaSpecialTagProps {}
+  /** @deprecated Use FroalaSpecialTagWithChildrenProps. */
+  export interface MyComponentProps extends FroalaSpecialTagWithChildrenProps {}
 
-  export default class FroalaEditorA extends React.Component<FroalaSpecialTagProps> {
+  export default class FroalaEditorA extends React.Component<FroalaSpecialTagWithChildrenProps> {
     getEditor(): FroalaEditor | null;
     initialize(): void;
     destroy(): void;
@@ -109,12 +114,12 @@ declare module 'react-froala-wysiwyg/FroalaEditorButton'
 {
   import * as React from 'react';
   import FroalaEditor from 'froala-editor';
-  import { FroalaSpecialTagProps } from 'react-froala-wysiwyg';
+  import { FroalaSpecialTagWithChildrenProps } from 'react-froala-wysiwyg';
 
-  /** @deprecated Use FroalaSpecialTagProps. */
-  export interface MyComponentProps extends FroalaSpecialTagProps {}
+  /** @deprecated Use FroalaSpecialTagWithChildrenProps. */
+  export interface MyComponentProps extends FroalaSpecialTagWithChildrenProps {}
 
-  export default class FroalaEditorButton extends React.Component<FroalaSpecialTagProps> {
+  export default class FroalaEditorButton extends React.Component<FroalaSpecialTagWithChildrenProps> {
     getEditor(): FroalaEditor | null;
     initialize(): void;
     destroy(): void;
