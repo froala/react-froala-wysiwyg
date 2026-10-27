@@ -27,18 +27,24 @@ It supports React 0.14 through 19. The function component examples below use hoo
 
 ## Installation
 
+Install the wrapper and `froala-editor` together, with `froala-editor` at the exact version the wrapper depends on:
+
 ```bash
-npm install react-froala-wysiwyg
+npm view react-froala-wysiwyg dependencies.froala-editor
+npm install react-froala-wysiwyg froala-editor@<that version>
 ```
 
-This also installs the matching version of `froala-editor`, which `react-froala-wysiwyg` depends on.
+The samples below import `froala-editor` directly (its CSS, plugins and the `FroalaEditor` class), so it has to be a direct dependency. npm happens to hoist the wrapper's copy, but pnpm and Yarn PnP don't, and the build fails to resolve `froala-editor/css/...`.
+
+Don't install a different `froala-editor` version. With two copies, plugins and custom buttons register on your copy while the wrapper creates the editor from its own, so they silently don't show up.
 
 ## Update editor version
 
-`react-froala-wysiwyg` pins the exact `froala-editor` version it was built and tested against, so update the wrapper to get a newer editor:
+`react-froala-wysiwyg` pins the exact `froala-editor` version it was built and tested against, so update the wrapper to get a newer editor, and move `froala-editor` to the version the new wrapper depends on:
 
 ```bash
-npm install react-froala-wysiwyg@latest
+npm view react-froala-wysiwyg@latest dependencies.froala-editor
+npm install react-froala-wysiwyg@latest froala-editor@<that version>
 ```
 
 ## Usage
@@ -488,6 +494,19 @@ export default function Editor() {
   return <FroalaClient />;
 }
 ```
+
+And render `Editor` from the page:
+
+```jsx
+// app/editor/page.jsx
+import Editor from './Editor';
+
+export default function Page() {
+  return <Editor />;
+}
+```
+
+Pages and other server components should import `Editor`, never `FroalaClient`. Importing `FroalaClient` directly brings back the server-rendering failure.
 
 Register custom buttons, icons and languages inside `FroalaClient.jsx` too, so they only run in the browser.
 
