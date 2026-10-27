@@ -104,51 +104,6 @@ root.render(<FroalaEditorComponent tag='textarea'/>);
 
 In an app created with a tool like Vite, render `<FroalaEditorComponent/>` inside one of your components instead. The examples below assume `FroalaEditorComponent` and the special components are imported as shown above.
 
-#### Vite 8 with 5.5.0 and earlier
-
-From 5.6.0 the default imports above work on Vite 8, and nothing in this section is needed.
-
-With `react-froala-wysiwyg` 5.5.0 or earlier, in a Vite 8 project whose `package.json` has `"type": "module"` (the `npm create vite` default), the default import resolves to an object instead of the component, and the page renders blank. Vite 7 isn't affected. Upgrade to 5.6.0, or import the components like this:
-
-```jsx
-import * as FroalaModule from 'react-froala-wysiwyg';
-import * as FroalaViewModule from 'react-froala-wysiwyg/FroalaEditorView';
-
-const FroalaEditorComponent = FroalaModule.default?.default ?? FroalaModule.default;
-const FroalaEditorView = FroalaViewModule.default?.default ?? FroalaViewModule.default;
-```
-
-The special components (`FroalaEditorA`, `FroalaEditorButton`, `FroalaEditorImg`, `FroalaEditorInput`) need the same treatment.
-
-In TypeScript, `.default?.default` doesn't type-check, so pick the component with a small helper instead:
-
-```tsx
-import * as FroalaModule from 'react-froala-wysiwyg';
-import * as FroalaViewModule from 'react-froala-wysiwyg/FroalaEditorView';
-
-type Mod<T> = { default: T } | T;
-const pick = <T,>(m: Mod<T>): T => ((m as { default?: T }).default ?? m) as T;
-
-const FroalaEditorComponent = pick(FroalaModule.default as Mod<typeof FroalaModule.default>);
-const FroalaEditorView = pick(FroalaViewModule.default as Mod<typeof FroalaViewModule.default>);
-```
-
-For the [lazy-loading samples](#other-ssr-frameworks), pick the component in a `.then()`:
-
-```jsx
-const FroalaEditor = React.lazy(() =>
-  import('react-froala-wysiwyg').then(m => ({ default: m.default?.default ?? m.default }))
-);
-```
-
-and in TypeScript, with the same helper:
-
-```tsx
-const FroalaEditor = React.lazy(() =>
-  import('react-froala-wysiwyg').then(m => ({ default: pick(m.default as Mod<typeof m.default>) }))
-);
-```
-
 #### Component props
 
 ```jsx
@@ -167,7 +122,7 @@ const FroalaEditor = React.lazy(() =>
 - **onManualControllerReady**: see [Manual Instantiation](#manual-instantiation).
 - **skipReset**: when `true`, setting a new `model` from outside the editor keeps the editor's undo history instead of resetting it. See [Undo history and `skipReset`](#undo-history-and-skipreset).
 
-There are special tags: **a**, **button**, **img**, **input**. Do not use them in FroalaEditor component. To initialize the editor on a special tag, use `FroalaEditorA`, `FroalaEditorButton`, `FroalaEditorImg` and `FroalaEditorInput` components.
+There are special tags: **a**, **button**, **img**, **input**. Do not use them in `FroalaEditorComponent`. To initialize the editor on a special tag, use `FroalaEditorA`, `FroalaEditorButton`, `FroalaEditorImg` and `FroalaEditorInput` components.
 
 ## Config
 
@@ -286,7 +241,7 @@ class EditorComponent extends React.Component {
 }
 ```
 
-`onModelChange` is called on the editor's `contentChanged` event, and on every `keyup` too when `immediateReactModelUpdate` is set. It's only called when the content differs from the last value the component passed in or out, so loading `model` on mount doesn't call it.
+`onModelChange` is called on the editor's `contentChanged` event, and on every `keyup` too when `immediateReactModelUpdate` is set. For the editor's HTML, it's only called when the content differs from the last value the component passed in or out, so loading `model` on mount doesn't call it.
 
 To achieve one way binding and pass only the initial editor content, simply do not pass `onModelChange` attribute.
 
@@ -418,7 +373,7 @@ The object received by the function will contain the following methods:
 
 ### Using a ref
 
-From 5.6.0 the same three methods are on the component itself, so a ref reaches the editor too. With a ref the editor still starts on mount, unless `onManualControllerReady` is also set:
+The same three methods are on the component itself, so a ref reaches the editor too. With a ref the editor still starts on mount, unless `onManualControllerReady` is also set:
 
 ```jsx
 import { useRef } from 'react';
@@ -587,7 +542,6 @@ import React, { Suspense, useEffect, useState } from 'react';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/froala_style.min.css';
 
-// With 5.5.0 and earlier on Vite 8, use the .then() from the Vite 8 section above.
 const FroalaEditor = React.lazy(() => import('react-froala-wysiwyg'));
 
 export default function MyComponent() {
@@ -624,7 +578,6 @@ import React, { Suspense } from 'react';
 import 'froala-editor/css/froala_editor.pkgd.min.css';
 import 'froala-editor/css/froala_style.min.css';
 
-// With 5.5.0 and earlier on Vite 8, use the .then() from the Vite 8 section above.
 const FroalaEditor = React.lazy(() => import('react-froala-wysiwyg'));
 
 export default class MyComponent extends React.Component {
@@ -666,7 +619,7 @@ The `react-froala-wysiwyg/FroalaEditor*` types are declared in that same file, s
 /// <reference types="react-froala-wysiwyg" />
 ```
 
-From 5.6.0 the props are typed: `config` takes the editor's options plus the wrapper's own (`immediateReactModelUpdate`, `reactIgnoreAttrs`), `onModelChange` receives a `string` (an attribute map for the special tags), and `getEditor()` returns the editor instance. The package also exports the types it uses, such as `FroalaEditorConfig`, `FroalaEditorProps` and `ManualController`:
+The props are typed: `config` takes the editor's options plus the wrapper's own (`immediateReactModelUpdate`, `reactIgnoreAttrs`), `onModelChange` receives a `string` (an attribute map for the special tags), and `getEditor()` returns the editor instance, or `null` before it's created. The package also exports the types it uses, such as `FroalaEditorConfig`, `FroalaEditorProps` and `ManualController`:
 
 ```tsx
 import type { FroalaEditorConfig } from 'react-froala-wysiwyg';
@@ -693,8 +646,6 @@ const config: Partial<FroalaOptions> = {
 ## React StrictMode
 
 In development, StrictMode mounts every component twice, so the editor is created, destroyed and created again. Handlers such as `initialized` run once for each editor that's created, so twice in development. Production builds mount once.
-
-With 5.5.0 and earlier, the second editor ran each `initialized` handler twice, once for itself and once left over from the first editor, so it ran three times in development. That's fixed in 5.6.0.
 
 ## License
 
