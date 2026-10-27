@@ -231,6 +231,15 @@ export default class FroalaEditorFunctionality extends React.Component {
     return null;
   }
 
+  // Public names for a ref to the component, as declared in index.d.ts.
+  initialize() {
+    this.createEditor();
+  }
+
+  destroy() {
+    this.destroyEditor();
+  }
+
   generateManualController() {
     let self = this;
 
