@@ -10,3 +10,7 @@ export default class FroalaEditorImg extends FroalaEditorFunctionality {
     );
   }
 }
+
+// The build exports this class itself (webpack library.export 'default');
+// this keeps require(...).default working for existing CommonJS code.
+FroalaEditorImg.default = FroalaEditorImg;
