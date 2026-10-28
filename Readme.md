@@ -241,7 +241,7 @@ class EditorComponent extends React.Component {
 }
 ```
 
-`onModelChange` is called on the editor's `contentChanged` event, and on every `keyup` too when `immediateReactModelUpdate` is set. For the editor's HTML, it's only called when the content differs from the last value the component passed in or out, so loading `model` on mount doesn't call it.
+`onModelChange` is called on the editor's `contentChanged` event, and on every `keyup` too when `immediateReactModelUpdate` is set. For the editor's HTML, it's only called when the content differs from the last value the component passed in or out, so loading `model` on mount doesn't call it when it's already the editor's HTML.
 
 To achieve one way binding and pass only the initial editor content, simply do not pass `onModelChange` attribute.
 
