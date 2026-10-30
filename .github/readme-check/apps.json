@@ -1,0 +1,18 @@
+{
+  "readme": "Readme.md",
+  "apps": [
+    {
+      "name": "vite",
+      "description": "the Usage example (the component and its #editor element) in a Vite app",
+      "build": ["npx", "vite", "build"],
+      "start": ["npx", "vite", "preview", "--port", "$PORT", "--strictPort"]
+    },
+    {
+      "name": "next",
+      "description": "the Next.js example (FroalaClient, Editor and page) in a Next.js app",
+      "build": ["npx", "next", "build"],
+      "start": ["npx", "next", "start", "--port", "$PORT"],
+      "path": "/editor"
+    }
+  ]
+}
