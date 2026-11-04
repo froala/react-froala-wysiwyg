@@ -23,6 +23,7 @@ It supports React 0.14 through 19. The function component examples below use hoo
 12. [TypeScript](#typescript)
 13. [React StrictMode](#react-strictmode)
 14. [License](#license)
+   - [License key](#license-key)
 15. [Development environment setup](#development-environment-setup)
 
 ## Installation
@@ -649,10 +650,26 @@ In development, StrictMode mounts every component twice, so the editor is create
 
 ## License
 
-The `react-froala-wysiwyg` project is under MIT license. However, in order to use Froala WYSIWYG HTML Editor plugin you should purchase a license for it.
+The `react-froala-wysiwyg` wrapper is under the MIT license. Froala Editor itself is commercial software: see the [pricing page](https://froala.com/wysiwyg-editor/pricing/) for licenses and the [License Agreement](https://froala.com/wysiwyg-editor/terms/) for the terms.
 
-Froala Editor has [3 different licenses](https://froala.com/wysiwyg-editor/pricing/) for commercial use.
-For details please see [License Agreement](https://froala.com/wysiwyg-editor/terms/).
+### License key
+
+Every editor feature works without a license key. Without a valid key, the editor shows a short notice at the bottom, under "Powered by Froala", and writes the same text to the browser console once. That happens on `localhost` too. `.dev`, `.edu` and `.test` domains, and playgrounds such as CodePen, still give a clean editor without a key.
+
+To evaluate the editor, use the public trial key, `TRIAL-LICENSE-KEY-FOR-FROALA-NOT-FOR-PRODUCTION-USE` (see the [activation page](https://froala.com/wysiwyg-editor/docs/activation/)). It isn't for production use, and the trial notice shows for as long as it's in use.
+
+For production, [buy a license](https://cart.froala.com) and pass its key in the editor options:
+
+```jsx
+<FroalaEditorComponent
+  tag='textarea'
+  config={{
+    key: 'YOUR_LICENSE_KEY'
+  }}
+/>
+```
+
+With a valid key the notice goes away, on `localhost` as well as on your own domain.
 
 ## Development environment setup
 
