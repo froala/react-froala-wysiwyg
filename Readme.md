@@ -53,6 +53,7 @@ In Windows `cmd`, run the `npm view` part on its own and paste the version, as a
 
 #### 1. Import and use the Froala Editor component inside your application.
 
+<!-- readme-test: vite src/main.jsx -->
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -98,6 +99,7 @@ root.render(<FroalaEditorComponent tag='textarea'/>);
 
 #### 2. Add an element with that id to your HTML.
 
+<!-- readme-test: vite @index.html:body -->
 ```html
 <div id="editor"></div>
 ```
@@ -476,6 +478,7 @@ The editor needs a browser, so on the server render nothing and load the editor 
 
 Put the editor in its own client component:
 
+<!-- readme-test: next app/editor/FroalaClient.jsx -->
 ```jsx
 // app/editor/FroalaClient.jsx
 'use client';
@@ -500,6 +503,7 @@ export default function FroalaClient() {
 
 Then load it with `next/dynamic` and `ssr: false`, from another client component:
 
+<!-- readme-test: next app/editor/Editor.jsx -->
 ```jsx
 // app/editor/Editor.jsx
 'use client';
@@ -517,6 +521,7 @@ export default function Editor() {
 
 And render `Editor` from the page:
 
+<!-- readme-test: next app/editor/page.jsx -->
 ```jsx
 // app/editor/page.jsx
 import Editor from './Editor';
