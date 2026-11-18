@@ -202,6 +202,8 @@ export default class FroalaEditorFunctionality extends React.Component {
     if (this.element) {
       this.editor.destroy && this.editor.destroy();
       this.listeningEvents.length = 0;
+      // The next createEditor() registers its init handlers again (StrictMode remount, manual destroy/initialize).
+      this._initEvents = [];
       this.element = null;
       this.editorInitialized = false;
       this.editorCreated = false;
@@ -227,6 +229,15 @@ export default class FroalaEditorFunctionality extends React.Component {
     }
 
     return null;
+  }
+
+  // Public names for a ref to the component, as declared in index.d.ts.
+  initialize() {
+    this.createEditor();
+  }
+
+  destroy() {
+    this.destroyEditor();
   }
 
   generateManualController() {
@@ -270,6 +281,11 @@ export default class FroalaEditorFunctionality extends React.Component {
       if (typeof returnedHtml === 'string') {
         modelContent = returnedHtml;
       }
+    }
+
+    // Nothing changed since the last value the parent gave or was given (e.g. the initial html.set on mount).
+    if (modelContent === this.oldModel) {
+      return;
     }
 
     this.oldModel = modelContent;

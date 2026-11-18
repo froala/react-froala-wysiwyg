@@ -21,3 +21,7 @@ export default class FroalaEditorView extends React.Component {
     );
   }
 }
+
+// The build exports this class itself (webpack library.export 'default');
+// this keeps require(...).default working for existing CommonJS code.
+FroalaEditorView.default = FroalaEditorView;
