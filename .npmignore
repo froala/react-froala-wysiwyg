@@ -6,3 +6,4 @@ push-image-to-nexus.sh
 version.json
 dist
 .github
+ci

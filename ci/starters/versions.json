@@ -1,0 +1,48 @@
+{
+  "_comment": "Versions the starter check uses. 'stable' is the known-good set: a failure there blocks the PR and the release, so only move these after a green 'latest' run. 'latest' is whatever npm has today and only ever reports. Packages are pinned only when the starter already depends on them.",
+  "stable": {
+    "create-vite": "9.3.4",
+    "create-next-app": "16.4.6",
+    "packages": {
+      "react": "19.3.1",
+      "react-dom": "19.3.1",
+      "@types/react": "19.3.3",
+      "@types/react-dom": "19.3.0",
+      "next": "16.4.6",
+      "vite": "8.3.8"
+    }
+  },
+  "latest": {
+    "create-vite": "latest",
+    "create-next-app": "latest",
+    "packages": {
+      "react": "latest",
+      "react-dom": "latest",
+      "@types/react": "latest",
+      "@types/react-dom": "latest",
+      "next": "latest",
+      "vite": "latest"
+    }
+  },
+  "react18": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "@types/react": "18.3.32",
+    "@types/react-dom": "18.3.7"
+  },
+  "matrix": {
+    "stable": [
+      { "starter": "vite", "react": "19", "node": "20" },
+      { "starter": "vite", "react": "19", "node": "22" },
+      { "starter": "vite", "react": "18", "node": "22" },
+      { "starter": "next-app", "react": "19", "node": "20" },
+      { "starter": "next-app", "react": "19", "node": "22" },
+      { "starter": "next-pages", "react": "19", "node": "22" }
+    ],
+    "latest": [
+      { "starter": "vite", "react": "latest", "node": "22" },
+      { "starter": "next-app", "react": "latest", "node": "22" },
+      { "starter": "next-pages", "react": "latest", "node": "22" }
+    ]
+  }
+}

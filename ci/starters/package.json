@@ -1,0 +1,9 @@
+{
+  "name": "react-froala-starter-check",
+  "private": true,
+  "description": "Builds fresh Vite and Next.js projects with the packed wrapper and checks the editor works. Run by .github/workflows/starter-check.yml.",
+  "type": "module",
+  "devDependencies": {
+    "playwright": "1.65.1"
+  }
+}

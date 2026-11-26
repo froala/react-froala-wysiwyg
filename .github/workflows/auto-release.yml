@@ -1,85 +1,95 @@
 name: Auto Release – react
- 
+
 on:
   pull_request:
     types: [closed]
     branches:
       - master
- 
+
 permissions:
   contents: write
- 
+
 jobs:
-  release:
-    # Run only when PR is merged
+  intent:
+    # Only merged PRs can release, and only the ones that say "release: yes".
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
- 
+    outputs:
+      release: ${{ steps.intent.outputs.release }}
     steps:
       - name: Validate release intent
         id: intent
-        uses: actions/github-script@v6
+        uses: actions/github-script@v8
         with:
           script: |
-            const body = context.payload.pull_request.body || '';
-            const title = context.payload.pull_request.title || '';
-            const text = `${title}\n${body}`;
- 
-            core.setOutput(
-              'release',
-              /release:\s*yes/i.test(text) ? 'true' : 'false'
-            );
- 
-      - name: Stop if not a release PR
-        if: steps.intent.outputs.release == 'false'
-        run: |
-          echo "Not a release PR. Skipping auto-release."
-          exit 0
- 
+            const pr = context.payload.pull_request;
+            const text = `${pr.title || ''}\n${pr.body || ''}`;
+            const release = /release:\s*yes/i.test(text);
+            core.setOutput('release', release ? 'true' : 'false');
+            core.info(release ? 'Release PR.' : 'Not a release PR. Nothing to release.');
 
-      - name: Checkout repository
-        uses: actions/checkout@v4
+  starter-check:
+    # The merged code runs the starter check once more before anything is released.
+    # Known-good entries failing stops the release; latest-version entries only report.
+    needs: intent
+    if: needs.intent.outputs.release == 'true'
+    permissions:
+      contents: read
+      pull-requests: write
+    uses: ./.github/workflows/starter-check.yml
+    with:
+      mode: both
+
+  release:
+    needs: [intent, starter-check]
+    if: needs.intent.outputs.release == 'true' && needs.starter-check.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the merge commit
+        uses: actions/checkout@v5
         with:
-          token: ${{ secrets.PAT }}
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
           fetch-depth: 0
- 
 
       - name: Read version from package.json
         run: |
           VERSION=$(jq -r '.version' package.json)
-      
+
           if [ -z "$VERSION" ] || [ "$VERSION" = "null" ]; then
-            echo "Failed to determine version from package.json"
+            echo "::error::Failed to determine version from package.json"
             exit 1
           fi
-      
+
           if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
-            echo "Invalid version format: $VERSION"
+            echo "::error::Invalid version format: $VERSION"
             exit 1
           fi
-      
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
           echo "Releasing version $VERSION"
-     
 
       - name: Prepare release notes
+        env:
+          # Passed through the environment, never pasted into the script:
+          # release notes contain backticks and quotes.
+          PR_BODY: ${{ github.event.pull_request.body }}
         run: |
-          PR_BODY="${{ github.event.pull_request.body }}"
- 
-          CLEAN_NOTES=$(echo "$PR_BODY" | sed \
-            -e '/^release:\s*/Id' \
-            -e '/^## Release Notes.*$/Id')
- 
-          echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
-          echo "$CLEAN_NOTES" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
- 
+          printf '%s\n' "$PR_BODY" \
+            | sed -E -e '/^release:[[:space:]]*/Id' -e '/^## Release Notes.*$/Id' \
+            > "$RUNNER_TEMP/release-notes.md"
 
       - name: Create GitHub Release
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
+          GH_TOKEN: ${{ secrets.PAT }}
+          TARGET_SHA: ${{ github.event.pull_request.merge_commit_sha }}
         run: |
+          if gh release view "v${VERSION}" > /dev/null 2>&1; then
+            echo "::notice::Release v${VERSION} already exists. Nothing to do."
+            exit 0
+          fi
+
           gh release create "v${VERSION}" \
+            --target "$TARGET_SHA" \
             --title "Release ${VERSION}" \
-            --notes "$RELEASE_NOTES" \
+            --notes-file "$RUNNER_TEMP/release-notes.md" \
             --latest

@@ -1,0 +1,229 @@
+name: Starter check
+
+# Builds the wrapper the way it's published, installs it into fresh Vite and Next.js
+# projects and checks the editor works there: TypeScript, production build, and the
+# editor rendering and taking input in headless Chrome.
+#
+# Two kinds of entries (see ci/starters/versions.json):
+#   stable - known-good framework versions. A failure blocks the PR and the release.
+#   latest - whatever npm has today. Only reports, never blocks.
+
+on:
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Which checks to run
+        type: choice
+        options: [both, stable, latest]
+        default: both
+      froala_editor_version:
+        description: froala-editor version to test against (blank = the one in package.json)
+        type: string
+        default: ''
+      react_version:
+        description: Force a React version, e.g. 19.3.1 or next (blank = from versions.json)
+        type: string
+        default: ''
+      next_version:
+        description: Force a Next.js version, e.g. 16.4.6 or canary (blank = from versions.json)
+        type: string
+        default: ''
+  workflow_call:
+    inputs:
+      mode:
+        type: string
+        default: both
+      froala_editor_version:
+        type: string
+        default: ''
+      react_version:
+        type: string
+        default: ''
+      next_version:
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+
+env:
+  # Next.js sends anonymous usage data from builds unless told not to.
+  NEXT_TELEMETRY_DISABLED: '1'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  package:
+    name: Pack the wrapper
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+      mode: ${{ steps.matrix.outputs.mode }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # On the release path (a merged PR) test the merge commit itself.
+          ref: ${{ github.event.pull_request.merged && github.event.pull_request.merge_commit_sha || '' }}
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Build and pack, as prepublishOnly does
+        run: |
+          npm install --no-audit --no-fund
+          npm run build
+          bash lib/copy_bundles.sh
+          mkdir -p "$RUNNER_TEMP/pack"
+          npm pack --pack-destination "$RUNNER_TEMP/pack"
+          ls -l "$RUNNER_TEMP/pack"
+
+      - uses: actions/upload-artifact@v5
+        with:
+          name: wrapper-tarball
+          path: ${{ runner.temp }}/pack/*.tgz
+          retention-days: 7
+
+      - name: Work out the matrix
+        id: matrix
+        env:
+          MODE: ${{ inputs.mode || 'both' }}
+        run: |
+          echo "mode=$MODE" >> "$GITHUB_OUTPUT"
+          echo "matrix=$(node ci/starters/matrix.mjs "$MODE")" >> "$GITHUB_OUTPUT"
+
+  starter:
+    name: ${{ matrix.mode }} · ${{ matrix.starter }} · React ${{ matrix.react }} · Node ${{ matrix.node }}
+    needs: package
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    # Latest-version entries report only: their failure never fails the workflow.
+    continue-on-error: ${{ !matrix.blocking }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.package.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # On the release path (a merged PR) test the merge commit itself.
+          ref: ${{ github.event.pull_request.merged && github.event.pull_request.merge_commit_sha || '' }}
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node }}
+
+      - uses: actions/download-artifact@v5
+        with:
+          name: wrapper-tarball
+          path: ${{ runner.temp }}/pack
+
+      - name: Install the check's own tools
+        working-directory: ci/starters
+        run: |
+          npm install --no-audit --no-fund
+          npx playwright install --with-deps chromium
+
+      - name: Create the starter project
+        working-directory: ci/starters
+        env:
+          OVERRIDE_REACT: ${{ inputs.react_version }}
+          OVERRIDE_NEXT: ${{ inputs.next_version }}
+          OVERRIDE_FROALA_EDITOR: ${{ inputs.froala_editor_version }}
+        run: |
+          node create-starter.mjs \
+            --id "${{ matrix.id }}" \
+            --starter "${{ matrix.starter }}" \
+            --mode "${{ matrix.mode }}" \
+            --react "${{ matrix.react }}" \
+            --node "${{ matrix.node }}" \
+            --tarball "$(ls "$RUNNER_TEMP"/pack/*.tgz | head -1)" \
+            --dir "$RUNNER_TEMP/app" \
+            --result "$RUNNER_TEMP/result/${{ matrix.id }}.json"
+
+      - name: Check the editor in it
+        working-directory: ci/starters
+        run: |
+          node check-editor.mjs \
+            --starter "${{ matrix.starter }}" \
+            --dir "$RUNNER_TEMP/app" \
+            --result "$RUNNER_TEMP/result/${{ matrix.id }}.json"
+
+      - name: Keep the result
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: result-${{ matrix.id }}
+          path: ${{ runner.temp }}/result/
+          if-no-files-found: ignore
+          retention-days: 14
+
+  report:
+    # The one check to mark as required on master: it fails only when a known-good
+    # entry failed or never reported.
+    name: Starter check result
+    needs: [package, starter]
+    if: always()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # On the release path (a merged PR) test the merge commit itself.
+          ref: ${{ github.event.pull_request.merged && github.event.pull_request.merge_commit_sha || '' }}
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - uses: actions/download-artifact@v5
+        with:
+          pattern: result-*
+          path: ${{ runner.temp }}/results
+          merge-multiple: true
+
+      - name: Summarise
+        id: report
+        env:
+          MODE: ${{ needs.package.outputs.mode || 'both' }}
+        run: |
+          set +e
+          node ci/starters/report.mjs --results "$RUNNER_TEMP/results" --mode "$MODE" --comment latest-comment.md
+          echo "exit=$?" >> "$GITHUB_OUTPUT"
+
+      - name: Comment on the PR about the latest versions
+        # Posts when the newest versions break, and updates that comment once they pass
+        # again. A PR from a fork gets a read-only token, so this may not be able to post;
+        # the summary above still has everything.
+        if: github.event.pull_request.number && hashFiles('latest-comment.md') != ''
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          LATEST_FAILED: ${{ steps.report.outputs.latest_failed }}
+        run: |
+          body=latest-comment.md
+          existing=$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR/comments" --paginate \
+            -q '.[] | select(.body | contains("<!-- starter-check-latest -->")) | .id' | head -1)
+
+          if [ "${LATEST_FAILED:-0}" != "0" ]; then
+            if [ -n "$existing" ]; then
+              gh api -X PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$existing" -F body=@"$body" > /dev/null
+            else
+              gh pr comment "$PR" --repo "$GITHUB_REPOSITORY" --body-file "$body"
+            fi
+          elif [ -n "$existing" ]; then
+            gh api -X PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$existing" -F body=@"$body" > /dev/null
+          fi
+
+      - name: Fail if a known-good starter failed
+        if: steps.report.outputs.exit != '0' || needs.package.result != 'success'
+        run: |
+          echo "::error::The wrapper failed in a fresh starter on known-good versions. See the summary for which one and why."
+          exit 1
